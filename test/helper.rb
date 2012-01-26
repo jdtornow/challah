@@ -1,17 +1,30 @@
-ENV["RAILS_ENV"] = "test"
 require 'simplecov'
-# require File.expand_path('../../config/environment', __FILE__)
 
+# Setup a sample rails app for testing rails modules
+SAMPLEAPP_ROOT = File.expand_path(File.join(File.dirname(__FILE__), '..', 'tmp', 'sampleapp'))
+FileUtils.rm_rf(SAMPLEAPP_ROOT) if File.exists?(SAMPLEAPP_ROOT)
+`rails new #{SAMPLEAPP_ROOT} --skip-bundle --skip-sprockets`
+
+ENV['RAILS_ENV'] = 'test'
+ENV['BUNDLE_GEMFILE'] ||= File.join(SAMPLEAPP_ROOT, 'Gemfile')
+
+RAKE_FILE = File.join(SAMPLEAPP_ROOT, 'Rakefile')
+
+require "#{SAMPLEAPP_ROOT}/config/environment"
+
+require 'shoulda/rails'
 require 'mocha'
 require 'factory_girl'
 require 'factories'
-require 'shoulda'
+require 'rails/test_help'
+
 require 'auth'
 
-include Auth
+`rake --rakefile #{RAKE_FILE} auth:setup`
 
-module Shoulda # :nodoc:
-  module ActiveRecord # :nodoc:
+# Fixing a bug within shoulda
+module Shoulda
+  module ActiveRecord
     module Matchers
       class AssociationMatcher
         protected

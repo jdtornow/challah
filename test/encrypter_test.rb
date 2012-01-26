@@ -1,6 +1,8 @@
 require 'helper'
 
-class TestEncrypter < Test::Unit::TestCase  
+class TestEncrypter < Test::Unit::TestCase
+  include Auth
+  
   context "The encrypter class" do
     should "encrypt a string" do
       assert_not_nil Encrypter.encrypt("testing 123")
@@ -8,13 +10,16 @@ class TestEncrypter < Test::Unit::TestCase
     
     should "use bcrypt to encrypt a string" do
       BCrypt::Password.expects(:create).with('testing 123', :cost => 10)
+      
       Encrypter.encrypt("testing 123")
+      
+      BCrypt::Password.unstub(:create)
     end 
 
     should "compare two encrypted strings quickly" do
       pass = Encrypter.encrypt("test A")    
       
-      assert_equal true, Encrypter.compare("test A", pass)    
+      assert_equal true, Encrypter.compare(pass, "test A")
       assert_equal false, Encrypter.compare("test A", "test A")
     end
   end
@@ -42,7 +47,7 @@ class TestEncrypter < Test::Unit::TestCase
     should "compare a string" do
       pass = @enc.encrypt("test A")    
       
-      assert_equal true, @enc.compare("test A", pass)    
+      assert_equal true, @enc.compare(pass, "test A")
       assert_equal false, @enc.compare("test A", "test A")
     end
     
@@ -61,6 +66,8 @@ class TestEncrypter < Test::Unit::TestCase
       Digest::SHA512.expects(:hexdigest).times(10)
       
       @enc.hash('hash me')
+      
+      Digest::SHA512.unstub(:hexdigest)
     end 
   end
 end

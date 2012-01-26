@@ -33,7 +33,7 @@ module Auth
     end
     
     # Returns true if the the bcrypted value of a is equal to b
-    def compare(plain_string, crypted_string)
+    def compare(crypted_string, plain_string)
       BCrypt::Password.new(crypted_string).is_password?(plain_string)
     rescue BCrypt::Errors::InvalidHash
       false

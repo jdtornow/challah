@@ -5,7 +5,7 @@ namespace :auth do
   task :setup => :environment do
     puts "Copying migrations..."    
     ENV['FROM'] = 'auth_engine'
-    Rake::Task['railties:install:migrations'].invoke    
+    Rake::Task['railties:install:migrations'].invoke
     
     puts "Migrating database..."    
     Rake::Task['db:migrate'].invoke

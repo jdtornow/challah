@@ -1,3 +1,3 @@
 module Auth
-  VERSION = "0.0.1.dev" unless defined?(::Auth::VERSION)
+  VERSION = "0.0.1" unless defined?(::Auth::VERSION)
 end

@@ -19,8 +19,8 @@ module Auth
             before_save :before_save_password
           
             belongs_to :role
-            has_many :permissions_users, :dependent => :destroy
-            has_many :permissions, :through => :permissions_users, :order => 'permissions.name'
+            has_many :permission_users, :dependent => :destroy
+            has_many :permissions, :through => :permission_users, :order => 'permissions.name'
           
             scope :active, where(:active => true).order('users.first_name, users.last_name')
             scope :inactive, where(:active => false).order('users.first_name, users.last_name')
@@ -79,8 +79,8 @@ module Auth
               login_count
               permissions
               permissions_attributes
-              permissions_users
-              permissions_users_attributes
+              permission_users
+              permission_users_attributes
               persistence_token
               role_id
               updated_by
@@ -180,15 +180,15 @@ module Auth
             # in addition to the user's role.
             def save_permission_keys
               if @permission_keys and Array === @permission_keys
-                self.permissions_users(true).clear
+                self.permission_users(true).clear
 
                 @permission_keys = @permission_keys.uniq - self.role.permission_keys
 
                 @permission_keys.each do |key|
-                  permission = Permission.find_by_key(key)
+                  permission = ::Permission.find_by_key(key)
 
                   if permission
-                    self.permissions_users.create(:permission_id => permission.id, :user_id => self.id)
+                    self.permission_users.create(:permission_id => permission.id, :user_id => self.id)
                   end
                 end
 
@@ -202,14 +202,14 @@ module Auth
             # called before_save on the User model, actually encrypts the password with a new generated salt
             def before_save_password
               if @password_updated and valid?
-                self.crypted_password = Encrypter.bcrypt(@password)
+                self.crypted_password = ::Auth::Encrypter.bcrypt(@password)
 
                 @password_updated = false
                 @password = nil
               end
 
-              self.persistence_token = Random.token(125) if self.persistence_token.to_s.blank?
-              self.api_key = Random.token(25) if self.api_key.to_s.blank?
+              self.persistence_token = ::Auth::Random.token(125) if self.persistence_token.to_s.blank?
+              self.api_key = ::Auth::Random.token(25) if self.api_key.to_s.blank?
             end
 
             # validation call for new passwords, make sure the password is confirmed, and is >= 4 characters
@@ -226,7 +226,7 @@ module Auth
             end
           private
             def authenticate_with_password(plain_password)
-              ChAuth::Encrypter.bcrypt_compare(self.crypted_password, plain_password)
+              ::Auth::Encrypter.bcrypt_compare(self.crypted_password, plain_password)
             end
         end
       end

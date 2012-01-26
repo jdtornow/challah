@@ -1,3 +1,3 @@
 class User < ActiveRecord::Base
-  # authable_user
+  authable_user
 end

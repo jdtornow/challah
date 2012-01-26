@@ -1,3 +1,3 @@
 class PermissionUser < ActiveRecord::Base
-  # authable_permissions_user
+  authable_permission_user
 end

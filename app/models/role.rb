@@ -1,3 +1,3 @@
 class Role < ActiveRecord::Base
-  # authable_role
+  authable_role
 end

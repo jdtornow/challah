@@ -15,7 +15,7 @@ module Auth
           class_eval do
             validates_presence_of :name, :key, :description
             validates_uniqueness_of :name, :key
-            validates_format_of :key, :with => /^([a-z_])*$/, :message => I18n.t('activerecord.errors.permissions.invalid_key')
+            validates_format_of :key, :with => /^([a-z_])*$/, :message => :invalid_key
 
             has_many :permission_roles, :dependent => :destroy
             has_many :roles, :through => :permission_roles, :order => 'roles.name'
@@ -56,13 +56,13 @@ module Auth
           protected
             # After a new permission level is added, automatically add it to the admin user role
             def add_to_admin_role
-              # admin_role = ::Role[:administrator]
-              # 
-              # # if there is an admin role, add this permission to it.
-              # if admin_role
-              #   admin_role.permission_keys = admin_role.permission_keys + [ self.key ]
-              #   admin_role.save
-              # end
+              admin_role = ::Role[:administrator]
+              
+              # if there is an admin role, add this permission to it.
+              if admin_role
+                admin_role.permission_keys = admin_role.permission_keys + [ self.key ]
+                admin_role.save
+              end
             end
         end
       end

@@ -16,8 +16,8 @@ module Auth
             validates_presence_of :name, :default_path
             
             has_many :users, :order => 'users.first_name, users.last_name'
-            has_many :permissions_roles, :dependent => :destroy
-            has_many :permissions, :through => :permissions_roles, :order => 'permissions.name'
+            has_many :permission_roles, :dependent => :destroy
+            has_many :permissions, :through => :permission_roles, :order => 'permissions.name'
           
             default_scope order('roles.name')
 
@@ -77,13 +77,13 @@ module Auth
             # Saves any updated permission keys to the database for this role
             def save_permission_keys              
               if @permission_keys and Array === @permission_keys
-                self.permissions_roles(true).clear
+                self.permission_roles(true).clear
 
                 @permission_keys.uniq.each do |key|
                   permission = ::Permission.find_by_key(key)
                   
                   if permission
-                    self.permissions_roles.create(:permission_id => permission.id, :role_id => self.id)
+                    self.permission_roles.create(:permission_id => permission.id, :role_id => self.id)
                   end
                 end
 

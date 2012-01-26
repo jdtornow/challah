@@ -40,22 +40,22 @@ class SetupAuth < ActiveRecord::Migration
     add_index :permissions, :key
     
     # Permissions/Roles    
-    create_table :permissions_roles do |t|
+    create_table :permission_roles do |t|
       t.integer :role_id
       t.integer :permission_id
     end
     
-    add_index :permissions_roles, :role_id
-    add_index :permissions_roles, :permission_id
+    add_index :permission_roles, :role_id
+    add_index :permission_roles, :permission_id
     
     # Permissions/Users
-    create_table :permissions_users do |t|
+    create_table :permission_users do |t|
       t.integer :user_id
       t.integer :permission_id
     end
     
-    add_index :permissions_users, :user_id
-    add_index :permissions_users, :permission_id
+    add_index :permission_users, :user_id
+    add_index :permission_users, :permission_id
     
     # Roles
     create_table :roles do |t|
@@ -74,10 +74,10 @@ class SetupAuth < ActiveRecord::Migration
     drop_table :permissions
     
     # Permissions/Roles
-    drop_table :permissions_roles
+    drop_table :permission_roles
     
     # Permissions/Users
-    drop_table :permissions_users
+    drop_table :permission_users
     
     # Roles
     drop_table :roles

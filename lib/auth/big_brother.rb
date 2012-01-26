@@ -28,7 +28,7 @@ module Auth
     end
     
     private
-      def before_save_big_brother   
+      def before_save_big_brother
         if new_record?
           all_big_brother_attributes.each do |attr_name|
             attr_name = attr_name.to_s
@@ -40,7 +40,7 @@ module Auth
           end
         else
           big_brother_attributes_for_update.each do |column|
-            if respond_to?(column) && respond_to?("#{column}=") && self.send(column).to_i.zero?
+            if respond_to?(column) && respond_to?("#{column}=")
               column = column.to_s
               next if attribute_changed?(column)
               write_attribute(column, current_user_id)

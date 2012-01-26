@@ -18,14 +18,7 @@ Gem::Specification.new do |s|
   
   s.add_dependency 'rails', '>= 3.1'
   s.add_dependency 'rake', '>= 0.9.2'
-  s.add_dependency 'shoulda', '>= 2.11.3'
   s.add_dependency 'bcrypt-ruby', '>= 0'
-  s.add_dependency 'mocha', '> 0'
-  s.add_dependency 'factory_girl', '>= 1.3.3'
-  
-  s.add_development_dependency 'rdoc', '>= 3.12'
-  s.add_development_dependency 'yard', '>= 0.7.4'
-  s.add_development_dependency 'rdiscount', '>= 1.6.8'
   
   s.required_rubygems_version = ">= 1.8.12"  
 end

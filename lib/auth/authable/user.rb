@@ -202,7 +202,7 @@ module Auth
             # called before_save on the User model, actually encrypts the password with a new generated salt
             def before_save_password
               if @password_updated and valid?
-                self.crypted_password = ::Auth::Encrypter.bcrypt(@password)
+                self.crypted_password = ::Auth::Encrypter.encrypt(@password)
 
                 @password_updated = false
                 @password = nil
@@ -226,7 +226,7 @@ module Auth
             end
           private
             def authenticate_with_password(plain_password)
-              ::Auth::Encrypter.bcrypt_compare(self.crypted_password, plain_password)
+              ::Auth::Encrypter.compare(self.crypted_password, plain_password)
             end
         end
       end

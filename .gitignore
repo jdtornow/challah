@@ -1,6 +1,7 @@
 .bundle
 .DS_Store
 .yardoc
+coverage/
 log/*.log
 tmp/**/*
 vendor/bundle

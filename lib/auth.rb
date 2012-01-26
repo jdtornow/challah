@@ -5,6 +5,19 @@ require 'auth/active_record'
 require 'auth/version'
 
 module Auth
-  class Engine < Rails::Engine    
+  if defined? Rails::Engine
+    class Engine < Rails::Engine
+    end
+  end
+  
+  if defined? ActiveRecord
+    class ActiveRecord::Base
+      include BigBrother
+      include Authable::Permission
+      include Authable::PermissionRole
+      include Authable::PermissionUser
+      include Authable::Role
+      include Authable::User      
+    end
   end
 end

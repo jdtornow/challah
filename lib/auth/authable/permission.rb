@@ -49,7 +49,7 @@ module Auth
               admin_role = ::Role.admin
               
               # if there is an admin role, add this permission to it.
-              if admin_role                
+              if admin_role
                 admin_role.permission_keys = admin_role.permission_keys + [ self.key ]
                 admin_role.save
               end

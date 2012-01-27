@@ -1,7 +1,7 @@
 # Define some basic factories for testing within our sample app
 FactoryGirl.define do
   factory :permission do
-    name { "Sample" }
+    sequence(:name) { |n| "Permission #{n}" }
     key { "sample" }
     description { "This is just a ample permission, it does nothing" }
 
@@ -52,6 +52,12 @@ FactoryGirl.define do
     password_confirmation { "abc123" }
     role_id { "1" }
 
+    factory :plain_user do
+      first_name { "Plain" }
+      sequence(:username) { |n| "plain#{n}" }
+      role_id nil
+    end
+    
     factory :normal_user do
       first_name { "Normal" }
       sequence(:username) { |n| "normal#{n}" }

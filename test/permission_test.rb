@@ -36,7 +36,7 @@ class PermissionTest < ActiveSupport::TestCase
       admin_role = Factory(:role, :name => 'Administrator')
       assert_equal nil, admin_role.permission_keys.index('new_permission')
       
-      Role.stubs(:admin).returns(admin_role)
+      #Role.stubs(:admin).returns(admin_role)
       
       permission = Permission.new(:name => 'New Permission', :key => 'new_permission', :description => 'This is just a test.')
       

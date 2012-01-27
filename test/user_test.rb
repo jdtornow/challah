@@ -22,7 +22,7 @@ class UserTest < ActiveSupport::TestCase
   
   context "A user instance" do
     setup do
-      @user = User.new
+      @user = Factory(:normal_user)
     end
     
     should "have a name attribute that returns the full name" do

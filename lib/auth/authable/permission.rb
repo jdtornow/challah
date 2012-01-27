@@ -42,16 +42,6 @@ module Auth
           def key=(value)
             write_attribute(:key, value.to_s.downcase.strip)
           end
-                    
-          # Convert this Permission instance to a json string
-          def as_json(options = {})
-            {
-              :id => id,
-              :name => name, 
-              :description => description,
-              :key => key
-            }.as_json(options)
-          end
           
           protected
             # After a new permission level is added, automatically add it to the admin user role

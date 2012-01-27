@@ -50,31 +50,19 @@ module Auth
           end
           alias :has :permission?
 
-          # Convert this Role instance to a json string
-          def as_json(options = {})
-            {      
-              :id => id,
-              :name => name, 
-              :description => description,
-              :permissions => permissions.collect(&:id)
-            }.as_json(options)
-          end
-          
           # Allow dynamic checking for permissions
           # 
-          # Example:
+          # +admin?+ is shorthand for:
+          #
           #   def admin?
           #     has(:admin)
           #   end
           def method_missing(sym, *args, &block)
-            return has(sym.to_s.gsub(/\?/, '')) if sym.to_s =~ /^[a-z_]*\?$/
+            return has(sym.to_s.gsub(/\?/, '')) if sym.to_s =~ /^[a-z0-9_]*\?$/
             super(sym, *args, &block)
           end
         
           protected
-            # Called after_save
-            #
-            # Saves any updated permission keys to the database for this role
             def save_permission_keys              
               if @permission_keys and Array === @permission_keys
                 self.permission_roles(true).clear

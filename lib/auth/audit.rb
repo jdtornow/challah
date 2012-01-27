@@ -70,7 +70,7 @@ module Auth
           audit_attributes_for_update.each do |column|
             if respond_to?(column) && respond_to?("#{column}=")
               column = column.to_s
-              next if attribute_changed?(column)
+              next if attribute_changed?(column) # don't update the column if we already manually did
               write_attribute(column, current_user_id)
             end
           end
@@ -95,7 +95,10 @@ module Auth
       # Clear attributes and changed_attributes
       def clear_audit_attributes
         all_audit_attributes.each do |attribute_name|
-          self[attribute_name] = nil
+          if respond_to?(attribute_name) && respond_to?("#{attribute_name}=")
+            write_attribute(attribute_name, nil)
+          end
+          
           changed_attributes.delete(attribute_name)
         end
       end

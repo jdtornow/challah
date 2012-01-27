@@ -9,6 +9,7 @@ module Auth
         def authable_user
           unless included_modules.include?(InstanceMethods)
             include InstanceMethods
+            extend ClassMethods
           end
           
           const_set(:PROTECTED_ATTRIBUTES, %w(api_key created_by crypted_password failed_login_count id last_login_at login_count permissions permissions_attributes permission_users permission_users_attributes persistence_token role_id updated_by))
@@ -30,6 +31,26 @@ module Auth
             scope :search, lambda { |q| where([ 'users.first_name like ? OR users.last_name like ? OR users.email like ? OR users.username LIKE ?', "%#{q}%", "%#{q}%", "%#{q}%", "%#{q}%" ]) }
           
             after_save :save_permission_keys
+          end
+        end
+        
+        module ClassMethods
+          # Find a user instance by username first, or email address if needed.
+          # If no user is found matching, return nil
+          def find_for_session(username_or_email)
+            return nil if username_or_email.to_s.blank?
+            
+            result = nil
+            
+            result = find_by_username(username_or_email)
+            
+            unless result
+              if username_or_email.to_s.include?('@')
+                result = find_by_email(username_or_email)
+              end              
+            end            
+            
+            result
           end
         end
       

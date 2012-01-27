@@ -20,6 +20,22 @@ class UserTest < ActiveSupport::TestCase
     should validate_uniqueness_of :username
   end
   
+  context "A User class" do
+    should "find a user by username or email" do
+      user_one = Factory(:normal_user, :username => 'test-user', :email => 'tester@example.com')
+      user_two = Factory(:normal_user, :username => 'test-user-2', :email => 'tester2@example.com')
+      
+      assert_equal user_one, User.find_for_session('test-user')
+      assert_equal user_one, User.find_for_session('tester@example.com')
+      
+      assert_equal user_two, User.find_for_session('test-user-2')
+      assert_equal user_two, User.find_for_session('tester2@example.com')
+      
+      assert_equal nil, User.find_for_session(' ')
+      assert_equal nil, User.find_for_session('not-existing')
+    end
+  end
+  
   context "A user instance" do
     should "have a name attribute that returns the full name" do
       user = User.new

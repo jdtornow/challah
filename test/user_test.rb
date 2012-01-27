@@ -87,6 +87,7 @@ class UserTest < ActiveSupport::TestCase
       assert user.save
       
       assert_equal true, user.authenticate('abc123')
+      assert_equal true, user.authenticate(:password, 'abc123')
       assert_equal false, user.authenticate('test123')
     end 
     
@@ -167,5 +168,30 @@ class UserTest < ActiveSupport::TestCase
       assert_equal true, user.has(:shoot)
       assert_equal true, user.shoot?
     end
+    
+    should "authenticate through various means by default" do
+      user = Factory(:user)      
+      
+      # By password
+      assert_equal false, user.authenticate_with_password('test123')
+      assert_equal false, user.authenticate(:password, 'test123')
+      assert_equal false, user.authenticate('test123')
+      
+      assert_equal true, user.authenticate_with_password('abc123')
+      assert_equal true, user.authenticate(:password, 'abc123')
+      assert_equal true, user.authenticate('abc123')
+      
+      # By api key
+      user.stubs(:api_key).returns('this-is-my-api-key')
+      
+      assert_equal true, user.authenticate_with_api_key('this-is-my-api-key')
+      assert_equal true, user.authenticate_with_api_key('this-is-my-api-key')
+      
+      assert_equal false, user.authenticate_with_api_key('this-is-not-my-api-key')
+      assert_equal false, user.authenticate_with_api_key('this-is-not-my-api-key')
+      
+      # With an unknown authentication method
+      assert_equal false, user.authenticate(:blah, 'sdsd', 'sdlsk')
+    end 
   end
 end

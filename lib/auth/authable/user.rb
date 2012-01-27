@@ -41,14 +41,33 @@ module Auth
             !!self.active
           end
           
-          # Use this method to authenticate this user based on the given password. Returns true 
-          # if the password provided is this user's current password.
-          #
-          # You can override this method if you want to use a different, non-bcrypt password 
-          # based authentication method.
-          def authenticate(plain_password)
+          # Generic authentication method. By default, this just checks to see if the password
+          # given matches this user. You can also pass in the first parameter as the method 
+          # to use for a different type of authentication.
+          def authenticate(*args)
             return false unless active?
-            authenticate_with_password(plain_password)
+            
+            if args.length > 1
+              method = args.shift
+              
+              if respond_to?("authenticate_with_#{method}")
+                return self.send("authenticate_with_#{method}", *args)
+              end
+              
+              false              
+            else
+              authenticate_with_password(args[0])
+            end
+          end
+          
+          # Pass in an api_key, and if it matches this user account, return true.
+          def authenticate_with_api_key(api_key)
+            self.api_key == api_key
+          end
+          
+          # Pass in a password, and if it matches this user's account, return true.
+          def authenticate_with_password(plain_password)
+            ::Auth::Encrypter.compare(self.crypted_password, plain_password)
           end
           
           # The default url where this user should be redirected to after logging in. Also can be used as the main link
@@ -149,10 +168,6 @@ module Auth
           end
           
           protected
-            def authenticate_with_password(plain_password)
-              ::Auth::Encrypter.compare(self.crypted_password, plain_password)
-            end
-            
             # called before_save on the User model, actually encrypts the password with a new generated salt
             def before_save_password
               if @password_updated and valid?

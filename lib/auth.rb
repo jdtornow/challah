@@ -1,4 +1,4 @@
-require 'auth/big_brother'
+require 'auth/audit'
 require 'auth/encrypter'
 require 'auth/random'
 require 'auth/active_record'
@@ -12,7 +12,7 @@ module Auth
   
   if defined? ActiveRecord
     class ActiveRecord::Base
-      include BigBrother
+      include Audit
       include Authable::Permission
       include Authable::PermissionRole
       include Authable::PermissionUser

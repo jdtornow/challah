@@ -3,6 +3,7 @@ require 'auth/audit'
 require 'auth/encrypter'
 require 'auth/random'
 require 'auth/session'
+require 'auth/techniques'
 require 'auth/version'
 
 module Auth
@@ -21,4 +22,10 @@ module Auth
       include Authable::User      
     end
   end
+  
+  extend Techniques  
+  @techniques ||= {}
+  
+  register_technique :password,       PasswordTechnique
+  register_technique :api_key,        ApiKeyTechnique
 end

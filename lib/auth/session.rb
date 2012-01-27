@@ -38,6 +38,9 @@ module Auth
       return @valid if @valid != nil
       return true if user and user.active?
       
+      # loop through all authentiction techniques..
+      Auth.techniques.keys
+      
       if username?
         user = User.find_for_session(self.username)
         

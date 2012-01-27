@@ -1,28 +1,31 @@
+# Coverage reporting, needs to be loaded first to capture all code coverage stats
 require 'simplecov'
 
 # Setup a sample rails app for testing rails modules
-SAMPLEAPP_ROOT = File.expand_path(File.join(File.dirname(__FILE__), '..', 'tmp', 'sampleapp'))
-FileUtils.rm_rf(SAMPLEAPP_ROOT) if File.exists?(SAMPLEAPP_ROOT)
-`rails new #{SAMPLEAPP_ROOT} --skip-bundle --skip-sprockets`
+sample_root = File.expand_path(File.join(File.dirname(__FILE__), '..', 'tmp', 'sampleapp'))
+FileUtils.rm_rf(sample_root) if File.exists?(sample_root)
+`rails new #{sample_root} --skip-bundle --skip-sprockets`
 
+# Setup environment variables for the Rails instance
 ENV['RAILS_ENV'] = 'test'
-ENV['BUNDLE_GEMFILE'] ||= File.join(SAMPLEAPP_ROOT, 'Gemfile')
+ENV['BUNDLE_GEMFILE'] ||= File.join(sample_root, 'Gemfile')
 
-RAKE_FILE = File.join(SAMPLEAPP_ROOT, 'Rakefile')
+# Load the newly created rails instance environment
+require "#{sample_root}/config/environment"
 
-require "#{SAMPLEAPP_ROOT}/config/environment"
-
+# Some other dependencies for testing w/ shoulda and factory girl
 require 'shoulda/rails'
 require 'mocha'
 require 'factory_girl'
 require 'factories'
-require 'rails/test_help'
 
+# Load the auth libraries
 require 'auth'
 
-`rake --rakefile #{RAKE_FILE} auth:setup`
+# Setup the auth app, including running migrations within the rails app
+`rake --rakefile #{ File.join(sample_root, 'Rakefile')} auth:setup`
 
-# Fixing a bug within shoulda
+# Monkey patch fix for shoulda and Rails 3.1+.
 module Shoulda
   module ActiveRecord
     module Matchers

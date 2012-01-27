@@ -46,10 +46,10 @@ module Auth
           protected
             # After a new permission level is added, automatically add it to the admin user role
             def add_to_admin_role
-              admin_role = ::Role[:administrator]
+              admin_role = ::Role.admin
               
               # if there is an admin role, add this permission to it.
-              if admin_role
+              if admin_role                
                 admin_role.permission_keys = admin_role.permission_keys + [ self.key ]
                 admin_role.save
               end

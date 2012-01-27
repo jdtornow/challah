@@ -50,7 +50,7 @@ FactoryGirl.define do
     sequence(:email) { |n| "email#{n}@example.com" }
     password { "abc123" }
     password_confirmation { "abc123" }
-    association :role, :factory => :default_role
+    role_id { "1" }
 
     factory :normal_user do
       first_name { "Normal" }

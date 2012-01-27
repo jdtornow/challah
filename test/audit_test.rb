@@ -68,7 +68,7 @@ class AuditTest < ActiveSupport::TestCase
   context "An audited model" do
     should "be able to receive a current user" do
       user = Factory(:normal_user)
-      user_two = Factory(:normal_user)
+      user_two = Factory(:user, :first_name => 'User', :last_name => 'Test 2')
       
       assert_equal 0, @model.current_user_id      
       assert_equal true, @model.new_record?

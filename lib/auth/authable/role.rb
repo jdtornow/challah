@@ -14,6 +14,7 @@ module Auth
           
           class_eval do
             validates_presence_of :name, :default_path
+            validates_uniqueness_of :name
             
             has_many :users, :order => 'users.first_name, users.last_name'
             has_many :permission_roles, :dependent => :destroy
@@ -28,6 +29,10 @@ module Auth
         module ClassMethods
           def [](value)
             self.find_by_name(value.to_s.strip.downcase.gsub(' ', '_').titleize)
+          end
+          
+          def admin
+            @admin ||= self.find_by_name('Administrator')
           end
         end
       

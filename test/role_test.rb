@@ -7,8 +7,16 @@ class RoleTest < ActiveSupport::TestCase
   should have_many :permission_roles
   should have_many :permissions
   
+  context "With existing roles" do
+    setup do
+      Factory(:role)
+    end
+    
+    should validate_uniqueness_of :name
+  end
+  
   context "The Role model" do
-    should "be able to load a role with Role[:role_name] shortcut" do
+    should "load with the brackets shortcut" do
       test = Factory(:role, :name => 'Test Role')
       default = Factory(:default_role)
 
@@ -18,6 +26,13 @@ class RoleTest < ActiveSupport::TestCase
       assert_equal default, Role[' defAult  ']
       assert_equal nil, Role[:bad_role]
     end
+    
+    should "be able to quickly load the admin role" do
+      admin_role = Factory(:role, :name => 'Administrator')
+      
+      assert_equal admin_role, Role[:administrator]
+      assert_equal admin_role, Role.admin
+    end 
   end
   
   context "A Role instance" do

@@ -1,6 +1,6 @@
 require 'helper'
 
-class AuditTest < Test::Unit::TestCase
+class AuditTest < ActiveSupport::TestCase
   include ActiveModel::Lint::Tests
 
   # Use Widget as a fake model to test auditing.

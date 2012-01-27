@@ -1,16 +1,19 @@
-AUTH_ROOT = File.expand_path(File.join(File.dirname(__FILE__), '..', '..'))
-
 namespace :auth do
   desc "Setup the auth gem within this rails app."
-  task :setup => :environment do
-    puts "Copying migrations..."    
-    ENV['FROM'] = 'auth_engine'
-    Rake::Task['railties:install:migrations'].invoke
+  task :setup => [ "auth:setup:migrations", "db:migrate", "auth:setup:seeds" ]
+  
+  namespace :setup do
+    desc "Copy migrations from auth gem"
+    task :migrations do
+      puts "Copying migrations..."    
+      ENV['FROM'] = 'auth_engine'
+      Rake::Task['railties:install:migrations'].invoke
+    end
     
-    puts "Migrating database..."    
-    Rake::Task['db:migrate'].invoke
-    
-    puts "Populating seed data..."    
-    Auth::Engine.load_seed
+    desc "Load seed data"
+    task :seeds => :environment do
+      puts "Populating seed data..." 
+      Auth::Engine.load_seed
+    end
   end
 end

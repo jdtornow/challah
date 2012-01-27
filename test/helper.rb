@@ -18,12 +18,23 @@ require 'shoulda/rails'
 require 'mocha'
 require 'factory_girl'
 require 'factories'
+require 'rails/test_help'
 
 # Load the auth libraries
 require 'auth'
 
 # Setup the auth app, including running migrations within the rails app
-`rake --rakefile #{ File.join(sample_root, 'Rakefile')} auth:setup`
+`rake --rakefile #{ File.join(sample_root, 'Rakefile')} auth:setup:migrations`
+
+# Run migrations for the sample app, hiding output
+ActiveRecord::Migration.verbose = false
+ActiveRecord::Migrator.migrate("#{Rails.root}/db/migrate")
+
+# Use ActiveSupport::TestCase for any tests using factories and database saving, 
+# so we can have a transactional rollback after each test.
+class ActiveSupport::TestCase
+  self.use_transactional_fixtures = true
+end
 
 # Monkey patch fix for shoulda and Rails 3.1+.
 module Shoulda

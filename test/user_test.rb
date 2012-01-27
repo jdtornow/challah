@@ -1,6 +1,6 @@
 require 'helper'
 
-class UserTest < Test::Unit::TestCase
+class UserTest < ActiveSupport::TestCase
   should validate_presence_of :email
   should validate_presence_of :first_name
   should validate_presence_of :last_name
@@ -13,7 +13,7 @@ class UserTest < Test::Unit::TestCase
   
   context "With an existing user" do
     setup do
-      Factory(:user)
+      Factory(:normal_user)
     end
     
     should validate_uniqueness_of :email

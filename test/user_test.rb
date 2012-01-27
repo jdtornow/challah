@@ -186,7 +186,7 @@ class UserTest < ActiveSupport::TestCase
     end
     
     should "authenticate through various means by default" do
-      user = Factory(:user)      
+      user = Factory(:user)
       
       # By password
       assert_equal false, user.authenticate_with_password('test123')
@@ -208,6 +208,24 @@ class UserTest < ActiveSupport::TestCase
       
       # With an unknown authentication method
       assert_equal false, user.authenticate(:blah, 'sdsd', 'sdlsk')
+    end
+    
+    should "have successful and failed authentication methods" do
+      user = Factory(:user)
+      
+      assert_nil user.last_session_ip
+      assert_nil user.last_session_at
+      
+      assert_difference 'user.session_count', 1 do
+        user.successful_authentication!('192.168.0.1')
+      end
+      
+      assert_not_nil user.last_session_ip
+      assert_not_nil user.last_session_at
+      
+      assert_difference 'user.failed_auth_count', 1 do
+        user.failed_authentication!
+      end
     end 
   end
 end

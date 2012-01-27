@@ -2,6 +2,7 @@ require 'auth/active_record'
 require 'auth/audit'
 require 'auth/encrypter'
 require 'auth/random'
+require 'auth/session'
 require 'auth/version'
 
 module Auth

@@ -47,7 +47,7 @@ module Auth
             unless result
               if username_or_email.to_s.include?('@')
                 result = find_by_email(username_or_email)
-              end              
+              end       
             end            
             
             result
@@ -95,6 +95,10 @@ module Auth
           # at the top of navigation.
           def default_path
             role ? role.default_path : '/'
+          end
+          
+          def failed_authentication!
+            self.increment!(:failed_auth_count)
           end
           
           # full name
@@ -156,6 +160,13 @@ module Auth
           # shortened name, just includes the first name and last initial
           def small_name
             "#{first_name.to_s.titleize} #{last_name.to_s.first.upcase}."
+          end
+          
+          # Called when a +Session+ validation is successful, and this user has 
+          # been authenticated.
+          def successful_authentication!(ip_address = nil)
+            self.update_attributes(:last_session_at => Time.now, :last_session_ip => ip_address)
+            self.increment!(:session_count, 1)
           end
           
           # Update a user's own account. This differsfrom User#update_attributes because it won't let

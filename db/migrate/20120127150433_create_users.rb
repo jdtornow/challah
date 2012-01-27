@@ -9,10 +9,10 @@ class CreateUsers < ActiveRecord::Migration
       t.string :persistence_token
       t.string :api_key
       t.integer :role_id
-      t.datetime :last_login_at
-      t.integer :login_count, :default => 0
-      t.integer :failed_login_count, :default => 0
-      t.string :last_login_ip
+      t.datetime :last_session_at
+      t.string :last_session_ip
+      t.integer :session_count, :default => 0
+      t.integer :failed_auth_count, :default => 0      
       t.integer :created_by, :default => 0
       t.integer :updated_by, :default => 0
       t.datetime :created_at

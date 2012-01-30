@@ -4,7 +4,7 @@ module Auth
     include ActiveModel::Conversion
     
     attr_accessor :return_to, :ip
-    attr_reader :params, :request, :user
+    attr_reader :params, :request, :user, :persist
     
     def initialize(request = nil, params = {})
       @request = request
@@ -17,8 +17,13 @@ module Auth
       return true if user and user.active?
       
       Auth.techniques.values.each do |klass|
-        @user = klass.new(self).authenticate        
-        break if @user
+        technique = klass.new(self)
+        @user = technique.authenticate
+        
+        if @user
+          @persist = technique.persist?
+          break
+        end
       end
       
       if user

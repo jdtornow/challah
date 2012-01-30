@@ -15,5 +15,9 @@ module Auth
       
       nil
     end
+    
+    def persist?
+      false
+    end
   end
 end

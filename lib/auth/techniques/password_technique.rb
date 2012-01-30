@@ -6,18 +6,6 @@ module Auth
       @password = session.password? ? session.password : nil
     end
     
-    def username?
-      !!@username
-    end
-    
-    def username
-      @username
-    end
-    
-    def password?
-      !!@password
-    end
-    
     # if we can successfully authenticate, return a User instance, otherwise nil
     def authenticate
       if username? and password?
@@ -36,6 +24,22 @@ module Auth
       end
       
       nil
+    end
+    
+    def password?
+      !!@password
+    end
+    
+    def persist?
+      true
+    end
+    
+    def username?
+      !!@username
+    end
+    
+    def username
+      @username
     end
   end
 end

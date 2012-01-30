@@ -1,13 +1,19 @@
 module Auth
   class ApiKeyTechnique
-    # grab the params we want from this request
-    def initialize(request, params)
-      
+    def initialize(session)
+      @key = session.api_key? ? session.api_key : nil   
     end
     
-    # if we can successfully authenticate, return a User instance, otherwise nil
-    def valid?
-      # User...
+    def authenticate
+      unless @key.to_s.blank?
+        user = User.find_by_api_key(@key)
+        
+        if user and user.active?
+          return user
+        end
+      end
+      
+      nil
     end
   end
 end

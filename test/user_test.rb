@@ -139,50 +139,38 @@ class UserTest < ActiveSupport::TestCase
     end
     
     should "get and set permission keys" do
-      role = Factory(:role, :name => 'New Role')
+      %w( run pass throw block ).each { |p| Factory(:permission, :key => p) }
       
-      user = Factory.build(:plain_user)      
-      user.role_id = role.id
-            
-      play = Permission.create(:name => 'Play', :key => 'play', :description => 'Just a test')
-      run = Permission.create(:name => 'run', :key => 'run', :description => 'Just a test')
-      shoot = Permission.create(:name => 'shoot', :key => 'shoot', :description => 'Just a test')
+      user = Factory.build(:user)
       
-      user.permission_keys = %w( run play )
-      assert_equal 2, user.permission_keys.length
+      user.stubs(:role).returns(Role.new)
+      user.role.stubs(:permission_keys).returns([])
       
-      assert_equal true, user.permission?(:run)
-      assert_equal true, user.has(:run)
-      assert_equal true, user.run?
-      
-      assert_equal true, user.permission?(:play)
-      assert_equal true, user.has(:play)
-      assert_equal true, user.play?
-      
-      assert_equal false, user.permission?(:shoot)
-      assert_equal false, user.has(:shoot)
-      assert_equal false, user.shoot?
-      
-      assert_raises NoMethodError do
-        user.bad_call_without_question_mark
-      end
-      
-      assert user.save
-      
-      user.permission_keys = %w( run play shoot )
       user.save
       
-      assert_equal true, user.permission?(:run)
-      assert_equal true, user.has(:run)
+      assert_equal [], user.permission_keys
+      
+      user.permission_keys = %w( pass throw run )      
+      
+      assert_difference 'PermissionUser.count', 3 do
+        user.save
+      end
+      
+      assert_equal true, user.pass?
+      assert_equal true, user.has(:pass)
+      assert_equal true, user.permission?(:pass)
+      
       assert_equal true, user.run?
+      assert_equal true, user.has(:run)
+      assert_equal true, user.permission?(:run)
       
-      assert_equal true, user.permission?(:play)
-      assert_equal true, user.has(:play)
-      assert_equal true, user.play?
+      assert_equal false, user.fake?
+      assert_equal false, user.has(:fake)
+      assert_equal false, user.permission?(:fake)
       
-      assert_equal true, user.permission?(:shoot)
-      assert_equal true, user.has(:shoot)
-      assert_equal true, user.shoot?
+      assert_raises NoMethodError do
+        user.does_not_exist
+      end
     end
     
     should "authenticate through various means by default" do

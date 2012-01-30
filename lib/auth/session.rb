@@ -4,33 +4,11 @@ module Auth
     include ActiveModel::Conversion
     
     attr_accessor :return_to, :ip
-    attr_reader :params, :request, :user    
-    attr_accessor :username, :password
+    attr_reader :params, :request, :user
     
-    def initialize(request = nil, params = nil)
+    def initialize(request = nil, params = {})
       @request = request
       @params = params
-      
-      # If params was given and is hash, grab username and password if they are present
-      if @params and params.respond_to?(:key?)
-        self.username = params[:username] if params.has_key?(:username)
-        self.password = params[:password] if params.has_key?(:password)
-      end
-    end
-    
-    # Shouldn't be able to access the password outside of this model
-    def password
-      nil
-    end
-    
-    # Was a password provided
-    def password?
-      !@password.to_s.blank?
-    end
-    
-    # Was a username provided
-    def username?
-      !@username.to_s.blank?
     end
     
     # Returns true if this session has been authenticated and is ready to save.
@@ -38,27 +16,31 @@ module Auth
       return @valid if @valid != nil
       return true if user and user.active?
       
-      # loop through all authentiction techniques..
-      Auth.techniques.keys
+      Auth.techniques.values.each do |klass|
+        @user = klass.new(self).authenticate        
+        break if @user
+      end
       
-      if username?
-        user = User.find_for_session(self.username)
-        
-        if user.active?
-          if password?
-            if user.authenticate(:password, @password)
-              @valid = true
-              user.successful_authentication!(self.ip)
-              @user = user              
-              return true
-            end
-          end
-        end
-        
-        user.failed_authentication!
+      if user
+        user.successful_authentication!(self.ip)
+        return @valid = true
       end
       
       false
+    end
+    
+    # Allow for dynamic setting of instance variables.
+    # also allows for variable? to see if it was provided
+    def method_missing(sym, *args, &block)
+      if @params.has_key?(sym)
+        return @params[sym]
+      elsif sym.to_s =~ /^[a-z0-9_]*=$/
+        return @params[sym.to_s.sub(/^(.*?)=$/, '\1').to_sym] = args.shift
+      elsif sym.to_s =~ /^[a-z0-9_]*\?$/
+        return !!@params[sym.to_s.sub(/^(.*?)\?$/, '\1').to_sym]
+      end
+      
+      super(sym, *args, &block)
     end
   end
 end

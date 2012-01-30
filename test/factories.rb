@@ -6,8 +6,8 @@ FactoryGirl.define do
     description { "This is just a ample permission, it does nothing" }
 
     factory :admin_permission do
-      name "Administrator"
-      key "admin"
+      name { "Administrator" }
+      key { "admin" }
     end
 
     factory :users_permission do

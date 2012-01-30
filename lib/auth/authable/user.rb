@@ -184,7 +184,7 @@ module Auth
           
           # Returns the permission keys used by this specific user, does not include any role-based permissions. 
           def user_permission_keys
-            @user_permission_keys ||= self.permissions(true).collect(&:key)
+            self.permissions(true).collect(&:key)
           end
 
           # Allow dynamic checking for permissions

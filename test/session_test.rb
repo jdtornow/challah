@@ -152,5 +152,17 @@ class SessionTest < ActiveSupport::TestCase
       
       User.unstub(:find_for_session)
     end
+    
+    should "have a default_path attribute" do
+      user = Factory(:user, :username => 'test-user')
+      
+      user.stubs(:default_path).returns("/user-path")
+      
+      session = Session.new      
+      assert_equal '/', session.default_path
+      
+      session = Session.create(user)
+      assert_equal '/user-path', session.default_path
+    end 
   end
 end

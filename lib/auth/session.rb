@@ -14,6 +14,11 @@ module Auth
       @store = self.class.storage_class.new(self)
     end
     
+    # The path where a user will be redirected to upon login
+    def default_path
+      self.user ? self.user.default_path : '/'
+    end
+    
     def destroy
       self.store.destroy
       
@@ -50,6 +55,10 @@ module Auth
     # Id of the current user.
     def user_id
       @user_id ||= self.user ? self.user[:id] : nil
+    end
+    
+    def username
+      params[:username] || ""
     end
     
     # Returns true if this session has been authenticated and is ready to save.

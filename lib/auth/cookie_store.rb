@@ -27,8 +27,6 @@ module Auth
       @user_id = user_id
       
       write_cookies!
-      
-      true
     end
     
     private
@@ -42,7 +40,7 @@ module Auth
       end
       
       def domain
-        request.session_options[:session_domain]
+        request.session_options[:domain]
       end
       
       def expiration

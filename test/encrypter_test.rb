@@ -1,6 +1,6 @@
 require 'helper'
 
-class TestEncrypter < Test::Unit::TestCase
+class TestEncrypter < ActiveSupport::TestCase
   include Auth
   
   context "The encrypter class" do

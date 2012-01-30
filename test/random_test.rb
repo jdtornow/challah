@@ -1,6 +1,6 @@
 require 'helper'
 
-class TestRandom < Test::Unit::TestCase
+class TestRandom < ActiveSupport::TestCase
   include Auth
   
   should "be able to provide a random string from ActiveSupport" do

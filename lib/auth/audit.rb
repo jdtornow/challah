@@ -32,7 +32,7 @@ module Auth
       base.class_eval do
         before_save :before_save_audit
       end
-    end   
+    end
     
     # @private
     def initialize_dup(other)

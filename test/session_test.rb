@@ -3,10 +3,46 @@ require 'helper'
 class SessionTest < ActiveSupport::TestCase
   include Auth
   
-  class MockController    
-  end
-  
-  class MockRequest
+  context "An Auth::Session class" do
+    should "use the test storage method" do
+      assert_equal TestSessionStore, Session.storage_class
+    end 
+    
+    should "create a new session instance from a user or id" do
+      user = Factory(:user)
+            
+      assert_equal true, user.active?      
+      
+      session = Session.create(user)      
+      assert_equal true, session.valid?
+      assert_equal user.id, session.user_id
+    end
+    
+    should "create a blank but invalid session for a non-existant or inactive user" do
+      session = Session.create(999)
+      assert_equal false, session.valid?
+      assert_equal nil, session.user_id
+    end
+    
+    should "persist a session" do
+      user = Factory(:user)
+      
+      session = Session.create(user)
+      assert_equal true, session.valid?
+      assert_equal user, session.user
+      
+      session.save
+      
+      session_two = Session.find
+      assert_equal true, session_two.valid?
+      assert_equal user, session_two.user
+      
+      session_two.destroy
+      
+      session_three = Session.find
+      assert_equal false, session_three.valid?
+      assert_equal nil, session_three.user
+    end 
   end
   
   context "A Auth::Session instance" do    
@@ -75,6 +111,8 @@ class SessionTest < ActiveSupport::TestCase
       
       assert_equal true, session.valid?
       assert_equal user, session.user
+      assert_equal user.id, session.user_id
+      assert_equal true, session.persist?
       
       User.unstub(:find_for_session)
     end
@@ -90,6 +128,8 @@ class SessionTest < ActiveSupport::TestCase
       
       assert_equal true, session.valid?
       assert_equal user, session.user
+      assert_equal user.id, session.user_id      
+      assert_equal false, session.persist?
       
       user.expects(:successful_authentication!).with('127.0.0.1').once
       
@@ -111,6 +151,6 @@ class SessionTest < ActiveSupport::TestCase
       assert_equal nil, session.user
       
       User.unstub(:find_for_session)
-    end    
+    end
   end
 end

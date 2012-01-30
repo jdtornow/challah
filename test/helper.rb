@@ -36,6 +36,66 @@ class ActiveSupport::TestCase
   self.use_transactional_fixtures = true
 end
 
+# Used to persist session data in test mode instead of using cookies. Stores the session
+# data lazily in a global var, accessible across the testing environment.
+class TestSessionStore
+  def initialize(session = nil)
+    @session = session
+  end
+  
+  def destroy
+    $auth_test_session = nil
+  end
+  
+  def read
+    if $auth_test_session
+      return $auth_test_session.to_s.split(':')
+    end
+    
+    nil
+  end
+  
+  def save(token, user_id)
+    $auth_test_session = "#{token}:#{user_id}"
+    true
+  end
+end
+
+class MockController
+  include Auth::Controller
+  
+  attr_accessor :request
+  
+  def initialize()
+    @request = MockRequest.new
+  end
+end
+
+class MockRequest
+  attr_accessor :cookies, :session_options
+  
+  class CookieHash < Hash
+    def delete(key, options = {})
+      super(key)
+    end
+  end
+  
+  def initialize
+    @cookies = CookieHash.new
+    @session_options = { :session_domain => 'test.dev' }
+  end
+  
+  def remote_ip
+    "8.8.8.8"
+  end
+  
+  def user_agent
+    "Some Cool Browser"
+  end
+end
+
+Auth::Session.storage_class = TestSessionStore
+
 # Monkey patch fix for shoulda and Rails 3.1+.
 module Shoulda
   module ActiveRecord

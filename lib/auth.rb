@@ -1,5 +1,7 @@
 require 'auth/active_record'
 require 'auth/audit'
+require 'auth/controller'
+require 'auth/cookie_store'
 require 'auth/encrypter'
 require 'auth/random'
 require 'auth/session'
@@ -12,8 +14,8 @@ module Auth
     end
   end
   
-  if defined? ActiveRecord
-    class ActiveRecord::Base
+  if defined? ::ActiveRecord
+    class ::ActiveRecord::Base
       include Audit
       include Authable::Permission
       include Authable::PermissionRole
@@ -23,9 +25,24 @@ module Auth
     end
   end
   
+  if defined? ::ActionController
+    class ::ActionController::Base
+      include Controller
+      
+      helper_method :logged_in?, :current_user, :current_user_session
+    end
+  end
+  
   extend Techniques  
   @techniques ||= {}
   
+  # Default registered authentication techiques.   
   register_technique :password,       PasswordTechnique
   register_technique :api_key,        ApiKeyTechnique
+  
+  # By default, store session persistence in cookies.
+  Auth::Session.storage_class = CookieStore
+  
+  # Name the CookieStore cookie prefixes
+  CookieStore.prefix = 'auth'
 end

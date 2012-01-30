@@ -40,6 +40,8 @@ module Auth
     end
     
     def save
+      return false unless self.valid?
+      
       if self.user
         self.store.save(self.user.persistence_token, user_id)
       end

@@ -6,7 +6,7 @@ class SessionTest < ActiveSupport::TestCase
   context "An Auth::Session class" do
     should "use the test storage method" do
       assert_equal TestSessionStore, Session.storage_class
-    end 
+    end
     
     should "create a new session instance from a user or id" do
       user = Factory(:user)

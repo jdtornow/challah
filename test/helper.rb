@@ -24,7 +24,8 @@ require 'rails/test_help'
 require 'auth'
 
 # Setup the auth app, including running migrations within the rails app
-`rake --rakefile #{ File.join(sample_root, 'Rakefile')} auth:setup:migrations`
+# TODO - this causes some annoying output in 1.9.3, still works, but would like to suppress
+`rake --rakefile #{File.join(sample_root, 'Rakefile')} auth:setup:migrations`
 
 # Run migrations for the sample app, hiding output
 ActiveRecord::Migration.verbose = false

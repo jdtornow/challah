@@ -28,15 +28,16 @@ module Auth
           end
         end
         
+        # These methods will be accessible directly on the Permission class.
         module ClassMethods
-          # Returns a permission instance for the provided key:
-          # 
-          # Alias for Permission.find_by_key()
+          # Quickly access a +Permission+ instance by the provided key.
+          #
+          #   Permission[:admin] # => Permission.find_by_key('admin')
           def [](value)
             self.find_by_key(value.to_s.strip.downcase.gsub(' ', '_'))
           end      
         end
-    
+        
         # Instance methods to be included once authable_permission is set up.
         module InstanceMethods
           def key=(value)

@@ -12,5 +12,4 @@ end
 
 group :doc do
   gem 'yard'
-  gem 'rdiscount'
 end

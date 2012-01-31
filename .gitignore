@@ -1,8 +1,10 @@
 .bundle
 .DS_Store
 .rbenv-version
+.rvmrc
 .yardoc
 coverage/
+doc/
 log/*.log
 tmp/**/*
 vendor/bundle

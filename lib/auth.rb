@@ -15,6 +15,7 @@ module Auth
   end
   
   if defined? ::ActiveRecord
+    # @private
     class ::ActiveRecord::Base
       include Audit
       include Authable::Permission
@@ -26,6 +27,7 @@ module Auth
   end
   
   if defined? ::ActionController
+    # @private
     class ::ActionController::Base
       include Controller
       

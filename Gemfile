@@ -11,5 +11,6 @@ group :test do
 end
 
 group :doc do
+  gem 'rdiscount'
   gem 'yard'
 end

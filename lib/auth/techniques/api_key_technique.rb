@@ -6,7 +6,7 @@ module Auth
     
     def authenticate
       unless @key.to_s.blank?
-        user = User.find_by_api_key(@key)
+        user = ::User.find_by_api_key(@key)
         
         if user and user.active?
           return user

@@ -34,7 +34,7 @@ module Auth
       persistence_token, user_id = self.store.read      
       return false if persistence_token.nil? or user_id.nil?
       
-      store_user = User.find_by_id(user_id)
+      store_user = ::User.find_by_id(user_id)
       
       if store_user and store_user.active? and store_user.persistence_token == persistence_token
         self.user = store_user
@@ -85,7 +85,7 @@ module Auth
     class << self
       # Manually create a new Session
       def create(user_or_user_id)
-        user_record = ::User === user_or_user_id ? user_or_user_id : User.find_by_id(user_or_user_id)
+        user_record = ::User === user_or_user_id ? user_or_user_id : ::User.find_by_id(user_or_user_id)
         
         session = Session.new()
         

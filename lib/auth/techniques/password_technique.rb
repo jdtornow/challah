@@ -9,7 +9,7 @@ module Auth
     # if we can successfully authenticate, return a User instance, otherwise nil
     def authenticate
       if username? and password?
-        user = User.find_for_session(username)
+        user = ::User.find_for_session(username)
         
         if user
           if user.active?

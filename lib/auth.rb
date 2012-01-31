@@ -1,4 +1,8 @@
-require 'auth/active_record'
+require 'auth/permission'
+require 'auth/permission_role'
+require 'auth/permission_user'
+require 'auth/role'
+require 'auth/user'
 require 'auth/audit'
 require 'auth/controller'
 require 'auth/cookie_store'
@@ -18,11 +22,11 @@ module Auth
     # @private
     class ::ActiveRecord::Base
       include Audit
-      include Authable::Permission
-      include Authable::PermissionRole
-      include Authable::PermissionUser
-      include Authable::Role
-      include Authable::User      
+      extend AuthablePermission
+      extend AuthablePermissionRole
+      extend AuthablePermissionUser
+      extend AuthableRole
+      extend AuthableUser      
     end
   end
   

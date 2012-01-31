@@ -1,5 +1,0 @@
-require 'auth/authable/permission'
-require 'auth/authable/permission_role'
-require 'auth/authable/permission_user'
-require 'auth/authable/role'
-require 'auth/authable/user'

@@ -16,7 +16,7 @@ module Auth
     
     def read
       if cookies[session_cookie_name]
-        return cookies[session_cookie_name].to_s.split(':')
+        return cookies[session_cookie_name].to_s.split(joiner)
       end
         
       nil
@@ -36,7 +36,7 @@ module Auth
       end
     
       def cookies
-        request.cookies
+        request.cookie_jar
       end
       
       def domain
@@ -46,7 +46,11 @@ module Auth
       def expiration
         @expiration ||= 1.month.from_now
       end
-    
+      
+      def joiner
+        '@'
+      end
+      
       def prefix
         @prefix ||= self.class.prefix
       end
@@ -62,7 +66,7 @@ module Auth
       end
       
       def session_cookie_value
-        @session_cookie_value ||= "#@token:#@user_id"
+        @session_cookie_value ||= "#@token#{joiner}#@user_id"
       end
       
       def validation_cookie_name

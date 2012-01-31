@@ -72,17 +72,25 @@ class MockController
 end
 
 class MockRequest
-  attr_accessor :cookies, :session_options
+  attr_accessor :cookie_jar, :session_options
   
-  class CookieHash < Hash
+  class MockCookieJar < Hash
     def delete(key, options = {})
       super(key)
     end
   end
   
   def initialize
-    @cookies = CookieHash.new
-    @session_options = { :session_domain => 'test.dev' }
+    @cookie_jar = MockCookieJar.new
+    @session_options = { :domain => 'test.dev' }
+  end
+  
+  def cookies
+    @cookie_jar
+  end
+  
+  def cookies=(value)
+    @cookie_jar = value
   end
   
   def remote_ip

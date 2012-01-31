@@ -15,11 +15,7 @@ module Auth
     end
     
     def read
-      if cookies[session_cookie_name]
-        return cookies[session_cookie_name].to_s.split(joiner)
-      end
-        
-      nil
+      existing? ? cookie_values : nil
     end
     
     def save(token, user_id)
@@ -34,13 +30,33 @@ module Auth
         cookies.delete(session_cookie_name, :domain => domain)
         cookies.delete(validation_cookie_name, :domain => domain)
       end
-    
+      
+      def cookie_values
+        session_cookie && session_cookie.to_s.split(joiner)
+      end
+      
       def cookies
         request.cookie_jar
       end
       
       def domain
         request.session_options[:domain]
+      end
+      
+      # Do the cookies exist, and are they valid?
+      def existing?
+        exists = false
+        
+        if session_cookie and validation_cookie
+          session_tmp = session_cookie.to_s
+          validation_tmp = validation_cookie.to_s
+          
+          if validation_tmp == validation_cookie_value(session_tmp)
+            exists = true
+          end
+        end
+        
+        exists
       end
       
       def expiration
@@ -56,9 +72,12 @@ module Auth
       end
       
       def request
-        raise "No Request Provided" unless @session and @session.request
-        
+        raise "No Request Provided" unless @session and @session.request        
         @session.request
+      end
+      
+      def session_cookie
+        cookies[session_cookie_name]
       end
     
       def session_cookie_name
@@ -66,14 +85,19 @@ module Auth
       end
       
       def session_cookie_value
-        @session_cookie_value ||= "#@token#{joiner}#@user_id"
+        "#@token#{joiner}#@user_id"
+      end
+      
+      def validation_cookie
+        cookies[validation_cookie_name]
       end
       
       def validation_cookie_name
         "#{prefix}-v"
       end
       
-      def validation_cookie_value
+      def validation_cookie_value(value = nil)
+        value = session_cookie_value if value.nil?
         Encrypter.md5(session_cookie_value, request.user_agent, request.remote_ip)
       end
       

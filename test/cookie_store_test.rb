@@ -25,16 +25,41 @@ class CookieStoreTest < ActiveSupport::TestCase
       assert_equal "test.dev", @request.cookies['auth-v'][:domain]
     end
     
-    should "read session data from cookies" do
-      @request.cookies['auth-s'] = "#{@user.persistence_token}@#{@user.id}"      
-      @request.cookies['auth-v'] = Encrypter.md5("#{@user.persistence_token}@#{@user.id}", @request.user_agent, @request.remote_ip)      
+    should "read cookies and detect tampered verification cookies" do
+      assert_equal [], @request.cookies.keys
       
       session = Session.new(@request)
       session.store = CookieStore.new(session)
-      session.read
+      session.user = @user
+      session.save
       
-      assert_equal true, session.valid?
-      assert_equal @user, session.user
+      validation_cookie_val = Encrypter.md5("#{@user.persistence_token}@#{@user.id}", @request.user_agent, @request.remote_ip)
+      session_cookie_val = "#{@user.persistence_token}@#{@user.id}"
+      
+      assert_equal session_cookie_val, @request.cookies['auth-s'][:value]
+      assert_equal session_cookie_val, session.store.send(:session_cookie)[:value]
+      assert_equal validation_cookie_val, @request.cookies['auth-v'][:value]
+      assert_equal validation_cookie_val, session.store.send(:validation_cookie)[:value]
+      
+      session.store.stubs(:validation_cookie).returns(validation_cookie_val)
+      session.store.stubs(:session_cookie).returns(session_cookie_val)
+      
+      session2 = Session.new(@request)
+      session2.store = session.store      
+      session2.read
+      
+      assert_equal true, session2.store.send(:existing?)
+      assert_equal true, session2.valid?
+      assert_equal @user.id, session2.user_id
+      
+      session.store.stubs(:validation_cookie).returns('bad-value')
+      
+      session3 = Session.new(@request)
+      session3.store = session.store
+      session3.read
+      
+      assert_equal false, session3.store.send(:existing?)
+      assert_equal false, session3.valid?
     end
     
     should "delete sessions from cookies" do

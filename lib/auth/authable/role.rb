@@ -1,4 +1,7 @@
 module Auth
+  # AuthableRole is used to extend functionality to a model in your app named Role. By default, 
+  # this model already exists within the auth engine.
+  #
   # The Role model is used to group together sets of permissions that can be assigned
   # to users. 
   #
@@ -17,7 +20,21 @@ module Auth
   # able to access all permissions. All subsequently added permissions will also be added
   # to the administrator role.
   #
-  # = Customizing the Role model
+  # == Validations
+  # 
+  # A role requires that a unique name be provided.
+  #  
+  # == Associations
+  #
+  # The following associations are set on this model by default:
+  #
+  # * Has many *users* (connects to {AuthableUser User})
+  # * Has many *permissions* (connects to {AuthablePermission Permission})
+  #
+  # The join table (permission_roles) is also included, but likely does not need to be
+  # accessed directly.
+  #
+  # == Customizing the Role model
   #
   # By default, the Role model is included within the gem engine. However, if you wish to 
   # include it within your app for any customizations, you can do so by creating a model 
@@ -29,11 +46,11 @@ module Auth
   #     authable_role  
   #
   #     # Your customizations here..
-  #   end  
+  #   end
   module AuthableRole
     # This method sets up the +Role+ class with all baked in methods.
     #
-    # A permission requires the presence of the +name+ and +default_path+ attributes.
+    # A role requires the presence of the +name+ and +default_path+ attributes.
     #
     # Once this method has been called, the {InstanceMethods} and {ClassMethods} modules
     # will be accessibile within the Role model.
@@ -44,7 +61,7 @@ module Auth
       end
       
       class_eval do
-        validates_presence_of :name, :default_path
+        validates_presence_of :name
         validates_uniqueness_of :name
         
         has_many :users, :order => 'users.first_name, users.last_name'

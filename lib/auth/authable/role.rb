@@ -29,7 +29,7 @@ module Auth
   #     authable_role  
   #
   #     # Your customizations here..
-  #   end
+  #   end  
   module AuthableRole
     # This method sets up the +Role+ class with all baked in methods.
     #

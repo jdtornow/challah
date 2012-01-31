@@ -25,6 +25,15 @@ class CookieStoreTest < ActiveSupport::TestCase
       assert_equal "test.dev", @request.cookies['auth-v'][:domain]
     end
     
+    should "be able to inspect the store" do
+      session = Session.new(@request)
+      session.store = CookieStore.new(session)
+      session.user = @user
+      session.save
+      
+      assert session.store.inspect =~ /<CookieStore:(.*?)>/, 'Does not match'
+    end 
+    
     should "read cookies and detect tampered verification cookies" do
       assert_equal [], @request.cookies.keys
       
@@ -78,6 +87,6 @@ class CookieStoreTest < ActiveSupport::TestCase
       assert_equal false, session.valid?
       assert_equal nil, session.user
       assert_equal [], @request.cookies.keys.sort
-    end 
+    end
   end
 end

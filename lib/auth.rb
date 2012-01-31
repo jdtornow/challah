@@ -15,6 +15,9 @@ require 'auth/version'
 module Auth
   if defined? Rails::Engine
     class Engine < Rails::Engine
+      initializer 'auth.router' do |app|
+        app.routes_reloader.paths.insert(0, File.expand_path(File.join(File.dirname(__FILE__), 'auth/routes.rb')))
+      end
     end
   end
   

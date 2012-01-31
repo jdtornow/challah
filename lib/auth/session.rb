@@ -10,7 +10,7 @@ module Auth
     
     def initialize(request = nil, params = {})
       @request = request
-      @params = params
+      @params = params || {}
       @store = self.class.storage_class.new(self)
     end
     
@@ -24,6 +24,10 @@ module Auth
       
       @valid = false
       @user = nil
+    end
+    
+    def inspect
+      "#<Session:0x#{object_id.to_s(16)} valid=#{valid?} store=#{self.store.inspect} user=#{user_id || 'nil'}>"
     end
    
     def persist?

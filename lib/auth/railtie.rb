@@ -3,17 +3,12 @@ module Auth
     require 'rails'
     
     class Engine < Rails::Engine
-      initializer 'auth.setup_active_record' do
-        ActiveSupport.on_load :active_record do
-          Auth::Railtie.setup
-        end
+      # Load up the routes first before your application specific routes, so these can be 
+      # overridden if needed.
+      initializer 'auth.router' do |app|
+        raise 'hell'
+        app.routes_reloader.paths.insert(0, File.expand_path(File.dirname(__FILE__), 'routes.rb'))
       end
-    end
-  end
-  
-  class Railtie
-    def self.setup
-      
     end
   end
 end

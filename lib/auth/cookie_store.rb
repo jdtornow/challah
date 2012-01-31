@@ -14,6 +14,10 @@ module Auth
       clear
     end
     
+    def inspect
+      "#<CookieStore:0x#{object_id.to_s(16)} valid=#{existing?}>"
+    end
+    
     def read
       existing? ? cookie_values : nil
     end
@@ -97,8 +101,8 @@ module Auth
       end
       
       def validation_cookie_value(value = nil)
-        value = session_cookie_value if value.nil?
-        Encrypter.md5(session_cookie_value, request.user_agent, request.remote_ip)
+        value = session_cookie_value unless value
+        Encrypter.md5(value, request.user_agent, request.remote_ip)
       end
       
       def write_cookies!

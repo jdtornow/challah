@@ -28,17 +28,24 @@ module Auth
           end
         end
         
-        # These methods will be accessible directly on the Permission class.
         module ClassMethods
-          # Quickly access a +Permission+ instance by the provided key.
+          # Quickly access a +Permission+ instance by the provided key. If no +Permission+
+          # is found with that key, +nil+ is returned.
           #
+          # @param [Symbol, String] key A permission +key+ to locate.
+          # @return [Permission, nil]
+          #
+          # @example
           #   Permission[:admin] # => Permission.find_by_key('admin')
-          def [](value)
-            self.find_by_key(value.to_s.strip.downcase.gsub(' ', '_'))
+          # @example
+          #   Permission['manage_users'] # => Permission.find_by_key('manage_users')
+          # @example
+          #   Permission[:does_not_exist] # => nil
+          def [](key)
+            self.find_by_key(key.to_s.strip.downcase.gsub(' ', '_'))
           end      
         end
         
-        # Instance methods to be included once authable_permission is set up.
         module InstanceMethods
           def key=(value)
             write_attribute(:key, value.to_s.downcase.strip)

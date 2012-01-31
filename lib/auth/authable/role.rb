@@ -27,10 +27,28 @@ module Auth
         end
       
         module ClassMethods
-          def [](value)
-            self.find_by_name(value.to_s.strip.downcase.gsub(' ', '_').titleize)
+          # Quickly access a +Role+ instance by the provided name. If no +Role+
+          # is found with that key, +nil+ is returned.
+          #
+          # @param [Symbol, String] name A role +name+ to locate.
+          # @return [Role, nil]
+          #
+          # @example
+          #   Role[:administrator] # => Role.find_by_name('administrator')
+          # @example
+          #   Role['User Manager'] # => Role.find_by_name('user manager')
+          # @example
+          #   Role[:does_not_exist] # => nil
+          def [](name)
+            self.find_by_name(name.to_s.strip.downcase.gsub(' ', '_').titleize)
           end
           
+          # Shortcut for finding the Role named 'Administrator'
+          #
+          # @return [Role, nil]
+          #
+          # @example
+          #   Role.admin # => Role.find_by_name('administrator')
           def admin
             @admin ||= self.find_by_name('Administrator')
           end

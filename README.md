@@ -1,6 +1,12 @@
 # Challah
 
+[![Build Status](https://secure.travis-ci.org/jdtornow/challah.png)](http://travis-ci.org/jdtornow/challah) [![Dependency Status](https://gemnasium.com/jdtornow/challah.png?travis)](https://gemnasium.com/jdtornow/challah)
+
 Challah (pronounced HAH-lah) is a simple Rails authentication gem with user, role and permission controls baked in. Most of the functionality within the gem lives within a Rails engine and tries to stay out of the way of your app. 
+
+## Development Note
+
+Please note, this gem is still under development. Use at your own risk, for now.
 
 ## Requirements
 

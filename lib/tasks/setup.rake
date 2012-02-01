@@ -30,15 +30,16 @@ namespace :challah do
     puts banner
   end
   
+  desc "Insert the default users, roles and permissions."
+  task :seeds => [ "challah:setup:seeds" ]
+  
   namespace :setup do
-    desc "Copy migrations from challah gem"
     task :migrations do
       puts "Copying migrations..."    
       ENV['FROM'] = 'challah_engine'
       Rake::Task['railties:install:migrations'].invoke
     end
     
-    desc "Load seed data"
     task :seeds => :environment do
       puts "Populating seed data..." 
       Challah::Engine.load_seed

@@ -16,7 +16,7 @@ module Challah
   if defined? Rails::Engine
     class Engine < Rails::Engine
       initializer 'challah.router' do |app|
-        app.routes_reloader.paths.insert(0, File.expand_path(File.join(File.dirname(__FILE__), 'auth/routes.rb')))
+        app.routes_reloader.paths.insert(0, File.expand_path(File.join(File.dirname(__FILE__), 'challah/routes.rb')))
       end
     end
   end

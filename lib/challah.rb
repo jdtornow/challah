@@ -38,7 +38,7 @@ module Challah
     class ::ActionController::Base
       include Controller
       
-      helper_method :signed_in?, :current_user, :current_user_session, :current_user?
+      helper_method :logged_in?, :current_user, :current_user_session, :current_user?
     end
   end
   

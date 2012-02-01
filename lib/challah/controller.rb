@@ -1,10 +1,10 @@
 module Challah
   module Controller
     protected
-      def signed_in?
+      def current_user?
         !!current_user
       end
-      alias_method :current_user?, :signed_in?
+      alias_method :logged_in?, :current_user?
       
       def current_user
         @current_user ||= current_user_session.user

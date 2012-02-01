@@ -1,21 +1,21 @@
-require 'auth/audit'
-require 'auth/authable/permission'
-require 'auth/authable/permission_role'
-require 'auth/authable/permission_user'
-require 'auth/authable/role'
-require 'auth/authable/user'
-require 'auth/controller'
-require 'auth/cookie_store'
-require 'auth/encrypter'
-require 'auth/random'
-require 'auth/session'
-require 'auth/techniques'
-require 'auth/version'
+require 'challah/audit'
+require 'challah/authable/permission'
+require 'challah/authable/permission_role'
+require 'challah/authable/permission_user'
+require 'challah/authable/role'
+require 'challah/authable/user'
+require 'challah/controller'
+require 'challah/cookie_store'
+require 'challah/encrypter'
+require 'challah/random'
+require 'challah/session'
+require 'challah/techniques'
+require 'challah/version'
 
-module Auth
+module Challah
   if defined? Rails::Engine
     class Engine < Rails::Engine
-      initializer 'auth.router' do |app|
+      initializer 'challah.router' do |app|
         app.routes_reloader.paths.insert(0, File.expand_path(File.join(File.dirname(__FILE__), 'auth/routes.rb')))
       end
     end
@@ -50,8 +50,8 @@ module Auth
   register_technique :api_key,        ApiKeyTechnique
   
   # By default, store session persistence in cookies.
-  Auth::Session.storage_class = CookieStore
+  Challah::Session.storage_class = CookieStore
   
   # Name the CookieStore cookie prefixes
-  CookieStore.prefix = 'auth'
+  CookieStore.prefix = 'challah'
 end

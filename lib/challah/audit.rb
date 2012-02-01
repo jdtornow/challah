@@ -1,4 +1,4 @@
-module Auth
+module Challah
   # The audit methods are included into ActiveRecord::Base automatically and add 
   # basic audit trail functionality for your models. Certain columns will be 
   # updated with the current user's id if provided at save time.

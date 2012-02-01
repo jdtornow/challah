@@ -1,7 +1,7 @@
 require 'helper'
 
 class TestEncrypter < ActiveSupport::TestCase
-  include Auth
+  include Challah
   
   context "The encrypter class" do
     should "encrypt a string" do

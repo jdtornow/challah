@@ -1,4 +1,4 @@
-module Auth
+module Challah
   class ApiKeyTechnique
     def initialize(session)
       @key = session.api_key? ? session.api_key : nil   

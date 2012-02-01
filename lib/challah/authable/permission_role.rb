@@ -1,4 +1,4 @@
-module Auth
+module Challah
   module AuthablePermissionRole
     def authable_permission_role
       class_eval do

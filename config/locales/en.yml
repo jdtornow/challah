@@ -5,7 +5,7 @@ en:
         invalid_password: 'is not a valid password. Please enter at least 4 letters or numbers.'
         no_match_password: 'does not match the confirmation password.'
         invalid_key: 'is not valid. Please use only lower cased letters and underscores.'
-  auth:
+  challah:
     sessions:
       new:
         user_or_email: "Username or email address"

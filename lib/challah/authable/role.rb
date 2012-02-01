@@ -1,6 +1,6 @@
-module Auth
+module Challah
   # AuthableRole is used to extend functionality to a model in your app named Role. By default, 
-  # this model already exists within the auth engine.
+  # this model already exists within the challah engine.
   #
   # The Role model is used to group together sets of permissions that can be assigned
   # to users. 
@@ -42,7 +42,7 @@ module Auth
   # 
   # @example app/models/role.rb
   #   class Role < ActiveRecord::Base
-  #     # Set up all role methods from auth gem
+  #     # Set up all role methods from challah gem
   #     authable_role  
   #
   #     # Your customizations here..

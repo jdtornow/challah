@@ -1,7 +1,7 @@
-require 'auth/techniques/api_key_technique'
-require 'auth/techniques/password_technique'
+require 'challah/techniques/api_key_technique'
+require 'challah/techniques/password_technique'
 
-module Auth
+module Challah
   # Techniques are used to allow different methods of authentication. By default, there are
   # two techniques included: Password and ApiKey. 
   #
@@ -41,7 +41,7 @@ module Auth
   #
   # To add a new technique, just register it using:
   #
-  #     Auth.register_technique(:shared_password, SharedPasswordTechnique)
+  #     Challah.register_technique(:shared_password, SharedPasswordTechnique)
   #
   # The first parameter is just a key for that technique, the second p param is the class name to use.
   module Techniques

@@ -1,4 +1,4 @@
-module Auth
+module Challah
   module AuthableUser
     def authable_user
       unless included_modules.include?(InstanceMethods)
@@ -82,7 +82,7 @@ module Auth
       
       # Pass in a password, and if it matches this user's account, return true.
       def authenticate_with_password(plain_password)
-        ::Auth::Encrypter.compare(self.crypted_password, plain_password)
+        ::Challah::Encrypter.compare(self.crypted_password, plain_password)
       end
       
       # The default url where this user should be redirected to after logging in. Also can be used as the main link
@@ -197,14 +197,14 @@ module Auth
         # called before_save on the User model, actually encrypts the password with a new generated salt
         def before_save_password
           if @password_updated and valid?
-            self.crypted_password = ::Auth::Encrypter.encrypt(@password)
+            self.crypted_password = ::Challah::Encrypter.encrypt(@password)
 
             @password_updated = false
             @password = nil
           end
 
-          self.persistence_token = ::Auth::Random.token(125) if self.persistence_token.to_s.blank?
-          self.api_key = ::Auth::Random.token(25) if self.api_key.to_s.blank?
+          self.persistence_token = ::Challah::Random.token(125) if self.persistence_token.to_s.blank?
+          self.api_key = ::Challah::Random.token(25) if self.api_key.to_s.blank?
         end
       
         # Saves any updated permission keys to the database for this user.  

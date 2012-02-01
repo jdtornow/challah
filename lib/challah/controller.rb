@@ -1,4 +1,4 @@
-module Auth
+module Challah
   module Controller
     protected
       def signed_in?
@@ -11,7 +11,7 @@ module Auth
       end
       
       def current_user_session
-        @current_user_session ||= Auth::Session.find(request)
+        @current_user_session ||= Challah::Session.find(request)
       end
   end
 end

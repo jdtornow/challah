@@ -1,4 +1,4 @@
-module Auth
+module Challah
   class Session
     extend ActiveModel::Naming
     include ActiveModel::Conversion
@@ -112,7 +112,7 @@ module Auth
       # Try and authenticate against the various auth techniques. If one
       # technique works, then just exist and make the session active.
       def authenticate!
-        Auth.techniques.values.each do |klass|
+        Challah.techniques.values.each do |klass|
           technique = klass.new(self)
           @user = technique.authenticate
 

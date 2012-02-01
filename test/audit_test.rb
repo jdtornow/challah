@@ -12,7 +12,7 @@ class AuditTest < ActiveSupport::TestCase
     
     define_model_callbacks :create, :update, :save
     
-    include Auth::Audit
+    include Challah::Audit
 
     attr_accessor :name, :created_by, :created_at, :updated_by, :updated_at
     

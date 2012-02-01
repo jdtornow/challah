@@ -1,6 +1,6 @@
-module Auth
+module Challah
   # AuthablePermission is used to extend functionality to a model in your app named Permission. 
-  # By default, this model already exists within the auth engine.
+  # By default, this model already exists within the challah engine.
   #
   # The Permission model is used to store every granular level of restriction for your application.
   # If there is anything within your app that may need to be restricted in any way, you'll likely
@@ -40,7 +40,7 @@ module Auth
   # 
   # @example app/models/permission.rb
   #   class Permission < ActiveRecord::Base
-  #     # Set up all permission methods from auth gem
+  #     # Set up all permission methods from challah gem
   #     authable_permission
   #
   #     # Your customizations here..

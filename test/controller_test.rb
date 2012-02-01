@@ -1,7 +1,7 @@
 require 'helper'
 
 class ControllerTest < ActiveSupport::TestCase
-  include Auth
+  include Challah
   
   context "A controller" do
     setup do

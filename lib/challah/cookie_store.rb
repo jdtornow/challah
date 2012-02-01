@@ -1,4 +1,4 @@
-module Auth
+module Challah
   # A base class for storing session data in a browser cookie.
   # 
   # To use a different storage method for persisting a session, just create

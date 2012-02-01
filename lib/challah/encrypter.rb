@@ -1,7 +1,7 @@
 require 'digest/sha2'
 require 'bcrypt'
 
-module Auth  
+module Challah  
   # Handles all encryption, hashing and comparison necessary for tokens and passwords.
   class Encrypter
     attr_accessor :cost, :joiner

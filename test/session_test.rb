@@ -1,9 +1,9 @@
 require 'helper'
 
 class SessionTest < ActiveSupport::TestCase
-  include Auth
+  include Challah
   
-  context "An Auth::Session class" do
+  context "An Challah::Session class" do
     should "use the test storage method" do
       assert_equal TestSessionStore, Session.storage_class
     end
@@ -45,7 +45,7 @@ class SessionTest < ActiveSupport::TestCase
     end 
   end
   
-  context "A Auth::Session instance" do    
+  context "A Challah::Session instance" do    
     should "receive a request and params object" do
       session = Session.new(MockRequest.new, { :username => 'test-user', :password => 'test123' })
       

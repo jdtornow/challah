@@ -1,4 +1,4 @@
-module Auth
+module Challah
   class PasswordTechnique    
     # grab the params we want from this request
     def initialize(session)

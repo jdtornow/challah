@@ -20,12 +20,12 @@ require 'factory_girl'
 require 'factories'
 require 'rails/test_help'
 
-# Load the auth libraries
-require 'auth'
+# Load the challah libraries
+require 'challah'
 
-# Setup the auth app, including running migrations within the rails app
+# Setup the challah app, including running migrations within the rails app
 # TODO - this causes some annoying output in 1.9.3, still works, but would like to suppress
-`rake --rakefile #{File.join(sample_root, 'Rakefile')} auth:setup:migrations`
+`rake --rakefile #{File.join(sample_root, 'Rakefile')} challah:setup:migrations`
 
 # Run migrations for the sample app, hiding output
 ActiveRecord::Migration.verbose = false
@@ -45,25 +45,25 @@ class TestSessionStore
   end
   
   def destroy
-    $auth_test_session = nil
+    $challah_test_session = nil
   end
   
   def read
-    if $auth_test_session
-      return $auth_test_session.to_s.split(':')
+    if $challah_test_session
+      return $challah_test_session.to_s.split(':')
     end
     
     nil
   end
   
   def save(token, user_id)
-    $auth_test_session = "#{token}:#{user_id}"
+    $challah_test_session = "#{token}:#{user_id}"
     true
   end
 end
 
 class MockController
-  include Auth::Controller
+  include Challah::Controller
   
   attr_accessor :request
   
@@ -103,7 +103,7 @@ class MockRequest
   end
 end
 
-Auth::Session.storage_class = TestSessionStore
+Challah::Session.storage_class = TestSessionStore
 
 # Monkey patch fix for shoulda and Rails 3.1+.
 module Shoulda

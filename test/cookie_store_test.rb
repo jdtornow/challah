@@ -1,7 +1,7 @@
 require 'helper'
 
 class CookieStoreTest < ActiveSupport::TestCase
-  include Auth
+  include Challah
   
   context "The CookieStore class" do
     setup do
@@ -17,12 +17,12 @@ class CookieStoreTest < ActiveSupport::TestCase
       session.user = @user
       session.save
             
-      assert_equal %w( auth-s auth-v ), @request.cookies.keys.sort
-      assert_equal "#{@user.persistence_token}@#{@user.id}", @request.cookies['auth-s'][:value]
-      assert_equal "test.dev", @request.cookies['auth-s'][:domain]
+      assert_equal %w( challah-s challah-v ), @request.cookies.keys.sort
+      assert_equal "#{@user.persistence_token}@#{@user.id}", @request.cookies['challah-s'][:value]
+      assert_equal "test.dev", @request.cookies['challah-s'][:domain]
       
-      assert_equal Encrypter.md5("#{@user.persistence_token}@#{@user.id}", @request.user_agent, @request.remote_ip), @request.cookies['auth-v'][:value]
-      assert_equal "test.dev", @request.cookies['auth-v'][:domain]
+      assert_equal Encrypter.md5("#{@user.persistence_token}@#{@user.id}", @request.user_agent, @request.remote_ip), @request.cookies['challah-v'][:value]
+      assert_equal "test.dev", @request.cookies['challah-v'][:domain]
     end
     
     should "be able to inspect the store" do
@@ -45,9 +45,9 @@ class CookieStoreTest < ActiveSupport::TestCase
       validation_cookie_val = Encrypter.md5("#{@user.persistence_token}@#{@user.id}", @request.user_agent, @request.remote_ip)
       session_cookie_val = "#{@user.persistence_token}@#{@user.id}"
       
-      assert_equal session_cookie_val, @request.cookies['auth-s'][:value]
+      assert_equal session_cookie_val, @request.cookies['challah-s'][:value]
       assert_equal session_cookie_val, session.store.send(:session_cookie)[:value]
-      assert_equal validation_cookie_val, @request.cookies['auth-v'][:value]
+      assert_equal validation_cookie_val, @request.cookies['challah-v'][:value]
       assert_equal validation_cookie_val, session.store.send(:validation_cookie)[:value]
       
       session.store.stubs(:validation_cookie).returns(validation_cookie_val)
@@ -80,7 +80,7 @@ class CookieStoreTest < ActiveSupport::TestCase
       
       assert_equal true, session.valid?
       assert_equal @user, session.user
-      assert_equal %w( auth-s auth-v ), @request.cookies.keys.sort
+      assert_equal %w( challah-s challah-v ), @request.cookies.keys.sort
       
       session.destroy
       

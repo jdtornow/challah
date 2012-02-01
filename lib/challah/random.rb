@@ -1,4 +1,4 @@
-module Auth
+module Challah
   # Random string class, uses ActiveSupport's SecureRandom if possible, otherwise gives a fairly 
   # secure random string
   class Random

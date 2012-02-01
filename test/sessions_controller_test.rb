@@ -1,7 +1,7 @@
 require 'helper'
 
 class SessionsControllerTest < ActionController::TestCase
-  tests Auth::SessionsController
+  tests Challah::SessionsController
   
   context "The sessions controller" do
     setup do
@@ -14,21 +14,21 @@ class SessionsControllerTest < ActionController::TestCase
     end
     
     should "be able to sign in" do
-      Auth::Session.any_instance.stubs(:save).returns(true)
+      Challah::Session.any_instance.stubs(:save).returns(true)
       
       post :create, :username => 'sessions-user-test', :password => 'abc123'
       assert_redirected_to '/'
       
-      Auth::Session.any_instance.unstub(:save)
+      Challah::Session.any_instance.unstub(:save)
     end
     
     should "send you back to the sign in page if you can't sign in" do
-      Auth::Session.any_instance.stubs(:save).returns(false)
+      Challah::Session.any_instance.stubs(:save).returns(false)
       
       post :create, :username => 'sessions-user-test', :password => 'abc123'
       assert_redirected_to '/sign-in'
       
-      Auth::Session.any_instance.unstub(:save)
+      Challah::Session.any_instance.unstub(:save)
     end 
     
     should "be able to sign out" do

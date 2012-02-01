@@ -88,7 +88,7 @@ module Challah
         # get an access denied notification.
         def access_denied!
           if current_user?
-            render :template => Challah.options[:access_denied_view], :status => :forbidden and return
+            render :template => Challah.options[:access_denied_view], :status => :unauthorized and return
           else
             session[:return_to] = request.url
             redirect_to login_path and return

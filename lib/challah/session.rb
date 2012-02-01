@@ -86,15 +86,29 @@ module Challah
     
     class << self
       # Manually create a new Session
-      def create(user_or_user_id)
+      def create(user_or_user_id, request = nil, params = nil)
         user_record = ::User === user_or_user_id ? user_or_user_id : ::User.find_by_id(user_or_user_id)
         
-        session = Session.new()
+        session = Session.new(request, params)
         
         if user_record and user_record.active?
-          session.user = user_record          
+          session.user = user_record
         end
         
+        session
+      end
+      
+      # Manually create a session, and save it.
+      def create!(user_or_user_id, request = nil, params = nil)
+        session = create(user_or_user_id, request, params)
+        session.save
+        session
+      end
+      
+      # Clear out any existing sessions
+      def destroy
+        session = Session.find
+        session.destroy if session
         session
       end
       

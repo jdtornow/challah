@@ -37,12 +37,12 @@ class SessionTest < ActiveSupport::TestCase
       assert_equal true, session_two.valid?
       assert_equal user, session_two.user
       
-      session_two.destroy
+      Session.destroy
       
       session_three = Session.find
       assert_equal false, session_three.valid?
       assert_equal nil, session_three.user
-    end 
+    end
   end
   
   context "A Challah::Session instance" do    

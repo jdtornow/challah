@@ -1,6 +1,6 @@
-<h2>Sign In</h2>
+<h2>Log in</h2>
 
-<%= form_for(@session, :as => :session, :url => signin_path, :method => :post) do |f| %>
+<%= form_for(@session, :as => :session, :url => login_path, :method => :post, :html => { :id => 'log-in-form'}) do |f| %>
   <dl>
     <dt><%= f.label :username, t('.user_or_email') %></dt>
     <dd><%= f.text_field :username, :size => 40, :maxlength => 200 %></dd>
@@ -9,5 +9,5 @@
     <dd class="last"><%= f.password_field :password, :size => 40, :maxlength => 200 %></dd>
   </dl>
 
-  <p><%= f.submit t('.signin') %></p>
+  <p class="submit"><%= f.submit t('.login') %></p>
 <% end %>

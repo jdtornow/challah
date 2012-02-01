@@ -3,12 +3,12 @@ class Challah::SessionsController < ApplicationController
   
   unloadable
   
-  # GET /sign-in
+  # GET /login
   def new
     @session = Challah::Session.new(request)
   end
   
-  # POST /sign-in
+  # POST /login
   def create
     @session = Challah::Session.new(request, params[:session])
     @session.ip = request.remote_ip
@@ -16,13 +16,13 @@ class Challah::SessionsController < ApplicationController
     if @session.save
       redirect_to return_to_path(@session.default_path)
     else
-      redirect_to signin_path, :alert => I18n.translate('challah.sessions.create.failed_sign_in')
+      redirect_to login_path, :alert => I18n.translate('challah.sessions.create.failed_login')
     end
   end
   
-  # GET /sign-out
+  # GET /logout
   def destroy
-    redirect_to signin_path
+    redirect_to login_path
   end
   
   protected

@@ -14,8 +14,8 @@ namespace :challah do
     - Role
     - Permission
 
-  And some new routes set up for /sign-in and /sign-out. You can use these 
-  for the built-in sign in page or roll your own if you'd prefer.
+  And some new routes set up for /login and /logout. You can use these 
+  for the built-in log in page or roll your own if you'd prefer.
 
   A default user with administrator permissions has been created with the 
   following credentials:

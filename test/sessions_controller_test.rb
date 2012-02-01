@@ -8,12 +8,12 @@ class SessionsControllerTest < ActionController::TestCase
       @user = Factory(:user, :username => 'sessions-user-test')
     end
     
-    should "have a sign-in page" do
+    should "have a login page" do
       get :new
       assert_response :success
     end
     
-    should "be able to sign in" do
+    should "be able to login" do
       Challah::Session.any_instance.stubs(:save).returns(true)
       
       post :create, :username => 'sessions-user-test', :password => 'abc123'
@@ -26,7 +26,7 @@ class SessionsControllerTest < ActionController::TestCase
       Challah::Session.any_instance.stubs(:save).returns(false)
       
       post :create, :username => 'sessions-user-test', :password => 'abc123'
-      assert_redirected_to '/sign-in'
+      assert_redirected_to '/login'
       
       Challah::Session.any_instance.unstub(:save)
     end 
@@ -34,7 +34,7 @@ class SessionsControllerTest < ActionController::TestCase
     should "be able to sign out" do
       get :destroy
       
-      assert_redirected_to '/sign-in'
+      assert_redirected_to '/login'
     end 
   end
 end

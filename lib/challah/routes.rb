@@ -1,7 +1,7 @@
 Rails.application.routes.draw do  
   match '/_', :to => 'session#index', :as => 'base'
   
-  match '/sign-in' => 'challah/sessions#create', :as => 'challahenticate', :via => :post
-  match '/sign-in' => 'challah/sessions#new', :as => 'signin', :via => :get
-  match '/sign-out' => 'challah/sessions#destroy', :as => 'signout'
+  match '/login' => 'challah/sessions#create', :as => 'authenticate', :via => :post
+  match '/login' => 'challah/sessions#new', :as => 'login', :via => :get
+  match '/logout' => 'challah/sessions#destroy', :as => 'logout'
 end

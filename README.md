@@ -12,7 +12,6 @@ Please note, this gem is still under development. Use at your own risk, for now.
 
 * Ruby 1.8.7+
 * Bundler
-* RubyGems 1.8.12+
 * Rails 3.1+
 
 ## Installation

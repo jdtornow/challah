@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.authors       = ["John Tornow"]
   s.email         = ["jt@ovenbits.com"]
   s.homepage      = "http://github.com/jdtornow/challah"
-  s.summary       = "Simple authentication gem."
+  s.summary       = "Simple authentication gem for Rails."
   s.description   = %Q{A simple ruby gem for authentication, users, roles and permissions.}
   s.files         = Dir.glob("{app,config,db,test,lib,vendor}/**/*") + %w(README.md CHANGELOG.md)
   s.require_paths = ["lib"]

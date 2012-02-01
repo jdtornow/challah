@@ -65,15 +65,28 @@ end
 class MockController
   include Challah::Controller
   
-  attr_accessor :request
+  attr_accessor :request, :session
   
   def initialize()
     @request = MockRequest.new
+    @session ||= {}
+  end
+  
+  def redirect_to(*args)
+    # do nothing
+  end
+  
+  def login_path
+    "/login"
+  end
+  
+  def logout_path
+    "/logout"
   end
 end
 
 class MockRequest
-  attr_accessor :cookie_jar, :session_options
+  attr_accessor :cookie_jar, :session_options, :url
   
   class MockCookieJar < Hash
     def delete(key, options = {})
@@ -84,6 +97,7 @@ class MockRequest
   def initialize
     @cookie_jar = MockCookieJar.new
     @session_options = { :domain => 'test.dev' }
+    @url = "http://example.com/"
   end
   
   def cookies

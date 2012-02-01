@@ -3,6 +3,7 @@
 .rbenv-version
 .rvmrc
 .yardoc
+challah-*.gem
 coverage/
 doc/
 log/*.log

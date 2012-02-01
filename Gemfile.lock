@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    challah (0.2.0)
+    challah (0.2.1)
       bcrypt-ruby
       rails (>= 3.1)
       rake (>= 0.9.2)

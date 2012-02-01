@@ -20,5 +20,6 @@ Gem::Specification.new do |s|
   s.add_dependency 'rake', '>= 0.9.2'
   s.add_dependency 'bcrypt-ruby', '>= 0'
   
-  s.required_rubygems_version = ">= 1.8.12"  
+  s.required_ruby_version     = '>= 1.8.7'
+  s.required_rubygems_version = '>= 1.3.6'
 end

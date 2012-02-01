@@ -6,5 +6,5 @@
 coverage/
 doc/
 log/*.log
-tmp/**/*
+tmp/
 vendor/bundle

@@ -42,16 +42,21 @@ module Challah
     end
   end
   
-  extend Techniques  
+  # Configuration options  
+  class << self
+    def options
+      @options ||= {
+        :storage_class => CookieStore,
+        :cookie_prefix => 'challah'
+      }
+    end
+  end
+  
+  # Set up techniques engines
+  extend Techniques
   @techniques ||= {}
   
   # Default registered authentication techiques.   
   register_technique :password,       PasswordTechnique
   register_technique :api_key,        ApiKeyTechnique
-  
-  # By default, store session persistence in cookies.
-  Challah::Session.storage_class = CookieStore
-  
-  # Name the CookieStore cookie prefixes
-  CookieStore.prefix = 'challah'
 end

@@ -5,7 +5,7 @@ class SessionTest < ActiveSupport::TestCase
   
   context "An Challah::Session class" do
     should "use the test storage method" do
-      assert_equal TestSessionStore, Session.storage_class
+      assert_equal TestSessionStore, Challah.options[:storage_class]
     end
     
     should "create a new session instance from a user or id" do

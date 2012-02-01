@@ -6,12 +6,10 @@ module Challah
     attr_accessor :return_to, :ip, :user, :store
     attr_reader :params, :request, :persist
     
-    cattr_accessor :storage_class
-    
     def initialize(request = nil, params = {})
       @request = request
       @params = params || {}
-      @store = self.class.storage_class.new(self)
+      @store = Challah.options[:storage_class].new(self)
     end
     
     # The path where a user will be redirected to upon login

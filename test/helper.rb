@@ -103,7 +103,7 @@ class MockRequest
   end
 end
 
-Challah::Session.storage_class = TestSessionStore
+Challah.options[:storage_class] = TestSessionStore
 
 # Monkey patch fix for shoulda and Rails 3.1+.
 module Shoulda

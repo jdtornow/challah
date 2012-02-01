@@ -13,5 +13,20 @@ module Challah
       def current_user_session
         @current_user_session ||= Challah::Session.find(request)
       end
+      
+      # Restrict a controller to only authenticated users.
+      #
+      # @example
+      #   class YourController < ApplicationController
+      #     before_filter :login_required
+      #     ...
+      #
+      # @example Specifing certain actions.
+      #   class YourOtherController < ApplicationController
+      #     before_filter :login_required, :only => [ :create, :update, :destroy ]
+      #     ...
+      def login_required
+        
+      end
   end
 end

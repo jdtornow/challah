@@ -3,9 +3,7 @@ module Challah
   # 
   # To use a different storage method for persisting a session, just create
   # a new class that responds to +read+, +save+ and +destroy+
-  class CookieStore
-    cattr_accessor :prefix
-    
+  class CookieStore    
     def initialize(session)
       @session = session
     end
@@ -72,7 +70,7 @@ module Challah
       end
       
       def prefix
-        @prefix ||= self.class.prefix
+        @prefix ||= Challah.options[:cookie_prefix]
       end
       
       def request

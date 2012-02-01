@@ -28,6 +28,6 @@ class ControllerTest < ActiveSupport::TestCase
       @controller.send(:login_required)
       
       assert_equal @controller.session[:return_to], 'http://example.com/protected-page'
-    end 
+    end
   end
 end

@@ -132,10 +132,10 @@ module Challah
       end
       
       # Returns true if this user has permission to the provided permission key
-      def permission?(key)
-        permission_keys.include?(key.to_s)
+      def has(permission_key)
+        self.permission_keys.include?(permission_key.to_s)
       end
-      alias :has :permission?
+      alias_method :permission?, :has
 
       # Set the permission keys that this role can access
       def permission_keys=(value)

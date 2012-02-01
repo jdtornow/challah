@@ -10,6 +10,6 @@ en:
       new:
         user_or_email: "Username or email address"
         password: "Password"
-        signin: "Sign in"
+        login: "Log in"
       create:
-        failed_sign_in: "There was a problem signing you in. Please check your username and password and try again."
+        failed_login: "There was a problem logging you in. Please check your username and password and try again."

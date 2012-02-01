@@ -61,11 +61,11 @@ module Challah
       #   end
       #
       # @param [String, Symbol] permission_key The permission to restrict action(s) to.
-      #
-      # @see Controller::InstanceMethods#permission_required permission_required
       def restrict_to_permission(permission_key, options = {})
         before_filter(options) do |controller|
-          controller.send(:permission_required, permission_key)
+          unless controller.send(:has, permission_key)
+            access_denied!
+          end
         end
       end
       alias_method :permission_required, :restrict_to_permission
@@ -73,6 +73,28 @@ module Challah
     
     module InstanceMethods
       protected
+        # Stop execution of the current action and display the access denied message.
+        #
+        # If the user is not logged in, they are redirected to the login screen.
+        #
+        # By default the built-in access denied message is displayed, but you can display a different
+        # message by setting the following option in an initializer:
+        #
+        #   Challah.options[:access_denied_view] = 'controller/denied-view-name'
+        #
+        # A status code of :unauthorized (401) will be returned. 
+        #
+        # Override this method if you'd like something different to happen when your users
+        # get an access denied notification.
+        def access_denied!
+          if current_user?
+            render :template => Challah.options[:access_denied_view], :status => :forbidden and return
+          else
+            session[:return_to] = request.url
+            redirect_to login_path and return
+          end          
+        end
+      
         # Is there currently a logged in user? Returns true if it is safe to use
         # the {#current_user current_user} method.
         #
@@ -154,23 +176,6 @@ module Challah
             session[:return_to] = request.url
             redirect_to login_path and return
           end
-        end
-        
-        # Restrict the current controller to the given permission key. All actions in the 
-        # controller will be restricted unless otherwise stated. All normal options
-        # for a before_filter are observed.
-        #
-        # If the current user does not have the given permission key, they are shown the 
-        # access denied message.
-        #
-        # Use the {Controller::ClassMethods#restrict_to_permission restrict_to_permission} 
-        # class method for best results.
-        #
-        # @param [String, Symbol] permission_key The permission to restrict action(s) to.
-        #
-        # @see Controller::ClassMethods#restrict_to_permission restrict_to_permission
-        def permission_required
-          
         end
     end
   end

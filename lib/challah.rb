@@ -49,12 +49,12 @@ module Challah
     #
     # @param [Hash] options The options to get or set
     # @option options [String] :cookie_prefix ('challah') A prefix to put in the names of the cookies that will be set.
-    # @option options [String] :denied_view ('challah/sessions/access_denied')Relative path to the view that will be used to show access denied method.
+    # @option options [String] :access_denied_view ('challah/sessions/access_denied')Relative path to the view that will be used to show access denied method.
     # @option options [Class] :storage_class (CookieStore) The class to use for persistence of sessions.
     def options
       @options ||= {
         :cookie_prefix => 'challah',
-        :denied_view => 'challah/sessions/access_denied',
+        :access_denied_view => 'challah/sessions/access_denied',
         :storage_class => CookieStore
       }
     end

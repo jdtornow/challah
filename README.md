@@ -17,7 +17,7 @@ Please note, this gem is still under development. Use at your own risk, for now.
 
 ## Installation
 
-Coming soon..
+    gem install challah
 
 ### Set Up
 

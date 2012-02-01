@@ -11,7 +11,21 @@ Challah (pronounced HAH-lah) is a simple Rails authentication gem with user, rol
 
 ## Installation
 
-Coming soon.
+Coming soon..
+
+### Set Up
+
+Once the gem has been set up and installed, run the following command to set up the database migrations:
+
+    rake challah:setup
+    
+This will copy over the necessary migrations to your app, migrate the database and add some seeds. 
+
+If you would prefer to handle these steps manually, you can do so by using these rake tasks instead:
+
+    rake challah:setup:migrations
+    rake db:migrate
+    rake challah:setup:seeds
 
 ## License
 

@@ -27,6 +27,12 @@ If you would prefer to handle these steps manually, you can do so by using these
     rake db:migrate
     rake challah:setup:seeds
 
+## Testing 
+
+Challah is fully tested using Test::Unit, Shoulda and Mocha. To run the test suite, `bundle install` then run:
+
+    rake test
+
 ## License
 
 Challah is released under the [MIT license](http://www.opensource.org/licenses/MIT)

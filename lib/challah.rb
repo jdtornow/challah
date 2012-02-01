@@ -46,8 +46,8 @@ module Challah
   class << self
     def options
       @options ||= {
-        :storage_class => CookieStore,
-        :cookie_prefix => 'challah'
+        :cookie_prefix => 'challah',
+        :storage_class => CookieStore        
       }
     end
   end

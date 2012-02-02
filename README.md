@@ -4,10 +4,6 @@
 
 Challah (pronounced HAH-lah) is a simple Rails authentication gem with user, role and permission controls baked in. Most of the functionality within the gem lives within a Rails engine and tries to stay out of the way of your app. 
 
-## Development Note
-
-Please note, this gem is still under development. Use at your own risk, for now.
-
 ## Requirements
 
 * Ruby 1.8.7+
@@ -17,6 +13,10 @@ Please note, this gem is still under development. Use at your own risk, for now.
 ## Installation
 
     gem install challah
+
+Or, in your `Gemfile`
+
+    gem 'challah'
 
 ### Set Up
 

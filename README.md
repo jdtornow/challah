@@ -32,6 +32,10 @@ If you would prefer to handle these steps manually, you can do so by using these
     rake db:migrate
     rake challah:setup:seeds
 
+## Documentation
+
+Documentation is available at: [http://rubydoc.info/gems/challah](http://rubydoc.info/gems/challah/frames)
+
 ## Testing 
 
 Challah is fully tested using Test::Unit, Shoulda and Mocha. To run the test suite, `bundle install` then run:

@@ -11,15 +11,15 @@ if Permission.count.zero? and Role.count.zero?
   normal_role = Role.create!(:name => 'Default', :description => 'Default users can log in to the application.', :default_path => '/')
 end
 
-if User.count.zero?
-  User.create! :role_id => Role.admin.id,
-                  :first_name => 'Admin',
-                  :last_name => 'User',
-                  :username => 'admin',
-                  :email => 'admin@example.com',
-                  :password => 'abc123',
-                  :password_confirmation => 'abc123'
-  
-  
-  puts "Added admin user (pw: abc123)"
-end
+#if User.count.zero?
+#  User.create! :role_id => Role.admin.id,
+#                  :first_name => 'Admin',
+#                  :last_name => 'User',
+#                  :username => 'admin',
+#                  :email => 'admin@example.com',
+#                  :password => 'abc123',
+#                  :password_confirmation => 'abc123'
+#  
+#  
+#  puts "Added admin user (pw: abc123)"
+#end

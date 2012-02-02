@@ -18,7 +18,7 @@ Or, in your `Gemfile`
 
     gem 'challah'
 
-### Set Up
+## Set Up
 
 Once the gem has been set up and installed, run the following command to set up the database migrations:
 

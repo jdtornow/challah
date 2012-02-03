@@ -84,6 +84,7 @@ namespace :challah do
       # First user is always going to be an admin, otherwise ask for the role
       unless first_user
         role = ask_for_role
+        role_id = role.id if role
       end
 
       user = User.new(:first_name => first_name, :last_name => last_name, :email => email, :username => username, :role_id => role_id, :password => password, :password_confirmation => password)

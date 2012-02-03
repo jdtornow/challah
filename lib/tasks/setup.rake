@@ -8,7 +8,7 @@ namespace :challah do
   ==========================================================================
   Challah has been set up successfully!
 
-  Your app now as a few new models:
+  Your app now has a few new models:
 
     - User
     - Role

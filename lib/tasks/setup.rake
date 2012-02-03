@@ -1,6 +1,6 @@
 namespace :challah do
   desc "Setup the challah gem within this rails app."
-  task :setup => [ "challah:setup:migrations", "db:migrate", "challah:setup:seeds", "challah:banner" ]
+  task :setup => [ "challah:setup:migrations", "db:migrate", "challah:setup:seeds", "challah:users:create", "challah:banner" ]
   
   task :banner do
     banner = <<-str
@@ -8,7 +8,7 @@ namespace :challah do
   ==========================================================================
   Challah has been set up successfully!
 
-  Your app now as a few new models:
+  Your app now has a few new models:
 
     - User
     - Role
@@ -16,12 +16,8 @@ namespace :challah do
 
   And some new routes set up for /login and /logout. You can use these 
   for the built-in log in page or roll your own if you'd prefer.
-
-  A default user with administrator permissions has been created with the 
-  following credentials:
-
-    Username: admin
-    Password: abc123
+    
+  The user that you just created is ready to log in.
 
   ==========================================================================
   

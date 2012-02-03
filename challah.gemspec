@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.version       = Challah::VERSION
   s.platform      = Gem::Platform::RUBY
   s.authors       = ["John Tornow"]
-  s.email         = ["jt@ovenbits.com"]
+  s.email         = ["john@johntornow.com"]
   s.homepage      = "http://github.com/jdtornow/challah"
   s.summary       = "Simple authentication gem for Rails."
   s.description   = %Q{A simple ruby gem for authentication, users, roles and permissions.}

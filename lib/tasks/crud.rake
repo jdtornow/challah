@@ -1,4 +1,34 @@
 namespace :challah do
+  namespace :permissions do
+    desc "Create a new permission"
+    task :create => :environment do
+      check_for_tables
+      check_for_roles
+
+      banner('Creating a permission')
+
+      # Grab the required fields.      
+      name = ask!('Name:')
+      key = name.to_s.parameterize.underscore
+      key = ask("Key [#{key}]:", key)
+      description = ask('Description [optional]:')
+      locked = ask('Lock this permission [Yes/No, Default: No]', 'No')
+      
+      locked = locked.to_s.downcase.strip.first == 'y'
+      
+      permission = Permission.new(:name => name, :key => key, :description => description, :locked => locked)
+
+      puts "\n"
+
+      if permission.save
+        puts "Role has been created successfully! [ID: #{permission.id}]"
+      else
+        puts "Role could not be added for the following errors:"
+        permission.errors.full_messages.each { |m| puts "  - #{m}" }
+      end
+    end
+  end
+  
   namespace :roles do
     desc "Create a new role"
     task :create => :environment do
@@ -92,9 +122,12 @@ def check_for_tables
   end
 end
 
+def role_names
+  @role_names ||= Role.all.collect(&:name).sort.join('|')
+end
+
 def ask_for_role
-  @role_names ||= Role.all.collect(&:name).sort.join('|')  
-  role_name = ask!("Role Name: [#@role_names]")  
+  role_name = ask!("Role Name: [#{role_names}]")
   role = Role.find_by_name(role_name)  
   return ask_for_role unless role  
   role

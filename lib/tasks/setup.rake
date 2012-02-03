@@ -1,6 +1,6 @@
 namespace :challah do
   desc "Setup the challah gem within this rails app."
-  task :setup => [ "challah:setup:migrations", "db:migrate", "challah:setup:seeds", "challah:createuser", "challah:banner" ]
+  task :setup => [ "challah:setup:migrations", "db:migrate", "challah:setup:seeds", "challah:users:create", "challah:banner" ]
   
   task :banner do
     banner = <<-str

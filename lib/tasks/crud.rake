@@ -1,46 +1,79 @@
 namespace :challah do
-  desc "Create a new challah user"
-  task :createuser => :environment do
-    check_for_tables
-    check_for_roles
-    
-    first_user = User.count == 0
-    
-    puts "=========================================================================="
-    puts "  Creating a user"
-    puts "==========================================================================\n\n"    
-    
-    if first_user
-      puts "Please answer the following questions to create your first admin user.\n\n"
-    else
-      puts "Please answer the following questions to create a new user.\n\n"
-    end    
-    
-    # Grab the required fields.    
-    first_name = ask!('First name:')
-    last_name = ask!('Last name:')
-    email = ask!('Email:')
-    username = ask('Username [leave blank to use email address]:', email)
-    password = ask('Password:')    
-    
-    role_id = Role.admin.id
-    
-    # First user is always going to be an admin, otherwise ask for the role
-    unless first_user
-      role = ask_for_role
-    end
-    
-    user = User.new(:first_name => first_name, :last_name => last_name, :email => email, :username => username, :role_id => role_id, :password => password, :password_confirmation => password)
-    
-    puts "\n"
-    
-    if user.save
-      puts "User has been created successfully! [ID: #{user.id}]"
-    else
-      puts "User could not be added for the following errors:"
-      user.errors.full_messages.each { |m| puts "  - #{m}" }
+  namespace :roles do
+    desc "Create a new role"
+    task :create => :environment do
+      check_for_tables
+      check_for_roles
+
+      banner('Creating a role')
+
+      # Grab the required fields.    
+      name = ask!('Name:')
+      description = ask('Description [optional]:')
+      path = ask('Default path [default: /]', '/')
+      locked = ask('Lock this role [Yes/No, Default: No]', 'No')      
+      
+      locked = locked.to_s.downcase.strip.first == 'y'
+      
+      role = Role.new(:name => name, :description => description, :default_path => path, :locked => locked)
+
+      puts "\n"
+
+      if role.save
+        puts "Role has been created successfully! [ID: #{role.id}]"
+      else
+        puts "Role could not be added for the following errors:"
+        role.errors.full_messages.each { |m| puts "  - #{m}" }
+      end
     end
   end
+  
+  namespace :users do
+    desc "Create a new user"
+    task :create => :environment do
+      check_for_tables
+      check_for_roles
+
+      first_user = User.count == 0
+
+      banner('Creating a user')
+
+      if first_user
+        puts "Please answer the following questions to create your first admin user.\n\n"
+      end    
+
+      # Grab the required fields.    
+      first_name = ask!('First name:')
+      last_name = ask!('Last name:')
+      email = ask!('Email:')
+      username = ask('Username [leave blank to use email address]:', email)
+      password = ask('Password:')    
+
+      role_id = Role.admin.id
+
+      # First user is always going to be an admin, otherwise ask for the role
+      unless first_user
+        role = ask_for_role
+      end
+
+      user = User.new(:first_name => first_name, :last_name => last_name, :email => email, :username => username, :role_id => role_id, :password => password, :password_confirmation => password)
+
+      puts "\n"
+
+      if user.save
+        puts "User has been created successfully! [ID: #{user.id}]"
+      else
+        puts "User could not be added for the following errors:"
+        user.errors.full_messages.each { |m| puts "  - #{m}" }
+      end
+    end
+  end
+end
+
+def banner(msg)
+  puts "=========================================================================="
+  puts "  #{msg}"
+  puts "==========================================================================\n\n"
 end
 
 def check_for_roles

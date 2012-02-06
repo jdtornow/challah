@@ -180,6 +180,13 @@ module Challah
       def user_permission_keys
         self.permissions(true).collect(&:key)
       end
+      
+      # Is this user valid and ready for a user session?
+      #
+      # Override this method if you need to check for a particular configuration on each page request.
+      def valid_session?
+        true
+      end
 
       # Allow dynamic checking for permissions
       # 

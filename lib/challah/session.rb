@@ -40,7 +40,7 @@ module Challah
       
       if store_user and store_user.active? and store_user.persistence_token == persistence_token
         self.user = store_user
-        @valid = true
+        @valid = self.user.valid_session?
       end
       
       self
@@ -115,7 +115,7 @@ module Challah
       # Load any existing session from the session store
       def find(*args)
         session = Session.new(*args)
-        session.read        
+        session.read
         session
       end
     end

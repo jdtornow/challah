@@ -7,6 +7,6 @@ Rails.application.routes.draw do
   
   if Rails.env.test?
     # These are used for testing purposes only.
-    match '/_ch_/:action', :controller => 'challah/test/restrictions'
+    match '/challah/:action', :controller => 'challah/test/restrictions'
   end
 end

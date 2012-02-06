@@ -1,4 +1,4 @@
-## Challah 0.3.3 (unreleased)
+## Challah 0.3.3
 
 * Added User#valid_session? method to check to see if this user is valid on each page load.
 

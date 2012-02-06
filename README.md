@@ -175,6 +175,20 @@ And of course, you can stack up multiple restrictions get very specific about wh
 
 Whichever method you use will yield the same results. Just make sure you are checking for a permission key, and not checking for a role. Checking for roles (i.e.: `user.role_id == 1`) is shameful practice. Use permissions!
 
+## Default Routes
+
+By default, there are a few routes included with the Challah engine. These routes provide a basic method for a username- and password-based login page. These routes are:
+
+    GET   /login        # => SessionsController#new
+    POST  /login        # => SessionsController#create
+    GET   /logout       # => SessionsController#new
+    
+Feel free to override the `SessionsController` with something more appropriate for your app.
+
+If you'd prefer to set up your own login/logout actions, you can skip the inclusion of the default routes by adding the following line to an initializer file in your app:
+
+    Challah.options[:skip_routes] = true
+
 ## Full documentation
 
 Documentation is available at: [http://rubydoc.info/gems/challah](http://rubydoc.info/gems/challah/frames)

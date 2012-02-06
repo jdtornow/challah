@@ -77,6 +77,11 @@ Roles should only be used within your app to consolidate various permissions int
 
 The default Challah installation creates two roles by default: 'Administrator' and 'Default'. Administrators have all permissions, now and in the future. Default users have no permissions other than being able to log in.
 
+To add a permission to a role, add it to the `permission_keys` array:
+
+    role.permission_keys << "new_role"
+    role.save
+
 ## Restricted access
 
 One of the main reasons to use a user- and permission-based system is to restrict access to certain portions of your application. Challah provides basic restriction methods for your controllers, views and directly from any User instance.

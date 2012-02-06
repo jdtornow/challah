@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    challah (0.2.1)
+    challah (0.3.2)
       bcrypt-ruby
       rails (>= 3.1)
       rake (>= 0.9.2)
@@ -40,7 +40,7 @@ GEM
     bcrypt-ruby (3.0.1)
     builder (3.0.0)
     erubis (2.7.0)
-    factory_girl (2.5.0)
+    factory_girl (2.5.1)
       activesupport
     hike (1.2.1)
     i18n (0.6.0)

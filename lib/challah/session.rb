@@ -38,9 +38,11 @@ module Challah
       
       store_user = ::User.find_by_id(user_id)
       
-      if store_user and store_user.active? and store_user.persistence_token == persistence_token
-        self.user = store_user
-        @valid = self.user.valid_session?
+      if store_user and store_user.active? and store_user.persistence_token == persistence_token        
+        if store_user.valid_session?
+          self.user = store_user
+          @valid = true
+        end
       end
       
       self

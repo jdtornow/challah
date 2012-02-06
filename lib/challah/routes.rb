@@ -5,6 +5,8 @@ Rails.application.routes.draw do
     match '/logout' => 'sessions#destroy', :as => 'logout'
   end
   
-  # These are used for testing purposes only.
-  match '/_ch_/:action', :controller => 'challah/test/restrictions'
+  if Rails.env.test?
+    # These are used for testing purposes only.
+    match '/_ch_/:action', :controller => 'challah/test/restrictions'
+  end
 end

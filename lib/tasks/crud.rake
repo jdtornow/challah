@@ -1,3 +1,5 @@
+require 'highline'
+
 namespace :challah do
   namespace :permissions do
     desc "Create a new permission"
@@ -8,7 +10,7 @@ namespace :challah do
       banner('Creating a permission')
 
       # Grab the required fields.      
-      name = ask!('Name:')
+      name = ask('Name:')
       key = name.to_s.parameterize.underscore
       key = ask("Key [#{key}]:", key)
       description = ask('Description [optional]:')
@@ -127,29 +129,29 @@ def role_names
   @role_names ||= Role.all.collect(&:name).sort.join('|')
 end
 
-def ask_for_role
-  role_name = ask!("Role Name: [#{role_names}]")
-  role = Role.find_by_name(role_name)  
-  return ask_for_role unless role  
-  role
-end
-
-def ask!(question)
-  ask(question, nil, false)
-end
-
-def ask(question, default = nil, allow_blank = true)
-  print " -> #{question} "
-  
-  result = STDIN.gets.chomp
-  
-  if result.nil? or result.to_s.strip == ""
-    if allow_blank
-      return default
-    else
-      return ask(question, default, allow_blank)
-    end
-  else
-    return result
-  end
-end
+# def ask_for_role
+#   role_name = ask!("Role Name: [#{role_names}]")
+#   role = Role.find_by_name(role_name)  
+#   return ask_for_role unless role  
+#   role
+# end
+# 
+# def ask!(question)
+#   ask(question, nil, false)
+# end
+# 
+# def ask(question, default = nil, allow_blank = true)
+#   print " -> #{question} "
+#   
+#   result = STDIN.gets.chomp
+#   
+#   if result.nil? or result.to_s.strip == ""
+#     if allow_blank
+#       return default
+#     else
+#       return ask(question, default, allow_blank)
+#     end
+#   else
+#     return result
+#   end
+# end

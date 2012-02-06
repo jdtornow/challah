@@ -1,3 +1,7 @@
+## Challah 0.3.5 (Unreleased)
+
+* Now using [Highline](https://github.com/JEG2/highline) for rake tasks instead of sloppy custom methods.
+
 ## Challah 0.3.4
 
 * Added `challah/test` include to allow for testing in your app.

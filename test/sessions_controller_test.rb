@@ -1,7 +1,7 @@
 require 'helper'
 
 class SessionsControllerTest < ActionController::TestCase
-  tests Challah::SessionsController
+  tests SessionsController
   
   context "The sessions controller" do
     setup do

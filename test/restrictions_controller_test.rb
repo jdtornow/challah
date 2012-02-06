@@ -52,7 +52,7 @@ class RestrictionsControllerTest < ActionController::TestCase
       should "not get to the new page" do
         get :new
         
-        assert_template 'challah/sessions/access_denied'
+        assert_template 'sessions/access_denied'
         assert_response :unauthorized
       end
     end

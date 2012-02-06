@@ -1,10 +1,10 @@
-Rails.application.routes.draw do  
-  match '/_', :to => 'session#index', :as => 'base'
-  
-  match '/login' => 'challah/sessions#create', :as => 'authenticate', :via => :post
-  match '/login' => 'challah/sessions#new', :as => 'login', :via => :get
-  match '/logout' => 'challah/sessions#destroy', :as => 'logout'
+Rails.application.routes.draw do
+  unless Challah.options[:skip_routes]
+    match '/login' => 'sessions#create', :as => 'authenticate', :via => :post
+    match '/login' => 'sessions#new', :as => 'login', :via => :get
+    match '/logout' => 'sessions#destroy', :as => 'logout'
+  end
   
   # These are used for testing purposes only.
-  match '/__challah__/:action', :controller => 'challah/test/restrictions'
+  match '/_ch_/:action', :controller => 'challah/test/restrictions'
 end

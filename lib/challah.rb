@@ -54,8 +54,9 @@ module Challah
     def options
       @options ||= {
         :cookie_prefix => 'challah',
-        :access_denied_view => 'challah/sessions/access_denied',
-        :storage_class => CookieStore
+        :access_denied_view => 'sessions/access_denied',
+        :storage_class => CookieStore,
+        :skip_routes => false
       }
     end
   end

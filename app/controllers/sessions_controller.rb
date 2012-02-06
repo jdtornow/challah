@@ -1,4 +1,4 @@
-class Challah::SessionsController < ApplicationController
+class SessionsController < ApplicationController
   before_filter :destroy_session, :except => :create
   
   unloadable

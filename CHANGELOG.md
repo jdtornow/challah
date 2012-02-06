@@ -1,3 +1,7 @@
+## Challah 0.3.4
+
+* Added `challah/test` include to allow for testing in your app.
+
 ## Challah 0.3.3
 
 * Added User#valid_session? method to check to see if this user is valid on each page load.

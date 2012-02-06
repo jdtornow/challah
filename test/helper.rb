@@ -22,6 +22,7 @@ require 'rails/test_help'
 
 # Load the challah libraries
 require 'challah'
+require 'challah/test'
 
 # Setup the challah app, including running migrations within the rails app
 # TODO - this causes some annoying output in 1.9.3, still works, but would like to suppress
@@ -35,31 +36,6 @@ ActiveRecord::Migrator.migrate("#{Rails.root}/db/migrate")
 # so we can have a transactional rollback after each test.
 class ActiveSupport::TestCase
   self.use_transactional_fixtures = true
-end
-
-# Used to persist session data in test mode instead of using cookies. Stores the session
-# data lazily in a global var, accessible across the testing environment.
-class TestSessionStore
-  def initialize(session = nil)
-    @session = session
-  end
-  
-  def destroy
-    $challah_test_session = nil
-  end
-  
-  def read
-    if $challah_test_session
-      return $challah_test_session.to_s.split(':')
-    end
-    
-    nil
-  end
-  
-  def save(token, user_id)
-    $challah_test_session = "#{token}:#{user_id}"
-    true
-  end
 end
 
 class MockController
@@ -116,8 +92,6 @@ class MockRequest
     "Some Cool Browser"
   end
 end
-
-Challah.options[:storage_class] = TestSessionStore
 
 # Monkey patch fix for shoulda and Rails 3.1+.
 module Shoulda

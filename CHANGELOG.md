@@ -1,3 +1,7 @@
+## Challah 0.3.2
+
+* Moving translations to accommodate for new namespace.
+
 ## Challah 0.3.1
 
 * Removed namespacing of controllers and default routes. 

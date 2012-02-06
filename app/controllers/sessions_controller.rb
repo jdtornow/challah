@@ -16,7 +16,7 @@ class SessionsController < ApplicationController
     if @session.save
       redirect_to return_to_path(@session.default_path)
     else
-      redirect_to login_path, :alert => I18n.translate('challah.sessions.create.failed_login')
+      redirect_to login_path, :alert => I18n.translate('sessions.create.failed_login')
     end
   end
   

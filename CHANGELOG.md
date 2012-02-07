@@ -1,4 +1,4 @@
-## Challah 0.3.5 (Unreleased)
+## Challah 0.3.5
 
 * Now using [Highline](https://github.com/JEG2/highline) for rake tasks instead of sloppy custom methods.
 

@@ -1,6 +1,6 @@
-require 'highline'
+require 'highline/import'
 
-namespace :challah do
+namespace :challah do 
   namespace :permissions do
     desc "Create a new permission"
     task :create => :environment do
@@ -10,15 +10,12 @@ namespace :challah do
       banner('Creating a permission')
 
       # Grab the required fields.      
-      name = ask('Name:')
+      name = ask('Permission name: ')
       key = name.to_s.parameterize.underscore
-      key = ask("Key [#{key}]:", key)
-      description = ask('Description [optional]:')
-      locked = ask('Lock this permission [Yes/No, Default: No]', 'No')
+      key = ask('Key: ') { |q| q.default = key }      
+      description = ask('Description (optional): ')
       
-      locked = locked.to_s.downcase.strip.first == 'y'
-      
-      permission = Permission.new(:name => name, :key => key, :description => description, :locked => locked)
+      permission = Permission.new(:name => name, :key => key, :description => description)
 
       puts "\n"
 
@@ -40,14 +37,10 @@ namespace :challah do
       banner('Creating a role')
 
       # Grab the required fields.    
-      name = ask!('Name:')
-      description = ask('Description [optional]:')
-      path = ask('Default path [default: /]', '/')
-      locked = ask('Lock this role [Yes/No, Default: No]', 'No')      
+      name = ask('Name: ')
+      description = ask('Description (optional): ')
       
-      locked = locked.to_s.downcase.strip.first == 'y'
-      
-      role = Role.new(:name => name, :description => description, :default_path => path, :locked => locked)
+      role = Role.new(:name => name, :description => description)
 
       puts "\n"
 
@@ -75,18 +68,24 @@ namespace :challah do
       end    
 
       # Grab the required fields.    
-      first_name = ask!('First name:')
-      last_name = ask!('Last name:')
-      email = ask!('Email:')
-      username = ask('Username [leave blank to use email address]:', email)
-      password = ask('Password:')    
+      first_name = ask('First name: ')
+      last_name = ask('Last name: ')
+      email = ask('Email: ')
+      username = ask('Username: ') { |q| q.default = email }
+      password = ask('Password: ') { |q| q.echo = false }
+      confirm = ask('Password again: ') { |q| q.echo = false }
 
       role_id = Role.admin.id
 
       # First user is always going to be an admin, otherwise ask for the role
       unless first_user
-        role = ask_for_role
-        role_id = role.id if role
+        choose do |menu|
+          menu.prompt = 'Choose a role for this user: '
+            
+          Role.all.each do |role|
+            menu.choice(role.name) { role_id = role.id }
+          end
+        end
       end
 
       user = User.new(:first_name => first_name, :last_name => last_name, :email => email, :username => username, :role_id => role_id, :password => password, :password_confirmation => password)
@@ -124,34 +123,3 @@ def check_for_tables
     exit 1
   end
 end
-
-def role_names
-  @role_names ||= Role.all.collect(&:name).sort.join('|')
-end
-
-# def ask_for_role
-#   role_name = ask!("Role Name: [#{role_names}]")
-#   role = Role.find_by_name(role_name)  
-#   return ask_for_role unless role  
-#   role
-# end
-# 
-# def ask!(question)
-#   ask(question, nil, false)
-# end
-# 
-# def ask(question, default = nil, allow_blank = true)
-#   print " -> #{question} "
-#   
-#   result = STDIN.gets.chomp
-#   
-#   if result.nil? or result.to_s.strip == ""
-#     if allow_blank
-#       return default
-#     else
-#       return ask(question, default, allow_blank)
-#     end
-#   else
-#     return result
-#   end
-# end

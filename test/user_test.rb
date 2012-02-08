@@ -34,6 +34,14 @@ class UserTest < ActiveSupport::TestCase
       assert_equal nil, User.find_for_session(' ')
       assert_equal nil, User.find_for_session('not-existing')
     end
+    
+    should "have protected attributes" do
+      assert Array === User.protected_attributes
+      
+      assert_difference 'User.protected_attributes.size', 1 do
+        User.protect_attributes :blah
+      end
+    end    
   end
   
   context "A user instance" do
@@ -66,10 +74,12 @@ class UserTest < ActiveSupport::TestCase
       user.active = true      
       assert_equal true, user.active
       assert_equal true, user.active?
+      assert_equal true, user.valid_session?
       
       user.active = false
       assert_equal false, user.active
       assert_equal false, user.active?
+      assert_equal false, user.valid_session?
     end
     
     should "not allow updating of certain protected attributes" do
@@ -214,6 +224,6 @@ class UserTest < ActiveSupport::TestCase
       assert_difference 'user.failed_auth_count', 1 do
         user.failed_authentication!
       end
-    end 
+    end       
   end
 end

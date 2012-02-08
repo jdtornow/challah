@@ -6,9 +6,9 @@ module Challah
         extend ClassMethods
       end
       
-      const_set(:PROTECTED_ATTRIBUTES, %w(api_key created_by crypted_password failed_login_count id last_login_at login_count permissions permissions_attributes permission_users permission_users_attributes persistence_token role_id updated_by))
-      
       class_eval do
+        cattr_accessor :protected_attributes
+        
         validates_presence_of :first_name, :last_name, :email, :role_id, :username
         validates_uniqueness_of :email, :username
         validate :validate_new_password
@@ -23,8 +23,9 @@ module Challah
         scope :inactive, where(:active => false).order('users.first_name, users.last_name')
         scope :with_role, lambda { |role| where([ "users.role_id = ?", role ]) }
         scope :search, lambda { |q| where([ 'users.first_name like ? OR users.last_name like ? OR users.email like ? OR users.username LIKE ?', "%#{q}%", "%#{q}%", "%#{q}%", "%#{q}%" ]) }
-      
         after_save :save_permission_keys
+        
+        protect_attributes :api_key, :created_by, :crypted_password, :failed_login_count, :id, :last_login_at, :login_count, :permissions, :permissions_attributes, :permission_users, :permission_users_attributes, :persistence_token, :role_id, :updated_by
       end
     end
   
@@ -45,6 +46,11 @@ module Challah
         end            
         
         result
+      end
+      
+      def protect_attributes(*args)        
+        self.protected_attributes ||= []
+        self.protected_attributes << args.collect(&:to_s)
       end
     end
   
@@ -168,11 +174,8 @@ module Challah
       #
       # All attributes on the user model can be updated, except for the ones listed below.
       def update_account_attributes(attributes_to_update = {})
-        protected_attributes = self.class.const_get(:PROTECTED_ATTRIBUTES)
-        
-        attributes_to_update
-        attributes_to_update.keys.each { |key| attributes_to_update.delete(key) if protected_attributes.include?(key.to_s) }
-        
+        protected_attributes = self.class.protected_attributes.clone.flatten          
+        attributes_to_update.keys.each { |key| attributes_to_update.delete(key) if protected_attributes.include?(key.to_s) }        
         self.update_attributes(attributes_to_update)
       end
       
@@ -185,7 +188,7 @@ module Challah
       #
       # Override this method if you need to check for a particular configuration on each page request.
       def valid_session?
-        true
+        self.active?
       end
 
       # Allow dynamic checking for permissions
@@ -213,7 +216,7 @@ module Challah
           self.persistence_token = ::Challah::Random.token(125) if self.persistence_token.to_s.blank?
           self.api_key = ::Challah::Random.token(50) if self.api_key.to_s.blank?
         end
-      
+        
         # Saves any updated permission keys to the database for this user.  
         # Any permission keys that are specifically given to this user and are also in the 
         # user's role will be removed. So, the only permission keys added here will be those 

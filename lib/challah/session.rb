@@ -146,7 +146,7 @@ module Challah
           @user = technique.authenticate
 
           if @user
-            @persist = technique.persist?
+            @persist = technique.respond_to?(:persist?) ? technique.persist? : false
             break
           end
         end

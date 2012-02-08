@@ -1,3 +1,7 @@
+## Challah 0.4.1 (Unreleased)
+
+* Added User#protect_attributes to allow for the addition of app-specific protected attributes in User
+
 ## Challah 0.4.0
 
 * Enabled api key access. Passing ?key=xxxx into any URL will authenticate a user for a single page load. This option is turned off by default in new apps and can be enabled using `Challah.options[:api_key_enabled]`.

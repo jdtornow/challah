@@ -1,4 +1,4 @@
-## Challah 0.4.0 (Unreleased)
+## Challah 0.4.0
 
 * Enabled api key access. Passing ?key=xxxx into any URL will authenticate a user for a single page load. This option is turned off by default in new apps and can be enabled using `Challah.options[:api_key_enabled]`.
 * Updated tests for API key access

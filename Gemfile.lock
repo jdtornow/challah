@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    challah (0.3.4)
+    challah (0.3.5)
       bcrypt-ruby
       highline
       rails (>= 3.1)

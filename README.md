@@ -77,9 +77,10 @@ Roles should only be used within your app to consolidate various permissions int
 
 The default Challah installation creates two roles by default: 'Administrator' and 'Default'. Administrators have all permissions, now and in the future. Default users have no permissions other than being able to log in.
 
-To add a permission to a role, add it to the `permission_keys` array:
+Once you've added a few other permissions, you can easily add them to a role. In this case, the `moderator` permission key is added to the default role:
 
-    role.permission_keys << "new_role"
+    role = Role[:default]
+    role.permission_keys = %w( moderator )
     role.save
 
 ## Restricted access

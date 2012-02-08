@@ -41,11 +41,12 @@ end
 class MockController
   include Challah::Controller
   
-  attr_accessor :request, :session
+  attr_accessor :request, :session, :params
   
   def initialize()
     @request = MockRequest.new
     @session ||= {}
+    @params ||= {}
   end
   
   def redirect_to(*args)

@@ -3,8 +3,8 @@ module Challah
     extend ActiveModel::Naming
     include ActiveModel::Conversion
     
-    attr_accessor :return_to, :ip, :user, :store
-    attr_reader :params, :request, :persist
+    attr_accessor :return_to, :ip, :user, :store, :persist
+    attr_reader :params, :request
     
     def initialize(request = nil, params = {})
       @request = request
@@ -22,6 +22,17 @@ module Challah
       
       @valid = false
       @user = nil
+    end
+    
+    def find
+      self.read
+      
+      # If no session was found, try and authenticate
+      unless valid?
+        self.authenticate!
+      end
+        
+      self
     end
     
     def inspect
@@ -49,11 +60,14 @@ module Challah
     end
     
     def save
-      return false unless self.valid?
+      return false unless valid?
       
-      if self.user
+      if self.user and persist?
         self.store.save(self.user.persistence_token, user_id)
+        return true
       end
+      
+      false
     end
     
     # Id of the current user.
@@ -95,6 +109,7 @@ module Challah
         
         if user_record and user_record.active?
           session.user = user_record
+          session.persist = true
         end
         
         session
@@ -117,7 +132,7 @@ module Challah
       # Load any existing session from the session store
       def find(*args)
         session = Session.new(*args)
-        session.read
+        session.find        
         session
       end
     end
@@ -125,8 +140,8 @@ module Challah
     protected
       # Try and authenticate against the various auth techniques. If one
       # technique works, then just exist and make the session active.
-      def authenticate!
-        Challah.techniques.values.each do |klass|
+      def authenticate!        
+        Challah.techniques.values.each do |klass|            
           technique = klass.new(self)
           @user = technique.authenticate
 

@@ -1,10 +1,14 @@
 module Challah
   class ApiKeyTechnique
     def initialize(session)
-      @key = session.api_key? ? session.api_key : nil   
+      @key = session.key? ? session.key : nil   
     end
     
     def authenticate
+      # Api key functionality is only enabled with the :api_key_enabled option. This is turned
+      # off by default and must be manually enabled for security reasons.
+      return nil unless Challah.options[:api_key_enabled]
+      
       unless @key.to_s.blank?
         user = ::User.find_by_api_key(@key)
         

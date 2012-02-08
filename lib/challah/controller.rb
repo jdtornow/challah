@@ -124,7 +124,7 @@ module Challah
         #
         # @return [Session] The current browser session.
         def current_user_session
-          @current_user_session ||= Challah::Session.find(request)
+          @current_user_session ||= Challah::Session.find(request, params)
         end
         
         # Checks the current user to see if they have the given permission key. If there is

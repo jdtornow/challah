@@ -211,7 +211,7 @@ module Challah
           end
 
           self.persistence_token = ::Challah::Random.token(125) if self.persistence_token.to_s.blank?
-          self.api_key = ::Challah::Random.token(25) if self.api_key.to_s.blank?
+          self.api_key = ::Challah::Random.token(50) if self.api_key.to_s.blank?
         end
       
         # Saves any updated permission keys to the database for this user.  

@@ -53,6 +53,7 @@ module Challah
     # @option options [Class] :storage_class (CookieStore) The class to use for persistence of sessions.
     def options
       @options ||= {
+        :api_key_enabled => false,
         :cookie_prefix => 'challah',
         :access_denied_view => 'sessions/access_denied',
         :storage_class => CookieStore,

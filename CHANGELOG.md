@@ -1,3 +1,10 @@
+## Challah 0.4.0 (Unreleased)
+
+* Enabled api key access. Passing ?key=xxxx into any URL will authenticate a user for a single page load. This option is turned off by default in new apps and can be enabled using `Challah.options[:api_key_enabled]`.
+* Updated tests for API key access
+* Authenticate users on page load
+* Changed default api key length to 50 instead of 25
+
 ## Challah 0.3.5
 
 * Now using [Highline](https://github.com/JEG2/highline) for rake tasks instead of sloppy custom methods.

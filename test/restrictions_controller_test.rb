@@ -86,5 +86,67 @@ class RestrictionsControllerTest < ActionController::TestCase
         assert_response :success
       end
     end
+    
+    context "With an api key" do
+      setup do
+        @user = Factory(:user)
+      end
+      
+      context "and api_key functionality enabled" do
+        setup do
+          Challah.options[:api_key_enabled] = true
+        end
+        
+        should "get to the index page" do
+          get :index, :key => @user.api_key
+          assert_response :success
+          assert_equal @user, assigns(:current_user)
+        end
+
+        should "get to the edit page" do
+          get :edit, :key => @user.api_key
+          assert_response :success
+        end
+
+        should "get to the show page" do
+          get :show, :key => @user.api_key
+          assert_response :success
+        end
+
+        should "not get to the new page" do
+          get :new, :key => @user.api_key
+
+          assert_template 'sessions/access_denied'
+          assert_response :unauthorized
+        end
+      end
+      
+      context "and api_key functionality disabled" do
+        setup do
+          Challah.options[:api_key_enabled] = false
+        end
+        
+        should "get to the index page" do
+          get :index, :key => @user.api_key
+          assert_response :success
+          assert_equal nil, assigns(:current_user)
+        end
+
+        should "get to the edit page" do
+          get :edit, :key => @user.api_key
+          assert_redirected_to '/login'
+        end
+
+        should "get to the show page" do
+          get :show, :key => @user.api_key
+          assert_redirected_to '/login'
+        end
+
+        should "not get to the new page" do
+          get :new, :key => @user.api_key
+          assert_redirected_to '/login'
+        end
+      end
+    end
   end
 end

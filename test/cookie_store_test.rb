@@ -14,6 +14,7 @@ class CookieStoreTest < ActiveSupport::TestCase
       
       session = Session.new(@request)
       session.store = CookieStore.new(session)
+      session.persist = true
       session.user = @user
       session.save
             
@@ -28,6 +29,7 @@ class CookieStoreTest < ActiveSupport::TestCase
     should "be able to inspect the store" do
       session = Session.new(@request)
       session.store = CookieStore.new(session)
+      session.persist = true
       session.user = @user
       session.save
       
@@ -39,6 +41,7 @@ class CookieStoreTest < ActiveSupport::TestCase
       
       session = Session.new(@request)
       session.store = CookieStore.new(session)
+      session.persist = true
       session.user = @user
       session.save
       
@@ -54,6 +57,7 @@ class CookieStoreTest < ActiveSupport::TestCase
       session.store.stubs(:session_cookie).returns(session_cookie_val)
       
       session2 = Session.new(@request)
+      session2.persist = true
       session2.store = session.store      
       session2.read
       
@@ -75,6 +79,7 @@ class CookieStoreTest < ActiveSupport::TestCase
       session = Session.new(@request)
       session.store = CookieStore.new(session)
       session.user = @user
+      session.persist = true
       
       session.save
       

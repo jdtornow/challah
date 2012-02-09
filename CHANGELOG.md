@@ -1,4 +1,4 @@
-## Challah 0.4.1 (Unreleased)
+## Challah 0.4.1
 
 * Added User#protect_attributes to allow for the addition of app-specific protected attributes in User
 

@@ -181,7 +181,7 @@ class UserTest < ActiveSupport::TestCase
       assert_raises NoMethodError do
         user.does_not_exist
       end
-    end
+    end    
     
     should "authenticate through various means by default" do
       user = Factory(:user)

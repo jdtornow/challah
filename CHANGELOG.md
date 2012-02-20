@@ -1,3 +1,8 @@
+## Challah 0.5.0
+
+* Modified user permission key lookup to use caching of permission keys.
+* Added timestamps to roles migration.
+
 ## Challah 0.4.1
 
 * Added User#protect_attributes to allow for the addition of app-specific protected attributes in User

@@ -5,6 +5,7 @@ class CreateRoles < ActiveRecord::Migration
       t.text :description
       t.string :default_path, :default => '/'
       t.boolean :locked, :default => false
+      t.timestamps
     end
   end
 

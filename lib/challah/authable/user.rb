@@ -15,7 +15,7 @@ module Challah
         
         before_save :before_save_password
         
-        belongs_to :role
+        belongs_to :role, :touch => true
         has_many :permission_users, :dependent => :destroy
         has_many :permissions, :through => :permission_users, :order => 'permissions.name'
         
@@ -131,8 +131,28 @@ module Challah
       def permission_keys
         return @permission_keys if @permission_keys
         
-        role_keys = self.role(true) ? self.role.permission_keys.clone : []
-        user_keys = new_record? ? [] : self.user_permission_keys.clone
+        role_keys = if role(true)
+          role_key = "#{role.cache_key}/permissions"
+          
+          keys = Rails.cache.fetch(role_key) do
+            role.permission_keys.clone
+          end
+          
+          Rails.cache.write(role_key, keys)          
+          keys
+        else
+          []
+        end
+        
+        user_key = "#{self.cache_key}/permissions"
+        
+        user_keys = Rails.cache.fetch(user_key) do
+          user_permission_keys.clone
+        end
+        
+        user_keys = [] unless user_keys
+          
+        Rails.cache.write(user_key, keys) unless new_record?
 
         @permission_keys = (role_keys + user_keys).uniq            
       end
@@ -145,6 +165,8 @@ module Challah
 
       # Set the permission keys that this role can access
       def permission_keys=(value)
+        Rails.cache.delete("#{self.cache_key}/permissions")
+        
         @permission_keys = value
         @permission_keys
       end
@@ -181,7 +203,7 @@ module Challah
       
       # Returns the permission keys used by this specific user, does not include any role-based permissions. 
       def user_permission_keys
-        self.permissions(true).collect(&:key)
+        new_record? ? [] : self.permissions(true).collect(&:key)
       end
       
       # Is this user valid and ready for a user session?

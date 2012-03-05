@@ -1,3 +1,8 @@
+## Challah 0.5.1
+
+* Dependency updates for Shoulda 3.0 and Rails 3.2.2.
+* Added multiple Gemfile configurations for Travis CI.
+
 ## Challah 0.5.0
 
 * Modified user permission key lookup to use caching of permission keys.

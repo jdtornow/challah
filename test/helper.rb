@@ -14,7 +14,7 @@ ENV['BUNDLE_GEMFILE'] ||= File.join(sample_root, 'Gemfile')
 require "#{sample_root}/config/environment"
 
 # Some other dependencies for testing w/ shoulda and factory girl
-require 'shoulda/rails'
+require 'shoulda'
 require 'mocha'
 require 'factory_girl'
 require 'factories'

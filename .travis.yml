@@ -8,6 +8,7 @@ branches:
   only:
     - master
 gemfile:
+  - Gemfile
   - gemfiles/gemfiles/rails3.gemfile
   - gemfiles/rails3_1.gemfile
   - gemfiles/rails3_2.gemfile

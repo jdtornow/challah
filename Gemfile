@@ -10,7 +10,7 @@ group :test do
   gem 'sqlite3'
 end
 
-group :doc do
+group :development do
   gem 'rdiscount'
   gem 'yard'
 end

@@ -199,10 +199,6 @@ If you'd prefer to set up your own login/logout actions, you can skip the inclus
 
 Documentation is available at: [http://rubydoc.info/gems/challah](http://rubydoc.info/gems/challah/frames)
 
-## Contributing to Challah 
-
-Contributions and pull requests are welcome.
-
 ### Issues
 
 If you have any issues or find bugs running Challah, please [report them on Github](https://github.com/jdtornow/challah/issues). While most functions should be stable, Challah is still in its infancy and certain issues may be present.

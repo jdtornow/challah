@@ -1,3 +1,7 @@
+## Challah 0.5.2
+
+* Created `SimpleCookieStore` and use it as the default storage method for Session. This varies from `CookieStore` only because the user agent and remote IP address are not used in the cookie.
+
 ## Challah 0.5.1
 
 * Dependency updates for Shoulda 3.0 and Rails 3.2.2.

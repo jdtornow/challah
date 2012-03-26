@@ -14,7 +14,7 @@ FactoryGirl.define do
       name { "Manage Users" }
       key { "manage_users" }
     end
-  end 
+  end
 
   factory :role do
     name { "Sample Role" }
@@ -23,13 +23,13 @@ FactoryGirl.define do
 
     factory :administrator_role do
       name "Administrator"
-      
-      after_create do |role| 
-        Factory(:admin_permission_role, :role => role)
-        Factory(:user_permission_role, :role => role)
+
+      after_create do |role|
+        FactoryGirl.create(:admin_permission_role, :role => role)
+        FactoryGirl.create(:user_permission_role, :role => role)
       end
     end
-    
+
     factory :default_role do
       name { "Default" }
     end
@@ -57,7 +57,7 @@ FactoryGirl.define do
       sequence(:username) { |n| "plain#{n}" }
       role_id nil
     end
-    
+
     factory :normal_user do
       first_name { "Normal" }
       sequence(:username) { |n| "normal#{n}" }

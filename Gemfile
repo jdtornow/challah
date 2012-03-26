@@ -3,7 +3,7 @@ source :rubygems
 gemspec
 
 group :test do
-  gem 'factory_girl'
+  gem 'factory_girl', '~> 3.0'
   gem 'mocha', '~> 0.10'
   gem 'shoulda', '~> 3.0'
   gem 'simplecov', :require => false

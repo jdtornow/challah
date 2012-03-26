@@ -1,3 +1,9 @@
+## Challah 0.5.3
+
+* Updated tests to conform with Factory Girl 3.0
+* Added `login_as` and `logout` test helper methods into `ActiveSupport::TestCase` by default. These methods can be used within functional tests to authenticate a user for a given test.
+* For each test run, all test sessions are cleared.
+
 ## Challah 0.5.2
 
 * Created `SimpleCookieStore` and use it as the default storage method for Session. This varies from `CookieStore` only because the user agent and remote IP address are not used in the cookie.
@@ -41,12 +47,12 @@
 
 ## Challah 0.3.1
 
-* Removed name spacing of controllers and default routes. 
+* Removed name spacing of controllers and default routes.
 * Added option to not include default routes
 
 ## Challah 0.3.0
 
-* Documentation clean up. 
+* Documentation clean up.
 * Added rake tasks for creating role, permission and user records.
 
 ## Challah 0.2.0

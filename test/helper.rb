@@ -32,31 +32,33 @@ require 'challah/test'
 ActiveRecord::Migration.verbose = false
 ActiveRecord::Migrator.migrate("#{Rails.root}/db/migrate")
 
-# Use ActiveSupport::TestCase for any tests using factories and database saving, 
+# Use ActiveSupport::TestCase for any tests using factories and database saving,
 # so we can have a transactional rollback after each test.
 class ActiveSupport::TestCase
+  include FactoryGirl::Syntax::Methods
+
   self.use_transactional_fixtures = true
 end
 
 class MockController
   include Challah::Controller
-  
+
   attr_accessor :request, :session, :params
-  
+
   def initialize()
     @request = MockRequest.new
     @session ||= {}
     @params ||= {}
   end
-  
+
   def redirect_to(*args)
     # do nothing
   end
-  
+
   def login_path
     "/login"
   end
-  
+
   def logout_path
     "/logout"
   end
@@ -64,31 +66,31 @@ end
 
 class MockRequest
   attr_accessor :cookie_jar, :session_options, :url
-  
+
   class MockCookieJar < Hash
     def delete(key, options = {})
       super(key)
     end
   end
-  
+
   def initialize
     @cookie_jar = MockCookieJar.new
     @session_options = { :domain => 'test.dev' }
     @url = "http://example.com/"
   end
-  
+
   def cookies
     @cookie_jar
   end
-  
+
   def cookies=(value)
     @cookie_jar = value
   end
-  
+
   def remote_ip
     "8.8.8.8"
   end
-  
+
   def user_agent
     "Some Cool Browser"
   end

@@ -8,7 +8,7 @@ Challah doesn't provide any fancy controllers or views that clutter your app or 
 
 ## Requirements
 
-* Ruby 1.8.7, 1.9.2 or 1.9.3
+* Ruby 1.9.2+
 * Bundler
 * Rails 3.1+
 
@@ -25,8 +25,8 @@ Or, in your `Gemfile`
 Once the gem has been set up and installed, run the following command to set up the database migrations:
 
     rake challah:setup
-    
-This will copy over the necessary migrations to your app, migrate the database and add some seed data. You will be prompted to add the first user as the last step in this process. 
+
+This will copy over the necessary migrations to your app, migrate the database and add some seed data. You will be prompted to add the first user as the last step in this process.
 
 ### Manual set up
 
@@ -36,7 +36,7 @@ If you would prefer to handle these steps manually, you can do so by using these
     rake db:migrate
     rake challah:setup:seeds
     rake challah:users:create
-    
+
 ### Creating users, permissions and roles
 
 Since Challah doesn't provide any controller and views for users, permissions and roles there are a few handy rake tasks you can use to create new records.
@@ -46,10 +46,10 @@ The following tasks will prompt for the various attributes in each model:
     rake challah:permissions:create     # => Create a new Permission record
     rake challah:roles:create           # => Create a new Role record
     rake challah:users:create           # => Creates a new User record
-    
+
 ## Models
 
-Challah provides three core models to your app: Permission, Role and User. By default, these models are hidden away in the Challah gem engine, but you can always copy the models into your app to make further modifications to the functionality. 
+Challah provides three core models to your app: Permission, Role and User. By default, these models are hidden away in the Challah gem engine, but you can always copy the models into your app to make further modifications to the functionality.
 
 ### User
 
@@ -71,9 +71,9 @@ The default Challah installation creates two permissions by default: `admin` and
 
 ### Role
 
-A role is used to group together various permissions and assign them to a user. Roles can also be thought of as user groups. Each role record requires a unique name. 
+A role is used to group together various permissions and assign them to a user. Roles can also be thought of as user groups. Each role record requires a unique name.
 
-Roles should only be used within your app to consolidate various permissions into logical groups. Roles are not intended to be used to restrict functionality, use permissions instead. 
+Roles should only be used within your app to consolidate various permissions into logical groups. Roles are not intended to be used to restrict functionality, use permissions instead.
 
 The default Challah installation creates two roles by default: 'Administrator' and 'Default'. Administrators have all permissions, now and in the future. Default users have no permissions other than being able to log in.
 
@@ -103,12 +103,12 @@ For example, restrict the second list item to only users that have logged in:
       <li><a href="/public-stuff">Not-so-secret Stuff</a></li>
     </ul>
 
-Controllers can also be restricted using `before_filter`: 
+Controllers can also be restricted using `before_filter`:
 
     class WidgetsController < ApplicationController
       before_filter :login_required
 
-      # …	
+      # …
     end
 
 Or, you can call `restrict_to_authenticated` instead, which does the same thing:
@@ -116,7 +116,7 @@ Or, you can call `restrict_to_authenticated` instead, which does the same thing:
     class WidgetsController < ApplicationController
       restrict_to_authenticated
 
-      # ...	
+      # ...
     end
 
 All normal Rails `before_filter` options apply, so you can always limit this restriction to a specific action:
@@ -124,12 +124,12 @@ All normal Rails `before_filter` options apply, so you can always limit this res
     class WidgetsController < ApplicationController
       restrict_to_authenticated :only => [ :edit, :update, :destroy ]
 
-      # ...	
+      # ...
     end
 
 ### Checking for a permission
 
-Since Challah is a permissions-based system, all restricted access should be performed by testing a user for the given permission. 
+Since Challah is a permissions-based system, all restricted access should be performed by testing a user for the given permission.
 
 Anywhere you can access a user instance, you can use the `has` method and pass in a single permission key to test that user for access:
 
@@ -143,7 +143,7 @@ Anywhere you can access a user instance, you can use the `has` method and pass i
       <li><a href="/public-stuff">Not-so-secret Stuff</a></li>
     </ul>
 
-Notice that we checked for existance of the user before we checked to see if the user has a permission. If you used the `restrict_to_authenticated` method in your controller, you can likely skip this step. 
+Notice that we checked for existance of the user before we checked to see if the user has a permission. If you used the `restrict_to_authenticated` method in your controller, you can likely skip this step.
 
 Note: `current_user` will return `nil` if there is no user available, so checking for `current_user?` prevents you from calling `has` on `nil`.
 
@@ -152,7 +152,7 @@ For controller restrictions, use the `restrict_to_permission` method:
     class WidgetsController < ApplicationController
       restrict_to_permission :manage_widgets
 
-      # ...	
+      # ...
     end
 
 The `restrict_to_permission` method will also fail if there is no user currently authenticated.
@@ -162,7 +162,7 @@ And, just as before, we can use the Rails filter options to limit the restrictio
     class WidgetsController < ApplicationController
       restrict_to_permission :admin, :only => [ :destroy ]
 
-      # ...	
+      # ...
     end
 
 And of course, you can stack up multiple restrictions get very specific about what your users can do:
@@ -176,7 +176,7 @@ And of course, you can stack up multiple restrictions get very specific about wh
       restrict_to_permission :manage_widgets, :except => [ :index, :destroy ]
       restrict_to_permission :admin, :only => [ :destroy ]
 
-      # ...	
+      # ...
     end
 
 Whichever method you use will yield the same results. Just make sure you are checking for a permission key, and not checking for a role. Checking for roles (i.e.: `user.role_id == 1`) is shameful practice. Use permissions!
@@ -188,7 +188,7 @@ By default, there are a few routes included with the Challah engine. These route
     GET   /login        # => SessionsController#new
     POST  /login        # => SessionsController#create
     GET   /logout       # => SessionsController#new
-    
+
 Feel free to override the `SessionsController` with something more appropriate for your app.
 
 If you'd prefer to set up your own login/logout actions, you can skip the inclusion of the default routes by adding the following line to an initializer file in your app:

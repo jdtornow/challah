@@ -3,6 +3,7 @@
 * Updated tests to conform with Factory Girl 3.0
 * Added `login_as` and `logout` test helper methods into `ActiveSupport::TestCase` by default. These methods can be used within functional tests to authenticate a user for a given test.
 * For each test run, all test sessions are cleared.
+* Removing support for Ruby 1.8.7, since Factory Girl does not support it anymore.
 
 ## Challah 0.5.2
 

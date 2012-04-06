@@ -257,7 +257,7 @@ module Challah
               permission = ::Permission[key]
 
               if permission
-                self.permission_users.create(:permission_id => permission.id, :user_id => self.id)
+                self.permission_users.create({ :permission_id => permission.id, :user_id => self.id }, :without_protection => true)
               end
             end
 

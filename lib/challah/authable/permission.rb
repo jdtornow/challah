@@ -1,10 +1,10 @@
 module Challah
-  # AuthablePermission is used to extend functionality to a model in your app named Permission. 
+  # AuthablePermission is used to extend functionality to a model in your app named Permission.
   # By default, this model already exists within the challah engine.
   #
   # The Permission model is used to store every granular level of restriction for your application.
   # If there is anything within your app that may need to be restricted in any way, you'll likely
-  # want to create a permission for it. 
+  # want to create a permission for it.
   #
   # Permission can be as granular as necessary. For example, you may have a permission called
   # +:people_admin+. Or, you could specify each action taken within an admin section, and add permissions
@@ -25,7 +25,7 @@ module Challah
   #
   # The join tables (permission_roles and permission_users) are also included, but likely do not
   # need to be accessed directly.
-  # 
+  #
   # == Scopes
   #
   # By default, the following scopes are included for this model:
@@ -34,10 +34,10 @@ module Challah
   #
   # == Customizing the Permission model
   #
-  # By default, the Permission model is included within the gem engine. However, if you wish to 
-  # include it within your app for any customizations, you can do so by creating a model 
+  # By default, the Permission model is included within the gem engine. However, if you wish to
+  # include it within your app for any customizations, you can do so by creating a model
   # file named +permission.rb+ and adding the +authable_permission+ line near the top of the class.
-  # 
+  #
   # @example app/models/permission.rb
   #   class Permission < ActiveRecord::Base
   #     # Set up all permission methods from challah gem
@@ -57,7 +57,7 @@ module Challah
         include InstanceMethods
         extend ClassMethods
       end
-      
+
       class_eval do
         validates_presence_of :name, :key
         validates_uniqueness_of :name, :key
@@ -69,11 +69,13 @@ module Challah
         has_many :users, :through => :permission_users, :order => 'users.last_name, users.first_name'
 
         default_scope order('permissions.name')
-        
+
+        attr_accessible :name, :description, :key, :locked
+
         after_create :add_to_admin_role
       end
     end
-    
+
     module ClassMethods
       # Quickly access a +Permission+ instance by the provided key. If no +Permission+
       # is found with that key, +nil+ is returned.
@@ -89,8 +91,8 @@ module Challah
         self.find_by_key(key.to_s.strip.downcase.gsub(' ', '_'))
       end
     end
-    
-    # @private 
+
+    # @private
     module InstanceMethods
       # @private
       #
@@ -98,13 +100,13 @@ module Challah
       def key=(value)
         write_attribute(:key, value.to_s.downcase.strip)
       end
-      
+
       protected
         # @private
         # After a new permission level is added, automatically add it to the admin user role
         def add_to_admin_role
           admin_role = ::Role.admin
-          
+
           # if there is an admin role, add this permission to it.
           if admin_role
             admin_role.permission_keys = admin_role.permission_keys + [ self.key ]

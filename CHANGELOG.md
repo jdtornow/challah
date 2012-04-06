@@ -1,3 +1,7 @@
+## Challah 0.5.4
+
+* Bug fixes for Rails v3.2.3 mass assignment defaults.
+
 ## Challah 0.5.3
 
 * Updated tests to conform with Factory Girl 3.0

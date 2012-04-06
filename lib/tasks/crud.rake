@@ -1,6 +1,6 @@
 require 'highline/import'
 
-namespace :challah do 
+namespace :challah do
   namespace :permissions do
     desc "Create a new permission"
     task :create => :environment do
@@ -9,25 +9,25 @@ namespace :challah do
 
       banner('Creating a permission')
 
-      # Grab the required fields.      
+      # Grab the required fields.
       name = ask('Permission name: ')
       key = name.to_s.parameterize.underscore
-      key = ask('Key: ') { |q| q.default = key }      
+      key = ask('Key: ') { |q| q.default = key }
       description = ask('Description (optional): ')
-      
-      permission = Permission.new(:name => name, :key => key, :description => description)
+
+      permission = Permission.new({ :name => name, :key => key, :description => description }, :without_protection => true)
 
       puts "\n"
 
       if permission.save
-        puts "Role has been created successfully! [ID: #{permission.id}]"
+        puts "Permission has been created successfully! [ID: #{permission.id}]"
       else
-        puts "Role could not be added for the following errors:"
+        puts "Permission could not be added for the following errors:"
         permission.errors.full_messages.each { |m| puts "  - #{m}" }
       end
     end
   end
-  
+
   namespace :roles do
     desc "Create a new role"
     task :create => :environment do
@@ -36,11 +36,11 @@ namespace :challah do
 
       banner('Creating a role')
 
-      # Grab the required fields.    
+      # Grab the required fields.
       name = ask('Name: ')
       description = ask('Description (optional): ')
-      
-      role = Role.new(:name => name, :description => description)
+
+      role = Role.new({ :name => name, :description => description }, :without_protection => true)
 
       puts "\n"
 
@@ -52,7 +52,7 @@ namespace :challah do
       end
     end
   end
-  
+
   namespace :users do
     desc "Create a new user"
     task :create => :environment do
@@ -65,9 +65,9 @@ namespace :challah do
 
       if first_user
         puts "Please answer the following questions to create your first admin user.\n\n"
-      end    
+      end
 
-      # Grab the required fields.    
+      # Grab the required fields.
       first_name = ask('First name: ')
       last_name = ask('Last name: ')
       email = ask('Email: ')
@@ -81,14 +81,21 @@ namespace :challah do
       unless first_user
         choose do |menu|
           menu.prompt = 'Choose a role for this user: '
-            
+
           Role.all.each do |role|
             menu.choice(role.name) { role_id = role.id }
           end
         end
       end
 
-      user = User.new(:first_name => first_name, :last_name => last_name, :email => email, :username => username, :role_id => role_id, :password => password, :password_confirmation => password)
+      user = User.new({
+        :first_name => first_name,
+        :last_name => last_name,
+        :email => email,
+        :username => username,
+        :role_id => role_id,
+        :password => password,
+        :password_confirmation => password }, :without_protection => true)
 
       puts "\n"
 

@@ -3,10 +3,10 @@ require 'challah/techniques/password_technique'
 
 module Challah
   # Techniques are used to allow different methods of authentication. By default, there are
-  # two techniques included: Password and ApiKey. 
+  # two techniques included: Password and ApiKey.
   #
-  # Techniques are just regular Ruby classes, that respond to several methods. At a minimum, 
-  # any new techniques should contain an +authenticate+ and +persist?+ method. Authenticate 
+  # Techniques are just regular Ruby classes, that respond to several methods. At a minimum,
+  # any new techniques should contain an +authenticate+ and +persist?+ method. Authenticate
   # will return a user if the authentication was successful, and persist? returns true if
   # this session should be persisted using cookies. If persist? is false, then no cookies will
   # be added, and the user will only be logged in for a single request.
@@ -17,7 +17,7 @@ module Challah
   #       def initialize(session)
   #         @session = session
   #       end
-  #     
+  #
   #       # Authenticate this user, return a User instance if valid, nil otherwise
   #       def authenticate
   #         # was params[:secret] provided to the request
@@ -29,10 +29,10 @@ module Challah
   #             return user
   #           end
   #         end
-  #     
+  #
   #         nil
   #       end
-  #       
+  #
   #       # Keep this user logged in?
   #       def persist?
   #         true
@@ -50,7 +50,7 @@ module Challah
     def register_technique(name, klass)
       @techniques[name] = klass
     end
-    
+
     # Get the list of all techniques that have been registered.
     def techniques
       @techniques.dup

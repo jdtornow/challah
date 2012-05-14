@@ -1,49 +1,23 @@
-require 'challah/audit'
-require 'challah/authable/permission'
-require 'challah/authable/permission_role'
-require 'challah/authable/permission_user'
-require 'challah/authable/role'
-require 'challah/authable/user'
-
-require 'challah/simple_cookie_store'
-require 'challah/cookie_store'
-
-require 'challah/controller'
-require 'challah/encrypter'
-require 'challah/random'
-require 'challah/session'
-require 'challah/techniques'
 require 'challah/version'
 
 module Challah
-  if defined? Rails::Engine
-    class Engine < Rails::Engine
-      initializer 'challah.router' do |app|
-        app.routes_reloader.paths.insert(0, File.expand_path(File.join(File.dirname(__FILE__), 'challah/routes.rb')))
-      end
-    end
-  end
-  
-  if defined? ::ActiveRecord
-    # @private
-    class ::ActiveRecord::Base
-      include Audit
-      extend AuthablePermission
-      extend AuthablePermissionRole
-      extend AuthablePermissionUser
-      extend AuthableRole
-      extend AuthableUser
-    end
-  end
-  
-  if defined? ::ActionController
-    # @private
-    class ::ActionController::Base
-      include Controller
-      helper_method :logged_in?, :current_user, :current_user_session, :current_user?, :has
-    end
-  end
-  
+  autoload :Audit,                            'challah/audit'
+
+  autoload :AuthablePermissionRole,           'challah/authable/permission_role'
+  autoload :AuthablePermissionUser,           'challah/authable/permission_user'
+  autoload :AuthablePermission,               'challah/authable/permission'
+  autoload :AuthableRole,                     'challah/authable/role'
+  autoload :AuthableUser,                     'challah/authable/user'
+
+  autoload :CookieStore,                      'challah/cookie_store'
+  autoload :SimpleCookieStore,                'challah/simple_cookie_store'
+
+  autoload :Controller,                       'challah/controller'
+  autoload :Encrypter,                        'challah/encrypter'
+  autoload :Random,                           'challah/random'
+  autoload :Session,                          'challah/session'
+  autoload :Techniques,                       'challah/techniques'
+
   # Configuration options
   class << self
     # Get or set options for the current Challah instance. In most cases these should be
@@ -63,12 +37,14 @@ module Challah
       }
     end
   end
-  
+
   # Set up techniques engines
   extend Techniques
   @techniques ||= {}
-  
-  # Default registered authentication techiques.   
-  register_technique :password,       PasswordTechnique
+
+  # Default registered authentication techiques.
   register_technique :api_key,        ApiKeyTechnique
+  register_technique :password,       PasswordTechnique
 end
+
+require 'challah/railtie' if defined?(Rails)

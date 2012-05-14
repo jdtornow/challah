@@ -4,7 +4,7 @@ module Challah
   #
   # This method will force the user to log in slightly more often, as user agents
   # and IP addresses change.
-  # 
+  #
   # To use a different storage method for persisting a session, just create
   # a new class that responds to +read+, +save+ and +destroy+
   #
@@ -12,7 +12,7 @@ module Challah
     def inspect
       "#<CookieStore:0x#{object_id.to_s(16)} valid=#{existing?}>"
     end
-    
+
     protected
       def validation_cookie_value(value = nil)
         value = session_cookie_value unless value

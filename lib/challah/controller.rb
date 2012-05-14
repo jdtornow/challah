@@ -1,5 +1,5 @@
 module Challah
-  # These methods are added into ActionController::Base and are available in all 
+  # These methods are added into ActionController::Base and are available in all
   # of your app's controllers.
   module Controller
     # @private
@@ -7,7 +7,7 @@ module Challah
       base.send(:include, InstanceMethods)
       base.send(:extend, ClassMethods)
     end
-    
+
     module ClassMethods
       # Restrict the current controller to only users that have authenticated. All actions
       # in the controller will be restricted unless otherwise stated. All normal options
@@ -17,7 +17,7 @@ module Challah
       #
       #   before_filter :login_required
       #
-      # @example 
+      # @example
       #   class YourController < ApplicationController
       #     restrict_to_authenticated
       #
@@ -38,15 +38,15 @@ module Challah
         end
       end
       alias_method :login_required, :restrict_to_authenticated
-      
-      # Restrict the current controller to the given permission key. All actions in the 
+
+      # Restrict the current controller to the given permission key. All actions in the
       # controller will be restricted unless otherwise stated. All normal options
       # for a before_filter are observed.
       #
-      # If the current user does not have the given permission key, they are shown the 
+      # If the current user does not have the given permission key, they are shown the
       # access denied message.
       #
-      # @example 
+      # @example
       #   class YourController < ApplicationController
       #     restrict_to_permission :manage_users
       #
@@ -70,7 +70,7 @@ module Challah
       end
       alias_method :permission_required, :restrict_to_permission
     end
-    
+
     module InstanceMethods
       protected
         # Stop execution of the current action and display the access denied message.
@@ -82,7 +82,7 @@ module Challah
         #
         #   Challah.options[:access_denied_view] = 'controller/denied-view-name'
         #
-        # A status code of :unauthorized (401) will be returned. 
+        # A status code of :unauthorized (401) will be returned.
         #
         # Override this method if you'd like something different to happen when your users
         # get an access denied notification.
@@ -92,9 +92,9 @@ module Challah
           else
             session[:return_to] = request.url
             redirect_to login_path and return
-          end          
+          end
         end
-      
+
         # Is there currently a logged in user? Returns true if it is safe to use
         # the {#current_user current_user} method.
         #
@@ -107,7 +107,7 @@ module Challah
           !!current_user
         end
         alias_method :logged_in?, :current_user?
-        
+
         # The user that is currently logged into this session. If there is no
         # user logged in, nil will be returned.
         #
@@ -117,16 +117,16 @@ module Challah
         def current_user
           @current_user ||= current_user_session.user
         end
-        
-        # The current authentication session, if one exists. A {Session} object will be 
-        # returned regardless of its valid status. If an invalid session is returned, the 
+
+        # The current authentication session, if one exists. A {Session} object will be
+        # returned regardless of its valid status. If an invalid session is returned, the
         # {Session#user user} attribute will be nil.
         #
         # @return [Session] The current browser session.
         def current_user_session
           @current_user_session ||= Challah::Session.find(request, params)
         end
-        
+
         # Checks the current user to see if they have the given permission key. If there is
         # not a user currently logged in, false is always returned.
         #
@@ -149,7 +149,7 @@ module Challah
         alias_method :permission?, :has
 
         # Restrict a controller to only authenticated users. If someone tries to access
-        # a restricted action and is not logged in, they will be redirected to the 
+        # a restricted action and is not logged in, they will be redirected to the
         # login page.
         #
         # This method is an alias for:
@@ -159,14 +159,14 @@ module Challah
         # @example
         #   class YourController < ApplicationController
         #     before_filter :login_required
-        # 
+        #
         #     # ...
         #   end
         #
         # @example Specifing certain actions.
         #   class YourOtherController < ApplicationController
         #     before_filter :login_required, :only => [ :create, :update, :destroy ]
-        # 
+        #
         #     # ...
         #   end
         #

@@ -1,3 +1,9 @@
+## Challah 0.6.0
+
+* Gem dependency updates
+* Reduced application load time by eager loading ActiveRecord and ActionController modules once they are loading instead of on gem load.
+* Lots of cleanup
+
 ## Challah 0.5.4
 
 * Bug fixes for Rails v3.2.3 mass assignment defaults.

@@ -4,7 +4,7 @@ Rails.application.routes.draw do
     match '/login' => 'sessions#new', :as => 'login', :via => :get
     match '/logout' => 'sessions#destroy', :as => 'logout'
   end
-  
+
   if Rails.env.test?
     # These are used for testing purposes only.
     match '/challah/:action', :controller => 'challah/test/restrictions'

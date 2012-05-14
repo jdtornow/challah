@@ -61,18 +61,35 @@ module Challah
       end
 
       class_eval do
-        validates_presence_of :name
-        validates_uniqueness_of :name
+        # Validations
+        ################################################################
 
-        has_many :users, :order => 'users.first_name, users.last_name'
-        has_many :permission_roles, :dependent => :destroy
-        has_many :permissions, :through => :permission_roles, :order => 'permissions.name'
+        validates :name, :presence => true, :uniqueness => true
+
+        # Relationships
+        ################################################################
+
+        has_many :permission_roles,   :dependent => :destroy
+
+        has_many :permissions,        :through => :permission_roles,
+                                      :order => 'permissions.name'
+
+        has_many :users,              :order => 'users.first_name, users.last_name'
+
+        # Scoped Finders
+        ################################################################
 
         default_scope order('roles.name')
 
-        attr_accessible :name, :description, :default_path, :locked
+        # Callbacks
+        ################################################################
 
         after_save :save_permission_keys
+
+        # Attributes
+        ################################################################
+
+        attr_accessible :description, :default_path, :locked, :name
       end
     end
 

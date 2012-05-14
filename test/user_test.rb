@@ -8,6 +8,7 @@ class UserTest < ActiveSupport::TestCase
   should validate_presence_of :username
 
   should belong_to :role
+
   should have_many :permission_users
   should have_many :permissions
 
@@ -39,8 +40,22 @@ class UserTest < ActiveSupport::TestCase
       assert Array === User.protected_attributes
 
       assert_difference 'User.protected_attributes.size', 1 do
-        User.protect_attributes :blah
+        User.protect_attributes(:blah)
       end
+    end
+
+    should "be able to find users by role" do
+      admin_role = create(:administrator_role)
+      another_role = create(:role, :name => 'Another')
+
+      create_list(:user, 5, :role_id => admin_role.id)
+      create_list(:user, 2, :role_id => another_role.id)
+
+      assert_equal 7, User.count
+
+      assert_equal 5, User.find_all_by_role(:administrator).count
+      assert_equal 5, User.find_all_by_role(admin_role.id).count
+      assert_equal 2, User.find_all_by_role(another_role).count
     end
   end
 

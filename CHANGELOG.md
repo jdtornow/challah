@@ -3,6 +3,7 @@
 * Gem dependency updates
 * Reduced application load time by eager loading ActiveRecord and ActionController modules once they are loading instead of on gem load.
 * Lots of cleanup
+* Added scoped User finders for `find_all_by_role` and `find_all_by_permission`
 
 ## Challah 0.5.4
 

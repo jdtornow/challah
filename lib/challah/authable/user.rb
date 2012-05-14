@@ -9,29 +9,90 @@ module Challah
       class_eval do
         cattr_accessor :protected_attributes
 
-        validates_presence_of :first_name, :last_name, :email, :role_id, :username
-        validates_uniqueness_of :email, :username
+        # Validation
+        ################################################################
+
+        validates :email,           :presence => true, :uniqueness => true
+        validates :first_name,      :presence => true
+        validates :last_name,       :presence => true
+        validates :role_id,         :presence => true
+        validates :username,        :presence => true, :uniqueness => true
+
         validate :validate_new_password
 
-        before_save :before_save_password
+        # Relationships
+        ################################################################
 
-        belongs_to :role, :touch => true
-        has_many :permission_users, :dependent => :destroy
-        has_many :permissions, :through => :permission_users, :order => 'permissions.name'
+        belongs_to :role,             :touch => true
 
-        scope :active, where(:active => true).order('users.first_name, users.last_name')
-        scope :inactive, where(:active => false).order('users.first_name, users.last_name')
-        scope :with_role, lambda { |role| where([ "users.role_id = ?", role ]) }
-        scope :search, lambda { |q| where([ 'users.first_name like ? OR users.last_name like ? OR users.email like ? OR users.username LIKE ?', "%#{q}%", "%#{q}%", "%#{q}%", "%#{q}%" ]) }
-        after_save :save_permission_keys
+        has_many :permission_users,   :dependent => :destroy
 
-        attr_accessible :first_name, :last_name, :username, :email, :password, :password_confirmation
+        has_many :permissions,        :through => :permission_users,
+                                      :order => 'permissions.name'
 
-        protect_attributes :api_key, :created_by, :crypted_password, :failed_login_count, :id, :last_session_at, :last_login_at, :last_session_ip, :login_count, :permissions, :permissions_attributes, :permission_users, :permission_users_attributes, :persistence_token, :role_id, :session_count, :updated_by
+        # Scoped Finders
+        ################################################################
+
+        default_scope       order('users.first_name, users.last_name')
+
+        scope :active,      where(:active => true)
+        scope :inactive,    where(:active => false)
+        scope :search,      lambda { |q| where([ 'users.first_name like ? OR users.last_name like ? OR users.email like ? OR users.username LIKE ?', "%#{q}%", "%#{q}%", "%#{q}%", "%#{q}%" ]) }
+        scope :with_role,   lambda { |role| where([ "users.role_id = ?", role ]) }
+
+        # Callbacks
+        ################################################################
+
+        after_save          :save_permission_keys
+        before_save         :before_save_password
+        before_validation   :sync_username
+
+        # Attributes
+        ################################################################
+
+        attr_accessible     :email,
+                            :first_name,
+                            :last_name,
+                            :password_confirmation,
+                            :password,
+                            :username
+
+        protect_attributes  :api_key,
+                            :created_by,
+                            :crypted_password,
+                            :failed_login_count,
+                            :id,
+                            :last_login_at,
+                            :last_session_at,
+                            :last_session_ip,
+                            :login_count,
+                            :permission_users_attributes,
+                            :permission_users,
+                            :permissions_attributes,
+                            :permissions,
+                            :persistence_token,
+                            :role_id,
+                            :session_count,
+                            :updated_by
       end
     end
 
     module ClassMethods
+      # Returns a scope of all users that are assigned to the given role.
+      # Accepts a `Role` instance, a role_id, or a Symbol of the role name.
+      def find_all_by_role(role_or_id_or_name)
+        role_id = case role_or_id_or_name
+        when Role
+          role_or_id_or_name[:id]
+        when Symbol
+          Role[role_or_id_or_name][:id]
+        else
+          role_or_id_or_name
+        end
+
+        User.with_role(role_id)
+      end
+
       # Find a user instance by username first, or email address if needed.
       # If no user is found matching, return nil
       def find_for_session(username_or_email)
@@ -103,7 +164,7 @@ module Challah
         self.increment!(:failed_auth_count)
       end
 
-      # full name
+      # First name and last name together
       def name
         "#{first_name} #{last_name}"
       end
@@ -201,7 +262,13 @@ module Challah
       # All attributes on the user model can be updated, except for the ones listed below.
       def update_account_attributes(attributes_to_update = {})
         protected_attributes = self.class.protected_attributes.clone.flatten
-        attributes_to_update.keys.each { |key| attributes_to_update.delete(key) if protected_attributes.include?(key.to_s) }
+
+        attributes_to_update.keys.each do |key|
+          if protected_attributes.include?(key.to_s)
+            attributes_to_update.delete(key)
+          end
+        end
+
         self.update_attributes(attributes_to_update)
       end
 
@@ -257,7 +324,10 @@ module Challah
               permission = ::Permission[key]
 
               if permission
-                self.permission_users.create({ :permission_id => permission.id, :user_id => self.id }, :without_protection => true)
+                self.permission_users.create({
+                  :permission_id => permission.id,
+                  :user_id => self.id
+                  }, :without_protection => true)
               end
             end
 
@@ -265,6 +335,14 @@ module Challah
             @user_permission_keys = nil
 
             self.permissions(true).collect(&:key)
+          end
+        end
+
+        # Called before validations, if no username was provided but an email was, copy it over to the
+        # username field.
+        def sync_username
+          if self.username.to_s.blank? and !self.email.to_s.blank?
+            self.username = self.email
           end
         end
 

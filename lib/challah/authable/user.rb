@@ -78,6 +78,35 @@ module Challah
     end
 
     module ClassMethods
+      # Returns a scope of all users that are assigned with the given permission.
+      # This takes into account permissions assigned by a user role, or permissions
+      # given to a user on an ad-hoc basis.
+      def find_all_by_permission(permission_id_or_key)
+        permission = case permission_id_or_key
+        when Permission
+          permission_id_or_key
+        when Symbol
+          Permission[permission_id_or_key]
+        else
+          Permission.find_by_id(permission_id_or_key)
+        end
+
+        unless Permission === permission
+          return self.scoped.limit(0)
+        end
+
+        user_ids = permission.permission_users.pluck(:user_id).to_a
+        role_ids = permission.permission_roles.pluck(:role_id).to_a
+
+        if user_ids.count.zero?
+          self.where(:role_id => role_ids)
+        else
+          t = self.arel_table
+          self.where(t[:role_id].in(role_ids).or(t[:id].in(user_ids)))
+        end
+      end
+      alias_method :find_by_permission, :find_all_by_permission
+
       # Returns a scope of all users that are assigned to the given role.
       # Accepts a `Role` instance, a role_id, or a Symbol of the role name.
       def find_all_by_role(role_or_id_or_name)
@@ -92,6 +121,7 @@ module Challah
 
         User.with_role(role_id)
       end
+      alias_method :find_by_role, :find_all_by_role
 
       # Find a user instance by username first, or email address if needed.
       # If no user is found matching, return nil
@@ -100,17 +130,18 @@ module Challah
 
         result = nil
 
-        result = find_by_username(username_or_email)
+        result = self.where(:username => username_or_email).first
 
         unless result
           if username_or_email.to_s.include?('@')
-            result = find_by_email(username_or_email)
+            result = self.where(:email => username_or_email).first
           end
         end
 
         result
       end
 
+      # Protect certain attributes of this table from User#update_account_attributes.
       def protect_attributes(*args)
         self.protected_attributes ||= []
         self.protected_attributes << args.collect(&:to_s)
@@ -190,7 +221,9 @@ module Challah
         @password_confirmation = value
       end
 
-      # Returns the permission keys in an array for exactly what this user can access. This includes all role based permission keys, and any specifically given to this user through permissions_users
+      # Returns the permission keys in an array for exactly what this user can access.
+      # This includes all role based permission keys, and any specifically given to this user
+      # through permissions_users
       def permission_keys
         return @permission_keys if @permission_keys
 
@@ -207,15 +240,13 @@ module Challah
           []
         end
 
-        user_key = "#{self.cache_key}/permissions"
-
-        user_keys = Rails.cache.fetch(user_key) do
+        user_keys = Rails.cache.fetch(permissions_cache_key) do
           user_permission_keys.clone
         end
 
         user_keys = [] unless user_keys
 
-        Rails.cache.write(user_key, keys) unless new_record?
+        Rails.cache.write(permissions_cache_key, keys) unless new_record?
 
         @permission_keys = (role_keys + user_keys).uniq
       end
@@ -228,7 +259,7 @@ module Challah
 
       # Set the permission keys that this role can access
       def permission_keys=(value)
-        Rails.cache.delete("#{self.cache_key}/permissions")
+        Rails.cache.delete(permissions_cache_key)
 
         @permission_keys = value
         @permission_keys
@@ -308,6 +339,11 @@ module Challah
 
           self.persistence_token = ::Challah::Random.token(125) if self.persistence_token.to_s.blank?
           self.api_key = ::Challah::Random.token(50) if self.api_key.to_s.blank?
+        end
+
+        # The cache key to use for saving user permissions.
+        def permissions_cache_key
+          "#{self.cache_key}/permissions"
         end
 
         # Saves any updated permission keys to the database for this user.

@@ -54,6 +54,7 @@ class UserTest < ActiveSupport::TestCase
       assert_equal 7, User.count
 
       assert_equal 5, User.find_all_by_role(:administrator).count
+      assert_equal 5, User.find_by_role(:administrator).count
       assert_equal 5, User.find_all_by_role(admin_role.id).count
       assert_equal 2, User.find_all_by_role(another_role).count
     end
@@ -106,7 +107,9 @@ class UserTest < ActiveSupport::TestCase
       assert_equal 7, User.find_all_by_permission(permission).count
       assert_equal 7, User.find_all_by_permission(permission.id).count
 
-      assert_equal 3, User.find_all_by_permission(:administrator).count
+      assert_equal 0, User.find_by_permission(nil).count
+
+      assert_equal 2, User.find_all_by_permission(:admin).count
       assert_equal 3, User.find_by_permission(:manage_users).count
     end
   end

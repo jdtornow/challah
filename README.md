@@ -230,7 +230,7 @@ Documentation is available at: [http://rubydoc.info/gems/challah](http://rubydoc
 
 ## Example App
 
-A fully-functional example app, complete with some basic tests, is available at [challah.herokuapp.com](http://challah.herokuapp.com).
+A fully-functional example app, complete with some basic tests, is available at [http://challah-example.herokuapp.com/](http://challah-example.herokuapp.com/).
 
 The source code to the example is available at [https://github.com/jdtornow/challah-example](https://github.com/jdtornow/challah-example).
 

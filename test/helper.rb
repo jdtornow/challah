@@ -62,6 +62,14 @@ class MockController
   def logout_path
     "/logout"
   end
+
+  def signin_path
+    "/sign-in"
+  end
+
+  def signout_path
+    "/sign-out"
+  end
 end
 
 class MockRequest

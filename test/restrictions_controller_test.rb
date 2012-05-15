@@ -6,7 +6,7 @@ class RestrictionsControllerTest < ActionController::TestCase
   context "The restrictions controller" do
     context "With no user" do
       setup do
-        logout
+        signout
       end
 
       should "be able to get to the index page" do
@@ -17,19 +17,19 @@ class RestrictionsControllerTest < ActionController::TestCase
 
       should "not be able to get to the edit page" do
         get :edit
-        assert_redirected_to '/login'
+        assert_redirected_to '/sign-in'
       end
 
       should "not get to the new page" do
         get :new
-        assert_redirected_to '/login'
+        assert_redirected_to '/sign-in'
       end
     end
 
     context "with a regular user" do
       setup do
         @user = create(:user)
-        login_as(@user)
+        signin_as(@user)
       end
 
       should "get to the index page" do
@@ -61,11 +61,17 @@ class RestrictionsControllerTest < ActionController::TestCase
         @user = create(:admin_user)
         @permission = create(:permission, :key => 'special')
 
-        login_as(@user)
+        signin_as(@user)
       end
 
       should "get to the index page" do
         get :index
+        assert_response :success
+        assert_equal @user, assigns(:current_user)
+      end
+
+      should "get to the blah page" do
+        get :blah
         assert_response :success
         assert_equal @user, assigns(:current_user)
       end
@@ -131,19 +137,19 @@ class RestrictionsControllerTest < ActionController::TestCase
           assert_equal nil, assigns(:current_user)
         end
 
-        should "get to the edit page" do
+        should "not get to the edit page" do
           get :edit, :key => @user.api_key
-          assert_redirected_to '/login'
+          assert_redirected_to '/sign-in'
         end
 
-        should "get to the show page" do
+        should "not get to the show page" do
           get :show, :key => @user.api_key
-          assert_redirected_to '/login'
+          assert_redirected_to '/sign-in'
         end
 
         should "not get to the new page" do
           get :new, :key => @user.api_key
-          assert_redirected_to '/login'
+          assert_redirected_to '/sign-in'
         end
       end
     end

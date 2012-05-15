@@ -6,6 +6,7 @@
 * Added scoped User finders for `find_all_by_role` and `find_all_by_permission`
 * Added routes for "/sign-in" and "/sign-out" in addition to "/login" and "/logout"
 * Sign in form by default is styled using Twitter Bootstrap compatible markup. Override `views/sessions/new.html.erb` with your own view to modify the markup.
+* Added various rake tasks for unpacking the internals of the gem into an app. (run `rake -T challah:unpack` to see details)
 
 ## Challah 0.5.4
 

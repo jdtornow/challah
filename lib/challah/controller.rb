@@ -13,10 +13,6 @@ module Challah
       # in the controller will be restricted unless otherwise stated. All normal options
       # for a before_filter are observed.
       #
-      # This method is an alias for:
-      #
-      #   before_filter :login_required
-      #
       # @example
       #   class YourController < ApplicationController
       #     restrict_to_authenticated
@@ -31,14 +27,18 @@ module Challah
       #     # ...
       #   end
       #
-      # @see Controller::InstanceMethods#login_required login_required
+      # @see Controller::InstanceMethods#signin_required signin_required
       def restrict_to_authenticated(options = {})
         before_filter(options) do |controller|
-          controller.send(:login_required)
+          controller.send(:signin_required)
         end
       end
-      alias_method :login_required, :restrict_to_authenticated
-      alias_method :signin_required, :restrict_to_authenticated
+
+      # Alias for restrict_to_authenticated
+      def signin_required(*args)
+        restrict_to_authenticated(*args)
+      end
+      alias_method :login_required, :signin_required
 
       # Restrict the current controller to the given permission key. All actions in the
       # controller will be restricted unless otherwise stated. All normal options
@@ -92,7 +92,7 @@ module Challah
             render :template => Challah.options[:access_denied_view], :status => :unauthorized and return
           else
             session[:return_to] = request.url
-            redirect_to login_path and return
+            redirect_to signin_path and return
           end
         end
 
@@ -107,8 +107,12 @@ module Challah
         def current_user?
           !!current_user
         end
-        alias_method :logged_in?, :current_user?
-        alias_method :signed_in?, :current_user?
+
+        # Alias for current_user?
+        def signed_in?
+          current_user?
+        end
+        alias_method :logged_in?, :signed_in?
 
         # The user that is currently logged into this session. If there is no
         # user logged in, nil will be returned.
@@ -173,12 +177,13 @@ module Challah
         #   end
         #
         # @see Controller::ClassMethods#restrict_to_authenticated restrict_to_authenticated
-        def login_required
-          unless logged_in?
+        def signin_required
+          unless signed_in?
             session[:return_to] = request.url
-            redirect_to login_path and return
+            redirect_to signin_path and return
           end
         end
+        alias_method :login_required, :signin_required
     end
   end
 end

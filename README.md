@@ -59,6 +59,15 @@ By default a user is marked as "active" and is able to log in to your applicatio
 
 Each user is assigned to exactly one `Role` and can also be assigned to multiple `Permission` objects as needed. Because a user can be assigned to a role (and therefore its permissions) *and* permissions on an ad-hoc basis, it is important to always check a user record for restrictions based on permissions and not to use roles as a mechanism for restricting functionality in your app.
 
+There are a few helpful scopes to help find users by role and for a particular role:
+
+    User.find_all_by_role(:administrator)       # => Finds all users that are administrators
+    User.find_all_by_permission(:manage_users)  # => Finds all users that have the :manage_users permission.
+
+To unpack the `User` model into your app so you can extend it further, run:
+
+    rake challah:unpack:user        # => Copy the User model into your app
+
 ### Permission
 
 A permission is used to identify something within your application that you would like to restrict to certain users. A permission does not inherently have any functionality of its own and is just used as a reference point for pieces of functionality in your app. A permission record requires the presence of a name and key.
@@ -68,6 +77,10 @@ A permission's key is used throughout Challah to refer to this permission. Each 
 If there is a role named 'Administrator' in your app, all permissions will be available to that role. Any new permissions that are added will also be automatically added to the 'Administrator' role, so this is a great role to use for anyone that needs to be able to do everything within your app.
 
 The default Challah installation creates two permissions by default: `admin` and `manage_users`.
+
+To unpack the `Permission` model into your app so you can extend it further, run:
+
+    rake challah:unpack:permission        # => Copy the Permission model into your app
 
 ### Role
 
@@ -82,6 +95,10 @@ Once you've added a few other permissions, you can easily add them to a role. In
     role = Role[:default]
     role.permission_keys = %w( moderator )
     role.save
+
+To unpack the `Role` model into your app so you can extend it further, run:
+
+    rake challah:unpack:role        # => Copy the Role model into your app
 
 ## Restricted access
 
@@ -106,7 +123,7 @@ For example, restrict the second list item to only users that have logged in:
 Controllers can also be restricted using `before_filter`:
 
     class WidgetsController < ApplicationController
-      before_filter :login_required
+      before_filter :signin_required
 
       # …
     end
@@ -143,7 +160,7 @@ Anywhere you can access a user instance, you can use the `has` method and pass i
       <li><a href="/public-stuff">Not-so-secret Stuff</a></li>
     </ul>
 
-Notice that we checked for existance of the user before we checked to see if the user has a permission. If you used the `restrict_to_authenticated` method in your controller, you can likely skip this step.
+Notice that we checked for existence of the user before we checked to see if the user has a permission. If you used the `restrict_to_authenticated` method in your controller, you can likely skip this step.
 
 Note: `current_user` will return `nil` if there is no user available, so checking for `current_user?` prevents you from calling `has` on `nil`.
 
@@ -183,21 +200,39 @@ Whichever method you use will yield the same results. Just make sure you are che
 
 ## Default Routes
 
-By default, there are a few routes included with the Challah engine. These routes provide a basic method for a username- and password-based login page. These routes are:
+By default, there are a few routes included with the Challah engine. These routes provide a basic method for a username- and password-based sign in page. These routes are:
 
-    GET   /login        # => SessionsController#new
-    POST  /login        # => SessionsController#create
-    GET   /logout       # => SessionsController#new
+    GET   /sign-in      # => SessionsController#new
+    POST  /sign-in      # => SessionsController#create
+    GET   /sign-out     # => SessionsController#new
 
 Feel free to override the `SessionsController` with something more appropriate for your app.
 
-If you'd prefer to set up your own login/logout actions, you can skip the inclusion of the default routes by adding the following line to an initializer file in your app:
+If you'd prefer to set up your own "sign in" and "sign out" actions, you can skip the inclusion of the default routes by adding the following line to an initializer file in your app:
 
     Challah.options[:skip_routes] = true
+
+Note: These routes have changed from previous versions of Challah. `signin_path` and `signout_path` are now the preferred routes, instead of the legacy `login_path` and `logout_path`. However, the legacy routes still remain for backward compatibility.
+
+## Sign In Form
+
+By default, the sign in form is tucked away within the Challah gem. If you'd like to customize the markup or functionality of the sign in form, you can unpack it into your app by running:
+
+    rake challah:unpack:views        # => Copy the sign in view into your app
+
+If necessary, the sessions controller which handles creating new sessions and signing users out can also be unpacked into your app. This is really only recommended if you need to add some custom behavior or have advanced needs.
+
+    rake challah:unpack:signin        # => Copy the sessions controller into your app
 
 ## Full documentation
 
 Documentation is available at: [http://rubydoc.info/gems/challah](http://rubydoc.info/gems/challah/frames)
+
+## Example App
+
+A fully-functional example app, complete with some basic tests, is available at [challah.herokuapp.com](http://challah.herokuapp.com).
+
+The source code to the example is available at [https://github.com/jdtornow/challah-example](https://github.com/jdtornow/challah-example).
 
 ### Issues
 

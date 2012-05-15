@@ -26,15 +26,17 @@ end
 Challah.options[:storage_class] = TestSessionStore
 
 class ActiveSupport::TestCase
-  # Log the given user instance in
-  def login_as(user)
+  # Sign the given user instance in
+  def signin_as(user)
     Challah::Session.create!(user)
   end
+  alias_method :login_as, :signin_as
 
-  # Log the given user instance out
-  def logout
+  # Sign the given user instance out
+  def signout
     Challah::Session.destroy
   end
+  alias_method :logout, :signout
 
   setup do
     # Reset any challah user sessions for each test.

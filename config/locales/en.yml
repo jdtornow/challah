@@ -7,8 +7,9 @@ en:
         invalid_key: 'is not valid. Please use only lower cased letters and underscores.'
   sessions:
     new:
-      user_or_email: "Username or email address"
-      password: "Password"
+      user_or_email: "Username or email:"
+      password: "Password:"
       login: "Log in"
+      signin: "Sign in"
     create:
-      failed_login: "There was a problem logging you in. Please check your username and password and try again."
+      failed_login: "There was a problem signing you in. Please check your username and password and try again."

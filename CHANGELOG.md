@@ -4,6 +4,8 @@
 * Reduced application load time by eager loading ActiveRecord and ActionController modules once they are loading instead of on gem load.
 * Lots of cleanup
 * Added scoped User finders for `find_all_by_role` and `find_all_by_permission`
+* Added routes for "/sign-in" and "/sign-out" in addition to "/login" and "/logout"
+* Sign in form by default is styled using Twitter Bootstrap compatible markup. Override `views/sessions/new.html.erb` with your own view to modify the markup.
 
 ## Challah 0.5.4
 

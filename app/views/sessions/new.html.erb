@@ -1,13 +1,33 @@
-<h2>Log in</h2>
+<div class="page-header">
+  <h1>Sign In</h1>
+</div>
 
-<%= form_for(@session, :as => :session, :url => login_path, :method => :post, :html => { :id => 'log-in-form'}) do |f| %>
-  <dl>
-    <dt><%= f.label :username, t('.user_or_email') %></dt>
-    <dd><%= f.text_field :username, :size => 40, :maxlength => 200 %></dd>
+<% if flash[:alert] %>
+  <div class="alert alert-block alert-error">
+    <%= flash[:alert] %>
+  </div>
+<% end %>
 
-    <dt><%= f.label :password, t('.password') %></dt>
-    <dd class="last"><%= f.password_field :password, :size => 40, :maxlength => 200 %></dd>
-  </dl>
+<%= form_for(@session, :as => :session, :url => signin_path, :method => :post, :html => { :id => 'log-in-form'}) do |f| %>
+  <div class="row">
+    <div class="span6 form-horizontal">
+      <div class="control-group">
+        <%= f.label :username, t('.user_or_email'), :class => 'control-label' %>
 
-  <p class="submit"><%= f.submit t('.login') %></p>
+        <div class="controls">
+          <%= f.text_field :username, :size => 40, :maxlength => 200, :class => 'span3' %>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <%= f.label :password, t('.password'), :class => 'control-label' %>
+
+        <div class="controls">
+          <%= f.password_field :password, :size => 40, :maxlength => 200, :class => 'span3' %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-actions"><%= f.submit t('.signin'), :class => 'btn btn-primary' %></div>
 <% end %>

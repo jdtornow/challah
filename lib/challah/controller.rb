@@ -38,6 +38,7 @@ module Challah
         end
       end
       alias_method :login_required, :restrict_to_authenticated
+      alias_method :signin_required, :restrict_to_authenticated
 
       # Restrict the current controller to the given permission key. All actions in the
       # controller will be restricted unless otherwise stated. All normal options
@@ -107,6 +108,7 @@ module Challah
           !!current_user
         end
         alias_method :logged_in?, :current_user?
+        alias_method :signed_in?, :current_user?
 
         # The user that is currently logged into this session. If there is no
         # user logged in, nil will be returned.

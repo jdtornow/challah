@@ -1,3 +1,7 @@
+## Challah 0.6.1
+
+* Bug fix, `signed_in?` should be included in helper methods.
+
 ## Challah 0.6.0
 
 * Gem dependency updates

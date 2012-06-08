@@ -28,7 +28,8 @@ module Challah
             :current_user,
             :current_user?,
             :has,
-            :logged_in?
+            :logged_in?,
+            :signed_in?
           )
         end
       end

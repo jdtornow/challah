@@ -107,9 +107,10 @@ class SessionTest < ActiveSupport::TestCase
       session.username = 'test-user'
       session.password = 'abc123'
 
-      user.expects(:successful_authentication!).with('127.0.0.1').once
+      assert_difference 'user.session_count', 1 do
+        assert_equal true, session.valid?
+      end
 
-      assert_equal true, session.valid?
       assert_equal user, session.user
       assert_equal user.id, session.user_id
       assert_equal true, session.persist?
@@ -129,7 +130,10 @@ class SessionTest < ActiveSupport::TestCase
       session.ip = '127.0.0.1'
       session.key = '123456abcdefg'
 
-      assert_equal true, session.valid?
+      assert_no_difference 'user.session_count' do
+        assert_equal true, session.valid?
+      end
+
       assert_equal user, session.user
       assert_equal user.id, session.user_id
       assert_equal false, session.persist?

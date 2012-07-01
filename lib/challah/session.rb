@@ -152,7 +152,12 @@ module Challah
         end
 
         if @user
-          @user.successful_authentication!(ip)
+          # Only update user record if persistence is on for the technique.
+          # Otherwise this builds up quick (one session for each API call)
+          if @persist
+            @user.successful_authentication!(ip)
+          end
+
           return @valid = true
         end
 

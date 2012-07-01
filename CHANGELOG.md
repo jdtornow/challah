@@ -1,3 +1,9 @@
+## Challah 0.6.2
+
+* Gem dependency updates
+* Don't increase session counter for non-persisted sessions. This is helpful for designing API requests that don't need a session count after each request.
+* Added `email_hash` column to users table. After a user record is saved the email address is hashed for use with services like Gravatar.com. Existing user tables without the `email_hash` column will not be affected.
+
 ## Challah 0.6.1
 
 * Bug fix, `signed_in?` should be included in helper methods.

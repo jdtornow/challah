@@ -45,6 +45,7 @@ module Challah
 
         after_save          :save_permission_keys
         before_save         :before_save_password
+        before_save         :check_email_hash
         before_validation   :sync_username
 
         # Attributes
@@ -339,6 +340,16 @@ module Challah
 
           self.persistence_token = ::Challah::Random.token(125) if self.persistence_token.to_s.blank?
           self.api_key = ::Challah::Random.token(50) if self.api_key.to_s.blank?
+        end
+
+        # If the email was changed, hash it
+        def check_email_hash
+          if User.column_names.include?("email_hash")
+            if email_changed?
+              require 'digest/md5'
+              self.email_hash = Digest::MD5.hexdigest(self.email.to_s.downcase.strip)
+            end
+          end
         end
 
         # The cache key to use for saving user permissions.

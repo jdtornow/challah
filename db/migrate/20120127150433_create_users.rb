@@ -5,6 +5,7 @@ class CreateUsers < ActiveRecord::Migration
       t.string      :last_name
       t.string      :username
       t.string      :email
+      t.string      :email_hash
       t.string      :crypted_password
       t.string      :persistence_token
       t.string      :api_key

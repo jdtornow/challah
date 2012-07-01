@@ -295,5 +295,17 @@ class UserTest < ActiveSupport::TestCase
         user.failed_authentication!
       end
     end
+
+    should "calculate an email hash on save" do
+      user = build(:user)
+
+      user.email = 'tester@challah.me'
+      assert user.save
+      assert_equal '859ea8a4ea69b321df4992ca14c08d6b', user.email_hash
+
+      user.email = 'tester-too@challah.me'
+      assert user.save
+      assert_equal '45ab23dd8eb9a00f61cef27004b38b01', user.email_hash
+    end
   end
 end

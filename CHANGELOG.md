@@ -1,3 +1,7 @@
+## Challah 0.7.0 (Unreleased)
+
+* Decoupling permissions and roles into its own gem [challah-rolls](http://github.com/jdtornow/challah-rolls)
+
 ## Challah 0.6.2
 
 * Gem dependency updates

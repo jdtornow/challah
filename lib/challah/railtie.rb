@@ -27,7 +27,6 @@ module Challah
             :current_user_session,
             :current_user,
             :current_user?,
-            :has,
             :logged_in?,
             :signed_in?
           )

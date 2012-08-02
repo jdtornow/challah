@@ -1,3 +1,3 @@
 module Challah
-  VERSION = "0.6.2" unless defined?(::Challah::VERSION)
+  VERSION = "0.7.0.pre" unless defined?(::Challah::VERSION)
 end

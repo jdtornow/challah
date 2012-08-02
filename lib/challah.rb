@@ -3,10 +3,6 @@ require 'challah/version'
 module Challah
   autoload :Audit,                            'challah/audit'
 
-  autoload :AuthablePermissionRole,           'challah/authable/permission_role'
-  autoload :AuthablePermissionUser,           'challah/authable/permission_user'
-  autoload :AuthablePermission,               'challah/authable/permission'
-  autoload :AuthableRole,                     'challah/authable/role'
   autoload :AuthableUser,                     'challah/authable/user'
 
   autoload :CookieStore,                      'challah/cookie_store'

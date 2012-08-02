@@ -67,7 +67,7 @@ class AuditTest < ActiveSupport::TestCase
 
   context "An audited model" do
     should "be able to receive a current user" do
-      user = create(:normal_user)
+      user = create(:user)
       user_two = create(:user, :first_name => 'User', :last_name => 'Test 2')
 
       assert_equal 0, @model.current_user_id

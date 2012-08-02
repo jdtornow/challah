@@ -1,63 +1,10 @@
 require 'highline/import'
 
 namespace :challah do
-  namespace :permissions do
-    desc "Create a new permission"
-    task :create => :environment do
-      check_for_tables
-      check_for_roles
-
-      banner('Creating a permission')
-
-      # Grab the required fields.
-      name = ask('Permission name: ')
-      key = name.to_s.parameterize.underscore
-      key = ask('Key: ') { |q| q.default = key }
-      description = ask('Description (optional): ')
-
-      permission = Permission.new({ :name => name, :key => key, :description => description }, :without_protection => true)
-
-      puts "\n"
-
-      if permission.save
-        puts "Permission has been created successfully! [ID: #{permission.id}]"
-      else
-        puts "Permission could not be added for the following errors:"
-        permission.errors.full_messages.each { |m| puts "  - #{m}" }
-      end
-    end
-  end
-
-  namespace :roles do
-    desc "Create a new role"
-    task :create => :environment do
-      check_for_tables
-      check_for_roles
-
-      banner('Creating a role')
-
-      # Grab the required fields.
-      name = ask('Name: ')
-      description = ask('Description (optional): ')
-
-      role = Role.new({ :name => name, :description => description }, :without_protection => true)
-
-      puts "\n"
-
-      if role.save
-        puts "Role has been created successfully! [ID: #{role.id}]"
-      else
-        puts "Role could not be added for the following errors:"
-        role.errors.full_messages.each { |m| puts "  - #{m}" }
-      end
-    end
-  end
-
   namespace :users do
     desc "Create a new user"
     task :create => :environment do
       check_for_tables
-      check_for_roles
 
       first_user = User.count == 0
 
@@ -75,15 +22,20 @@ namespace :challah do
       password = ask('Password: ') { |q| q.echo = false }
       confirm = ask('Password again: ') { |q| q.echo = false }
 
-      role_id = Role.admin.id
+      role_id = 0
 
-      # First user is always going to be an admin, otherwise ask for the role
-      unless first_user
-        choose do |menu|
-          menu.prompt = 'Choose a role for this user: '
+      # If Roles are included (challah-rolls) ask for the role here.
+      if defined?(::Role) and check_for_roles
+        role_id = Role.admin.id
 
-          Role.all.each do |role|
-            menu.choice(role.name) { role_id = role.id }
+        # First user is always going to be an admin, otherwise ask for the role
+        unless first_user
+          choose do |menu|
+            menu.prompt = 'Choose a role for this user: '
+
+            Role.all.each do |role|
+              menu.choice(role.name) { role_id = role.id }
+            end
           end
         end
       end
@@ -118,7 +70,7 @@ end
 def check_for_roles
   unless Role.table_exists? and Role.count > 0 and !!Role.admin
     unless admin
-      puts "Oops, you need to run `rake challah:setup` before you run this step, the administrator role is required."
+      puts "Oops, you need to run `rake challah:rolls:setup` before you run this step, the administrator role is required."
       exit 1
     end
   end

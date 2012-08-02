@@ -139,8 +139,6 @@ class SessionTest < ActiveSupport::TestCase
       assert_equal false, session.persist?
       assert_equal false, session.save
 
-      user.expects(:successful_authentication!).with('127.0.0.1').once
-
       User.unstub(:find_for_session)
 
       Challah.options[:api_key_enabled] = false

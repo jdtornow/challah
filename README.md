@@ -49,17 +49,11 @@ Use the following task to create a new user:
 
 ## Models
 
-Challah provides the core `User` model for your app. By default, this model is hidden away in the Challah gem engine, but you can always copy it into your app to make further modifications to the functionality.
-
-### User
+Challah provides the core `User` model for your app, and a database migration to go along with it. You can customize the model to your app's specific needs, just leave the `authable_user` line intact.
 
 A user is anyone that needs to be able to authenticate (log in) to the application. Each user requires a first name, last name, email address, username, role and password.
 
 By default a user is marked as “active” and is able to log in to your application. If the active status column is toggled to false, then this user is no longer able to log in. The active status column can be used as a soft-delete function for users.
-
-To unpack the `User` model into your app so you can extend it further, run:
-
-    rake challah:unpack:user        # => Copy the User model into your app
 
 ### Permissions and Roles
 

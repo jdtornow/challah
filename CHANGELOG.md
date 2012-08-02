@@ -1,6 +1,7 @@
 ## Challah 0.7.0 (Unreleased)
 
-* Decoupling permissions and roles into its own gem [challah-rolls](http://github.com/jdtornow/challah-rolls)
+* Decoupling permissions and roles into its own gem [challah-rolls](http://github.com/jdtornow/challah-rolls) and thus removing all references to roles and permissions within this gem.
+* User model is automatically unpacked into the app upon install
 
 ## Challah 0.6.2
 

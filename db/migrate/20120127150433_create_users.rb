@@ -9,7 +9,7 @@ class CreateUsers < ActiveRecord::Migration
       t.string      :crypted_password
       t.string      :persistence_token
       t.string      :api_key
-      t.integer     :role_id
+      t.integer     :role_id, :default => 0 # Not used by default, install challah-rolls to utilize this
       t.datetime    :last_session_at
       t.string      :last_session_ip
       t.integer     :session_count, :default => 0

@@ -29,21 +29,11 @@ end
 namespace :challah do
   namespace :unpack do
     desc "Unpack the User model, Role model, Sessions controller and sign in views to the app"
-    task :all => [ :permission, :role, :user, :signin, :views ]
-
-    desc "Copy the default Permission model into the app"
-    task :permission do
-      Challah::Task.unpack_file('app/models/permission.rb')
-    end
+    task :all => [ :user, :signin, :views ]
 
     desc "Copy the sign in and access denied views into the app"
     task :signin do
       Challah::Task.unpack_file('app/controllers/sessions_controller.rb')
-    end
-
-    desc "Copy the default Role model into the app"
-    task :role do
-      Challah::Task.unpack_file('app/models/role.rb')
     end
 
     desc "Copy the default User model into the app"
@@ -58,5 +48,5 @@ namespace :challah do
     end
   end
 
-  task :unpack => "unpack:all"
+  task :unpack => 'unpack:all'
 end

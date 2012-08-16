@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
   # For a list of all methods included into User, see:
   #
   # http://rubydoc.info/gems/challah
-  authable_user
+  challah_user
 
   # Uncomment the following line to add additional attributes to protect using the
   # User#update_account_attributes(params) methods

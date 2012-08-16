@@ -6,7 +6,7 @@ namespace :challah do
     task :create => :environment do
       check_for_tables
 
-      first_user = User.count == 0
+      first_user = ::User.count == 0
 
       banner('Creating a user')
 
@@ -40,7 +40,7 @@ namespace :challah do
         end
       end
 
-      user = User.new({
+      user = ::User.new({
         :first_name => first_name,
         :last_name => last_name,
         :email => email,
@@ -77,7 +77,7 @@ def check_for_roles
 end
 
 def check_for_tables
-  unless User.table_exists?
+  unless ::User.table_exists?
     puts "Oops, you need to run `rake challah:setup` before you create a user. The users table is required."
     exit 1
   end

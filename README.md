@@ -6,8 +6,6 @@ Challah (pronounced HAH-lah) is a simple Rails authentication gem that provides 
 
 Challah doesn’t provide any fancy controllers or views that clutter your app or force you to display information a certain way. That part is up to you. The functionality within Challah is designed to be a starting point for users and sign-ins you can tweak the rest to your app’s needs.
 
-** Note: As of challah v0.7.0, roles and permissions are maintained in a separate gem as part of [challah-rolls](http://github.com/jdtornow/challah). **
-
 ## Requirements
 
 * Ruby 1.9.2+
@@ -49,9 +47,9 @@ Use the following task to create a new user:
 
 ## Models
 
-Challah provides the core `User` model for your app, and a database migration to go along with it. You can customize the model to your app's specific needs, just leave the `authable_user` line intact.
+Challah provides the core `User` model for your app, and a database migration to go along with it. You can customize the model to your app's specific needs, just leave the `challah_user` line intact.
 
-A user is anyone that needs to be able to authenticate (log in) to the application. Each user requires a first name, last name, email address, username, role and password.
+A user is anyone that needs to be able to authenticate (sign in) to the application. Each user requires a first name, last name, email address, username, and password.
 
 By default a user is marked as “active” and is able to log in to your application. If the active status column is toggled to false, then this user is no longer able to log in. The active status column can be used as a soft-delete function for users.
 
@@ -59,11 +57,7 @@ By default a user is marked as “active” and is able to log in to your applic
 
 As of version 0.7.0 of Challah, permissions and roles have been moved to their own gem in [Challah Rolls](https://github.com/jdtornow/challah-rolls). Add this gem to your project to get additional functionality for permissions and role based restrictions.
 
-## Restricted access
-
-One of the main reasons to use a user- and permission-based system is to restrict access to certain portions of your application. Challah provides basic restriction methods for your controllers, views and directly from any User instance.
-
-### Checking for a current user
+## Checking for a current user
 
 The basic way to restrict functionality within your app is to require that someone authenticate (log in) before they can see it. From within your controllers and views you can call the `current_user?` method to determine if someone has authenticated. This method doesn’t care about who the user is, or what it has access to, just that it has successfully authenticated and is a valid user.
 
@@ -131,7 +125,7 @@ If necessary, the sessions controller which handles creating new sessions and si
 
 ## Full documentation
 
-Documentation is available at: [http://rubydoc.info/gems/challah](http://rubydoc.info/gems/challah/frames)
+Documentation is available at: [http://rubydoc.info/gems/challah](http://rubydoc.info/gems/challah)
 
 ## Example App
 

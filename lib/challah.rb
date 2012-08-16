@@ -3,8 +3,6 @@ require 'challah/version'
 module Challah
   autoload :Audit,                            'challah/audit'
 
-  autoload :AuthableUser,                     'challah/authable/user'
-
   autoload :CookieStore,                      'challah/cookie_store'
   autoload :SimpleCookieStore,                'challah/simple_cookie_store'
 
@@ -14,8 +12,12 @@ module Challah
   autoload :Session,                          'challah/session'
   autoload :Techniques,                       'challah/techniques'
 
+  autoload :User,                             'challah/user'
+
   # Configuration options
   class << self
+    attr_accessor :user_model
+
     # Get or set options for the current Challah instance. In most cases these should be
     # changed within a config/initializers/ file in your app.
     #

@@ -100,7 +100,7 @@ class SessionTest < ActiveSupport::TestCase
     should "validate with a password" do
       user = create(:user, :username => 'test-user')
 
-      User.stubs(:find_for_session).returns(user)
+      ::User.stubs(:find_for_session).returns(user)
 
       session = Session.new
       session.ip = '127.0.0.1'
@@ -116,7 +116,7 @@ class SessionTest < ActiveSupport::TestCase
       assert_equal true, session.persist?
       assert_equal true, session.save
 
-      User.unstub(:find_for_session)
+      ::User.unstub(:find_for_session)
     end
 
     should "validate with an api key" do
@@ -124,7 +124,7 @@ class SessionTest < ActiveSupport::TestCase
 
       user = create(:user, :api_key => '123456abcdefg')
 
-      User.stubs(:find_for_session).returns(user)
+      ::User.stubs(:find_for_session).returns(user)
 
       session = Session.new
       session.ip = '127.0.0.1'
@@ -139,7 +139,7 @@ class SessionTest < ActiveSupport::TestCase
       assert_equal false, session.persist?
       assert_equal false, session.save
 
-      User.unstub(:find_for_session)
+      ::User.unstub(:find_for_session)
 
       Challah.options[:api_key_enabled] = false
     end
@@ -147,7 +147,7 @@ class SessionTest < ActiveSupport::TestCase
     should "reject if password is incorrect" do
       user = create(:user, :username => 'test-user')
 
-      User.stubs(:find_for_session).returns(user)
+      ::User.stubs(:find_for_session).returns(user)
 
       session = Session.new
       session.username = 'test-user'
@@ -158,7 +158,7 @@ class SessionTest < ActiveSupport::TestCase
       assert_equal false, session.valid?
       assert_equal nil, session.user
 
-      User.unstub(:find_for_session)
+      ::User.unstub(:find_for_session)
     end
 
     should "have a default_path attribute" do

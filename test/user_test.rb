@@ -20,20 +20,20 @@ class UserTest < ActiveSupport::TestCase
       user_one = create(:user, :username => 'test-user', :email => 'tester@example.com')
       user_two = create(:user, :username => 'test-user-2', :email => 'tester2@example.com')
 
-      assert_equal user_one, User.find_for_session('test-user')
-      assert_equal user_one, User.find_for_session('tester@example.com')
+      assert_equal user_one, ::User.find_for_session('test-user')
+      assert_equal user_one, ::User.find_for_session('tester@example.com')
 
-      assert_equal user_two, User.find_for_session('test-user-2')
-      assert_equal user_two, User.find_for_session('tester2@example.com')
+      assert_equal user_two, ::User.find_for_session('test-user-2')
+      assert_equal user_two, ::User.find_for_session('tester2@example.com')
 
-      assert_equal nil, User.find_for_session(' ')
-      assert_equal nil, User.find_for_session('not-existing')
+      assert_equal nil, ::User.find_for_session(' ')
+      assert_equal nil, ::User.find_for_session('not-existing')
     end
 
     should "have protected attributes" do
-      assert Array === User.protected_attributes
+      assert Array === ::User.protected_attributes
 
-      assert_difference 'User.protected_attributes.size', 1 do
+      assert_difference '::User.protected_attributes.size', 1 do
         User.protect_attributes(:blah)
       end
     end
@@ -41,7 +41,7 @@ class UserTest < ActiveSupport::TestCase
 
   context "A user instance" do
     should "have a name attribute that returns the full name" do
-      user = User.new
+      user = ::User.new
 
       user.stubs(:first_name).returns('Cal')
       user.stubs(:last_name).returns('Ripken')
@@ -51,12 +51,12 @@ class UserTest < ActiveSupport::TestCase
     end
 
     should "have a default_path where this user will be sent upon login" do
-      user = User.new
+      user = ::User.new
       assert_equal '/', user.default_path
     end
 
     should "have an active? user flag" do
-      user = User.new
+      user = ::User.new
 
       user.active = true
       assert_equal true, user.active

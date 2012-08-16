@@ -11,7 +11,7 @@ module Challah
       return nil unless Challah.options[:api_key_enabled]
 
       unless @key.to_s.blank?
-        user = ::User.find_by_api_key(@key)
+        user = Challah.user_model.find_by_api_key(@key)
 
         if user and user.active?
           return user

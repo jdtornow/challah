@@ -1,10 +1,13 @@
 module Challah
-  module AuthableUser
-    def authable_user
+  module User
+    def challah_user
       unless included_modules.include?(InstanceMethods)
         include InstanceMethods
         extend ClassMethods
       end
+
+      # Set the reference to the model name for challah_user
+      Challah.user_model = self
 
       class_eval do
         cattr_accessor :protected_attributes
@@ -87,7 +90,7 @@ module Challah
       end
     end
 
-    # Instance methods to be included once authable_user is set up.
+    # Instance methods to be included once challah_user is set up.
     module InstanceMethods
       # Returns true if this user is active, and should be able to log in. If
       # the active column is false, the user will not be able to authenticate
@@ -216,7 +219,7 @@ module Challah
         # For backwards compatibilty, this column may not always exist, so just ignore
         # this if the column doesn't exist.
         def check_email_hash
-          if User.column_names.include?("email_hash")
+          if self.class.column_names.include?("email_hash")
             if email_changed?
               require 'digest/md5'
               self.email_hash = Digest::MD5.hexdigest(self.email.to_s.downcase.strip)

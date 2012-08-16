@@ -18,7 +18,7 @@ Challah doesn’t provide any fancy controllers or views that clutter your app o
 
 Or, in your `Gemfile`
 
-    gem ‘challah’
+    gem 'challah'
 
 ## Set up
 

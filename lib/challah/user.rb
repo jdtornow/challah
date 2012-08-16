@@ -6,9 +6,6 @@ module Challah
         extend ClassMethods
       end
 
-      # Set the reference to the model name for challah_user
-      Challah.user_model = self
-
       class_eval do
         cattr_accessor :protected_attributes
 

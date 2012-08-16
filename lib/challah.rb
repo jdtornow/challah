@@ -16,8 +16,6 @@ module Challah
 
   # Configuration options
   class << self
-    attr_accessor :user_model
-
     # Get or set options for the current Challah instance. In most cases these should be
     # changed within a config/initializers/ file in your app.
     #

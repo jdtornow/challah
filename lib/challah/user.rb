@@ -69,7 +69,7 @@ module Challah
 
         result = nil
 
-        result = self.where(:username => username_or_email).first
+        result = self.where(:username => username_or_email.to_s.strip.downcase).first
 
         unless result
           if username_or_email.to_s.include?('@')
@@ -230,6 +230,9 @@ module Challah
           if self.username.to_s.blank? and !self.email.to_s.blank?
             self.username = self.email
           end
+
+          # Make sure username stored is always stripped of whitespace and downcased
+          self.username = self.username.to_s.strip.downcase
         end
 
         # validation call for new passwords, make sure the password is confirmed, and is >= 4 characters

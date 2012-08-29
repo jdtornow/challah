@@ -17,10 +17,13 @@ class UserTest < ActiveSupport::TestCase
 
   context "A User class" do
     should "find a user by username or email" do
-      user_one = create(:user, :username => 'test-user', :email => 'tester@example.com')
-      user_two = create(:user, :username => 'test-user-2', :email => 'tester2@example.com')
+      user_one = create(:user, :username => ' Test-user ', :email => 'tester@example.com')
+      user_two = create(:user, :username => 'test-user-2  ', :email => 'tester2@example.com')
 
       assert_equal user_one, ::User.find_for_session('test-user')
+      assert_equal user_one, ::User.find_for_session('tester@example.com')
+
+      assert_equal user_one, ::User.find_for_session('Test-user')
       assert_equal user_one, ::User.find_for_session('tester@example.com')
 
       assert_equal user_two, ::User.find_for_session('test-user-2')
@@ -130,6 +133,13 @@ class UserTest < ActiveSupport::TestCase
       user.password_confirmation = 'abc123'
       assert_equal false, user.valid?
       assert user.errors.full_messages.include?("Password does not match the confirmation password.")
+    end
+
+    should "always lower case a username when setting" do
+      user = build(:user)
+      user.username = 'JimBob'
+      assert user.save
+      assert_equal 'jimbob', user.username
     end
 
     should "authenticate through various means by default" do

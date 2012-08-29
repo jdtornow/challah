@@ -1,3 +1,7 @@
+## Challah 0.7.1
+
+* Ensure users can be looked up by username as case insensitive value. Allows logins posted from iOS devices (with initial caps) to be valid usernames even when stored as caps.
+
 ## Challah 0.7.0
 
 * Removed roles and permissions functionality to keep the gem completely geared towards user authentication. In a future release this functionality will be added back into its own separate gem.

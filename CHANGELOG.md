@@ -1,3 +1,7 @@
+## Challah 0.8.0 (Unreleased)
+
+* Enabled plugin abilties through `Challah.register_plugin`. This restores the ability to use permissions and roles through the [challah-rolls gem](https://github.com/jdtornow/challah-rolls).
+
 ## Challah 0.7.1
 
 * Ensure users can be looked up by username as case insensitive value. Allows logins posted from iOS devices (with initial caps) to be valid usernames even when stored as caps.

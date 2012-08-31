@@ -8,6 +8,8 @@ module Challah
 
   autoload :Controller,                       'challah/controller'
   autoload :Encrypter,                        'challah/encrypter'
+  autoload :Techniques,                       'challah/techniques'
+  autoload :Plugins,                          'challah/plugins'
   autoload :Random,                           'challah/random'
   autoload :Session,                          'challah/session'
   autoload :Techniques,                       'challah/techniques'
@@ -41,6 +43,9 @@ module Challah
   # Default registered authentication techiques.
   register_technique :api_key,        ApiKeyTechnique
   register_technique :password,       PasswordTechnique
+
+  extend Plugins
+  @plugins ||= {}
 end
 
 require 'challah/railtie' if defined?(Rails)

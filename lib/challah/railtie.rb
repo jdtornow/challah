@@ -30,6 +30,13 @@ module Challah
             :logged_in?,
             :signed_in?
           )
+
+          # Load any ActionController/Challah plugins
+          Challah.plugins.values.each do |plugin|
+            plugin.action_controller.each do |proc|
+              proc.call
+            end
+          end
         end
       end
 
@@ -40,6 +47,13 @@ module Challah
 
           ActiveRecord::Base.send(:extend, Challah::User)
           ActiveRecord::Base.send(:include, Challah::Audit)
+
+          # Load any ActiveRecord/Challah plugins
+          Challah.plugins.values.each do |plugin|
+            plugin.active_record.each do |proc|
+              proc.call
+            end
+          end
         end
       end
     end

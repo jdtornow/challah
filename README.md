@@ -63,39 +63,48 @@ The basic way to restrict functionality within your app is to require that someo
 
 For example, restrict the second list item to only users that have logged in:
 
-    <ul>
-      <li><a href=”/”>Home</a></li>
+```erb
+<ul>
+  <li><a href=”/”>Home</a></li>
 
-      <% if current_user? %>
-        <li><a href=”/secret-stuff”>Secret Stuff</a></li>
-      <% end %>
+  <% if current_user? %>
+    <li><a href=”/secret-stuff”>Secret Stuff</a></li>
+  <% end %>
 
-      <li><a href=”/public-stuff”>Not-so-secret Stuff</a></li>
-    </ul>
+  <li><a href=”/public-stuff”>Not-so-secret Stuff</a></li>
+</ul>
+```
 
 Controllers can also be restricted using `before_filter`:
 
-    class WidgetsController < ApplicationController
-      before_filter :signin_required
+```ruby
+class WidgetsController < ApplicationController
+  before_filter :signin_required
 
-      # …
-    end
+  # ...
+end
+```
 
 Or, you can call `restrict_to_authenticated` instead, which does the same thing:
 
-    class WidgetsController < ApplicationController
-      restrict_to_authenticated
+```ruby
+class WidgetsController < ApplicationController
+  restrict_to_authenticated
 
-      # ...
-    end
+  # ...
+end
+```
 
 All normal Rails `before_filter` options apply, so you can always limit this restriction to a specific action:
 
-    class WidgetsController < ApplicationController
-      restrict_to_authenticated :only => [ :edit, :update, :destroy ]
 
-      # ...
-    end
+```ruby
+class WidgetsController < ApplicationController
+  restrict_to_authenticated :only => [ :edit, :update, :destroy ]
+
+  # ...
+end
+```
 
 ## Default Routes
 

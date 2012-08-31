@@ -3,17 +3,26 @@ module Challah
   module Plugins
     # A simple DSL for registering a plugin
     class Plugin
-      attr_accessor :active_record, :action_controller
+      attr_reader :active_record, :action_controller, :user_extensions, :user_init_methods
 
       def initialize
         @active_record ||= []
         @action_controller ||= []
+        @user_extensions ||= []
+        @user_init_methods ||= []
       end
 
       # When active_record or action_controller is loaded, run the given block
       def on_load(framework, &block)
         return unless [ :active_record, :action_controller ].include?(framework)
-        self.send(framework) << block
+        instance_variable_get("@#{framework}") << block
+      end
+
+      # Pass a module name to include it in the base User model after challah_user
+      # is run
+      def extend_user(module_name, init_method = nil)
+        @user_extensions << module_name
+        @user_init_methods << init_method unless init_method.nil?
       end
     end
 

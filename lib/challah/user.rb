@@ -1,4 +1,19 @@
 module Challah
+  class << self
+    # Loop through all registered plugins and extend User functionality.
+    def include_user_plugins!
+      Challah.plugins.values.each do |plugin|
+        plugin.user_extensions.each do |mod|
+          ::User.send(:extend, mod)
+        end
+
+        plugin.user_init_methods.each do |method_name|
+          ::User.send(method_name)
+        end
+      end
+    end
+  end
+
   module User
     def challah_user
       unless included_modules.include?(InstanceMethods)
@@ -59,6 +74,8 @@ module Challah
                             :session_count,
                             :updated_by
       end
+
+      Challah.include_user_plugins!
     end
 
     module ClassMethods

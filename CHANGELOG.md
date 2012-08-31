@@ -1,6 +1,6 @@
 ## Challah 0.8.0 (Unreleased)
 
-* Enabled plugin abilties through `Challah.register_plugin`. This restores the ability to use permissions and roles through the [challah-rolls gem](https://github.com/jdtornow/challah-rolls).
+* Enabled plugin abilties with `Challah.register_plugin`. This restores the ability to use permissions and roles through the [challah-rolls gem](https://github.com/jdtornow/challah-rolls).
 
 ## Challah 0.7.1
 

@@ -32,7 +32,7 @@ class TestPlugins < ActiveSupport::TestCase
           PluginContext.setup_active_record
         end
 
-        on_load :action_controller, do
+        on_load :action_controller do
           PluginContext.setup_controllers
         end
       end

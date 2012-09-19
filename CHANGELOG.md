@@ -1,3 +1,7 @@
+## Challah 0.8.1
+
+* Use an unscoped finder to reduce load time looking for the current session.
+
 ## Challah 0.8.0
 
 * Enabled plugin abilties with `Challah.register_plugin`. This restores the ability to use permissions and roles through the [challah-rolls gem](https://github.com/jdtornow/challah-rolls).

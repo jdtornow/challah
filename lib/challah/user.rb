@@ -37,8 +37,6 @@ module Challah
         # Scoped Finders
         ################################################################
 
-        default_scope       order('users.first_name, users.last_name')
-
         scope :active,      where(:active => true)
         scope :inactive,    where(:active => false)
         scope :search,      lambda { |q| where([ 'users.first_name like ? OR users.last_name like ? OR users.email like ? OR users.username LIKE ?', "%#{q}%", "%#{q}%", "%#{q}%", "%#{q}%" ]) }

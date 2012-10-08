@@ -1,3 +1,7 @@
+## Challah 0.8.2
+
+* Removing default_scope from user model.
+
 ## Challah 0.8.1
 
 * Use an unscoped finder to reduce load time looking for the current session.

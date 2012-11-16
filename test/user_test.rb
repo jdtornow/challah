@@ -128,6 +128,12 @@ class UserTest < ActiveSupport::TestCase
       assert user.errors.full_messages.include?("Password does not match the confirmation password.")
     end
 
+    should "create a password without confirmation when using !" do
+      user = build(:user)
+      user.password!('holla')
+      assert_equal true, user.valid?
+    end
+
     should "reasonable validate an email address" do
       user = build(:user)
 

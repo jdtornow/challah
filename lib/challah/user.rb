@@ -127,6 +127,12 @@ module Challah
         "#{first_name} #{last_name}".strip
       end
 
+      # Set the password and password_confirmation in one shortcut method.
+      def password!(new_password)
+        self.password = new_password
+        self.password_confirmation = new_password
+      end
+
       # Set a password for this user
       def password=(value)
         if value.to_s.blank?

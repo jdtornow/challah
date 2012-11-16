@@ -32,14 +32,6 @@ class UserTest < ActiveSupport::TestCase
       assert_equal nil, ::User.find_for_session(' ')
       assert_equal nil, ::User.find_for_session('not-existing')
     end
-
-    should "have protected attributes" do
-      assert Array === ::User.protected_attributes
-
-      assert_difference '::User.protected_attributes.size', 1 do
-        User.protect_attributes(:blah)
-      end
-    end
   end
 
   context "A user instance" do
@@ -80,14 +72,15 @@ class UserTest < ActiveSupport::TestCase
       assert_equal 0, user.created_by
       assert_equal 'Old Nombre', user.name
 
-      user.update_account_attributes({
-        :created_by => 1,
-        :first_name => 'New',
-        :last_name => 'Name'
-      })
+      assert_raise ActiveModel::MassAssignmentSecurity::Error do
+        user.update_attributes({
+          :created_by => 1,
+          :first_name => 'New',
+          :last_name => 'Name'
+        })
+      end
 
       assert_equal 0, user.created_by
-      assert_equal 'New Name', user.name
     end
 
     should "create a user with password and authenticate them" do

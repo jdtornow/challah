@@ -22,7 +22,6 @@ module Challah
       end
 
       class_eval do
-        cattr_accessor :protected_attributes
 
         # Validation
         ################################################################
@@ -47,30 +46,6 @@ module Challah
         before_save         :before_save_password
         before_save         :check_email_hash
         before_validation   :sync_username
-
-        # Attributes
-        ################################################################
-
-        attr_accessible     :email,
-                            :first_name,
-                            :last_name,
-                            :password_confirmation,
-                            :password,
-                            :username
-
-        protect_attributes  :api_key,
-                            :created_by,
-                            :crypted_password,
-                            :failed_login_count,
-                            :id,
-                            :last_login_at,
-                            :last_session_at,
-                            :last_session_ip,
-                            :login_count,
-                            :persistence_token,
-                            :role_id,
-                            :session_count,
-                            :updated_by
       end
 
       Challah.include_user_plugins!
@@ -93,12 +68,6 @@ module Challah
         end
 
         result
-      end
-
-      # Protect certain attributes of this table from User#update_account_attributes.
-      def protect_attributes(*args)
-        self.protected_attributes ||= []
-        self.protected_attributes << args.collect(&:to_s)
       end
     end
 
@@ -187,22 +156,6 @@ module Challah
         self.last_session_ip = ip_address
         self.save
         self.increment!(:session_count, 1)
-      end
-
-      # Update a user's own account. This differsfrom User#update_attributes because it won't let
-      # a user update their own role and other protected elements.
-      #
-      # All attributes on the user model can be updated, except for the ones listed below.
-      def update_account_attributes(attributes_to_update = {})
-        protected_attributes = self.class.protected_attributes.clone.flatten
-
-        attributes_to_update.keys.each do |key|
-          if protected_attributes.include?(key.to_s)
-            attributes_to_update.delete(key)
-          end
-        end
-
-        self.update_attributes(attributes_to_update)
       end
 
       # Is this user valid and ready for a user session?

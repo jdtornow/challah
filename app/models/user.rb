@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+  attr_accessible :email, :first_name, :last_name, :password_confirmation, :password, :username
+
   # Set up Challah's User methods. Keep this as the first line of your model to include
   # all methods by default. You can override methods after this line as necessary.
   #
@@ -6,11 +8,4 @@ class User < ActiveRecord::Base
   #
   # http://rubydoc.info/gems/challah
   challah_user
-
-  # Uncomment the following line to add additional attributes to protect using the
-  # User#update_account_attributes(params) methods
-  #
-  # Note: This does not affect User#update_attributes
-  #
-  # protect_attributes :your_attributes, :here
 end

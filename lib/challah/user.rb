@@ -22,6 +22,10 @@ module Challah
       end
 
       class_eval do
+        # Attributes
+        ################################################################
+
+        attr_reader :password, :password_confirmation
 
         # Validation
         ################################################################
@@ -34,7 +38,7 @@ module Challah
         validates :last_name,       :presence => true
         validates :username,        :presence => true, :uniqueness => true
 
-        validate :validate_new_password
+        validates_with Challah.options[:password_validator]
 
         # Scoped Finders
         ################################################################
@@ -124,11 +128,6 @@ module Challah
         "#{first_name} #{last_name}".strip
       end
 
-      # Get the value of the current password, only can be used right after setting a new password.
-      def password
-        @password
-      end
-
       # Set a password for this user
       def password=(value)
         if value.to_s.blank?
@@ -206,19 +205,6 @@ module Challah
 
           # Make sure username stored is always stripped of whitespace and downcased
           self.username = self.username.to_s.strip.downcase
-        end
-
-        # validation call for new passwords, make sure the password is confirmed, and is >= 4 characters
-        def validate_new_password
-          if new_record? and self.read_attribute(:crypted_password).to_s.blank? and !password_changed?
-            errors.add :password, :blank
-          elsif password_changed?
-            if @password.to_s.size < 4
-              errors.add :password, :invalid_password
-            elsif @password.to_s != @password_confirmation.to_s
-              errors.add :password, :no_match_password
-            end
-          end
         end
     end
   end

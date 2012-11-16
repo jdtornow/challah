@@ -16,6 +16,7 @@ module Challah
   autoload :Techniques,                       'challah/techniques'
 
   autoload :EmailValidator,                   'challah/validators/email_validator'
+  autoload :PasswordValidator,                'challah/validators/password_validator'
 
   autoload :User,                             'challah/user'
 
@@ -28,6 +29,9 @@ module Challah
     # @option options [String] :cookie_prefix ('challah') A prefix to put in the names of the cookies that will be set.
     # @option options [String] :access_denied_view ('challah/sessions/access_denied')Relative path to the view that will be used to show access denied method.
     # @option options [Class] :storage_class (SimpleCookieStore) The class to use for persistence of sessions.
+    # @option options [Boolean] :skip_routes (false) Pass in true to not add any routes into your Rails app by default.
+    # @option options [String] :email_validator ('challah/email') Pass in a string name of the class to use for email validation. Class should inherit from ActiveModel::EachValidator
+    # @option options [Class] :password_validator (Challah::PasswordValidator) Pass in a class to use for password validation.
     def options
       @options ||= {
         :api_key_enabled => false,
@@ -35,7 +39,8 @@ module Challah
         :access_denied_view => 'sessions/access_denied',
         :storage_class => SimpleCookieStore,
         :skip_routes => false,
-        :email_validator => 'challah/email'
+        :email_validator => 'challah/email',
+        :password_validator => PasswordValidator
       }
     end
   end

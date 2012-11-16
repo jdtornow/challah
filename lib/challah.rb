@@ -18,6 +18,7 @@ module Challah
   autoload :EmailValidator,                   'challah/validators/email_validator'
   autoload :PasswordValidator,                'challah/validators/password_validator'
 
+  autoload :Authorization,                    'challah/authorization'
   autoload :User,                             'challah/user'
 
   # Configuration options

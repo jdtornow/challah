@@ -19,8 +19,7 @@ namespace :challah do
       last_name = ask('Last name: ')
       email = ask('Email: ')
       username = ask('Username: ') { |q| q.default = email }
-      password = ask('Password: ') { |q| q.echo = false }
-      confirm = ask('Password again: ') { |q| q.echo = false }
+      password = ask_for_password
 
       role_id = 0
 
@@ -65,6 +64,18 @@ def banner(msg)
   puts "=========================================================================="
   puts "  #{msg}"
   puts "==========================================================================\n\n"
+end
+
+def ask_for_password
+  password = ask('Password: ') { |q| q.echo = false }
+  confirm = ask('Password again: ') { |q| q.echo = false }
+
+  unless password.to_s.length > 4 and password == confirm
+    puts "Password must be longer than 4 characters and match the confirmation."
+    password = ask_for_password
+  end
+
+  password
 end
 
 def check_for_roles

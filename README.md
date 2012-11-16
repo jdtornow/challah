@@ -100,7 +100,7 @@ All normal Rails `before_filter` options apply, so you can always limit this res
 
 ```ruby
 class WidgetsController < ApplicationController
-  restrict_to_authenticated :only => [ :edit, :update, :destroy ]
+  restrict_to_authenticated only: [ :edit, :update, :destroy ]
 
   # ...
 end

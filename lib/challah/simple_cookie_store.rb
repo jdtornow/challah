@@ -29,8 +29,8 @@ module Challah
 
     private
       def clear
-        cookies.delete(session_cookie_name, :domain => domain)
-        cookies.delete(validation_cookie_name, :domain => domain)
+        cookies.delete(session_cookie_name, domain: domain)
+        cookies.delete(validation_cookie_name, domain: domain)
       end
 
       def cookie_values
@@ -105,19 +105,19 @@ module Challah
 
       def write_cookies!
         cookies[session_cookie_name] = {
-          :value => session_cookie_value,
-          :expires => expiration,
-          :secure => false,
-          :httponly => true,
-          :domain => domain
+          value:      session_cookie_value,
+          expires:    expiration,
+          secure:     false,
+          httponly:   true,
+          domain:     domain
         }
 
         cookies[validation_cookie_name] = {
-          :value => validation_cookie_value,
-          :expires => expiration,
-          :secure => false,
-          :httponly => true,
-          :domain => domain
+          value:      validation_cookie_value,
+          expires:    expiration,
+          secure:     false,
+          httponly:   true,
+          domain:     domain
         }
       end
   end

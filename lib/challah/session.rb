@@ -47,7 +47,7 @@ module Challah
       persistence_token, user_id = self.store.read
       return false if persistence_token.nil? or user_id.nil?
 
-      store_user = ::User.unscoped.where(:id => user_id).first
+      store_user = ::User.unscoped.where(id: user_id).first
 
       if store_user and store_user.active? and store_user.persistence_token == persistence_token
         if store_user.valid_session?

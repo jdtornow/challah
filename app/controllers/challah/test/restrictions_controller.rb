@@ -1,9 +1,9 @@
 # @private
 # This controller is only used for testing purposes, it does not actually get used outside of test.
 class Challah::Test::RestrictionsController < ApplicationController
-  signin_required :only => [ :blah ]
-  before_filter :signin_required, :only => [ :edit ]
-  restrict_to_authenticated :only => [ :show ]
+  signin_required                 only: [ :blah ]
+  before_filter :signin_required, only: [ :edit ]
+  restrict_to_authenticated       only: [ :show ]
 
   def index
     current_user

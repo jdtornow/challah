@@ -29,7 +29,7 @@ module Challah
     end
 
     def encrypt(secret)
-      BCrypt::Password.create(secret, :cost => cost)
+      BCrypt::Password.create(secret, cost: cost)
     end
 
     # Returns true if the the bcrypted value of a is equal to b

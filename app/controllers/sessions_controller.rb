@@ -1,5 +1,5 @@
 class SessionsController < ApplicationController
-  before_filter :destroy_session, :except => :create
+  before_filter :destroy_session, except: :create
 
   unloadable
 
@@ -18,7 +18,7 @@ class SessionsController < ApplicationController
     if @session.save
       redirect_to return_to_path(@session.default_path)
     else
-      redirect_to signin_path, :alert => I18n.translate('sessions.create.failed_login')
+      redirect_to signin_path, alert: I18n.translate('sessions.create.failed_login')
     end
   end
 

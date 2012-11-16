@@ -21,6 +21,14 @@ module Challah
         extend ClassMethods
       end
 
+      email_validation_hash = {
+        presence: true,
+        uniqueness: true
+      }
+
+      email_validator_key = Challah.options[:email_validator].to_s.underscore
+      email_validation_hash[email_validator_key] = true
+
       class_eval do
         # Attributes
         ################################################################
@@ -30,21 +38,22 @@ module Challah
         # Validation
         ################################################################
 
-        validates :email,           :presence => true,
-                                    :uniqueness => true,
-                                    Challah.options[:email_validator].to_s.underscore => true
 
-        validates :first_name,      :presence => true
-        validates :last_name,       :presence => true
-        validates :username,        :presence => true, :uniqueness => true
+
+        validates :email,           email_validation_hash
+
+        validates :first_name,      presence: true
+        validates :last_name,       presence: true
+        validates :username,        presence: true,
+                                    uniqueness: true
 
         validates_with Challah.options[:password_validator]
 
         # Scoped Finders
         ################################################################
 
-        scope :active,      where(:active => true)
-        scope :inactive,    where(:active => false)
+        scope :active,      where(active: true)
+        scope :inactive,    where(active: false)
 
         # Callbacks
         ################################################################
@@ -65,11 +74,11 @@ module Challah
 
         result = nil
 
-        result = self.where(:username => username_or_email.to_s.strip.downcase).first
+        result = self.where(username: username_or_email.to_s.strip.downcase).first
 
         unless result
           if username_or_email.to_s.include?('@')
-            result = self.where(:email => username_or_email).first
+            result = self.where(email: username_or_email).first
           end
         end
 

@@ -1,24 +1,15 @@
+require 'challah/user/attributes'
+require 'challah/user/authentication'
+require 'challah/user/finders'
+
 module Challah
-  class << self
-    # Loop through all registered plugins and extend User functionality.
-    def include_user_plugins!
-      Challah.plugins.values.each do |plugin|
-        plugin.user_extensions.each do |mod|
-          ::User.send(:extend, mod)
-        end
-
-        plugin.user_init_methods.each do |method_name|
-          ::User.send(method_name)
-        end
-      end
-    end
-  end
-
   module User
     def challah_user
       unless included_modules.include?(InstanceMethods)
+        include Attributes
+        include Authentication
         include InstanceMethods
-        extend ClassMethods
+        extend Finders
       end
 
       email_validation_hash = {
@@ -38,10 +29,7 @@ module Challah
         # Validation
         ################################################################
 
-
-
         validates :email,           email_validation_hash
-
         validates :first_name,      presence: true
         validates :last_name,       presence: true
         validates :username,        presence: true,
@@ -66,76 +54,8 @@ module Challah
       Challah.include_user_plugins!
     end
 
-    module ClassMethods
-      # Find a user instance by username first, or email address if needed.
-      # If no user is found matching, return nil
-      def find_for_session(username_or_email)
-        return nil if username_or_email.to_s.blank?
-
-        result = nil
-
-        result = self.where(username: username_or_email.to_s.strip.downcase).first
-
-        unless result
-          if username_or_email.to_s.include?('@')
-            result = self.where(email: username_or_email).first
-          end
-        end
-
-        result
-      end
-    end
-
     # Instance methods to be included once challah_user is set up.
     module InstanceMethods
-      # Returns true if this user is active, and should be able to log in. If
-      # the active column is false, the user will not be able to authenticate
-      def active?
-        !!self.active
-      end
-
-      # Generic authentication method. By default, this just checks to see if the password
-      # given matches this user. You can also pass in the first parameter as the method
-      # to use for a different type of authentication.
-      def authenticate(*args)
-        return false unless active?
-
-        if args.length > 1
-          method = args.shift
-
-          if Challah.authenticators[method]
-            return Challah.authenticators[method].match?(self, *args)
-          end
-
-          false
-        else
-          self.authenticate(:password, args[0])
-        end
-      end
-
-      def authenticate_with_password(plain_password)
-        authenticate(:password, plain_password)
-      end
-
-      def authenticate_with_api_key(api_key)
-        authenticate(:api_key, api_key)
-      end
-
-      # The default url where this user should be redirected to after logging in. Override
-      # this method to change this behavior.
-      def default_path
-        '/'
-      end
-
-      def failed_authentication!
-        self.increment!(:failed_auth_count)
-      end
-
-      # First name and last name together
-      def name
-        "#{first_name} #{last_name}".strip
-      end
-
       # Set the password and password_confirmation in one shortcut method.
       def password!(new_password)
         self.password = new_password
@@ -161,27 +81,6 @@ module Challah
       # Was the password updated
       def password_changed?
         !!@password
-      end
-
-      # shortened name, just includes the first name and last initial
-      def small_name
-        "#{first_name.to_s.titleize} #{last_name.to_s.first.upcase}."
-      end
-
-      # Called when a +Session+ validation is successful, and this user has
-      # been authenticated.
-      def successful_authentication!(ip_address = nil)
-        self.last_session_at = Time.now
-        self.last_session_ip = ip_address
-        self.save
-        self.increment!(:session_count, 1)
-      end
-
-      # Is this user valid and ready for a user session?
-      #
-      # Override this method if you need to check for a particular configuration on each page request.
-      def valid_session?
-        self.active?
       end
 
       protected

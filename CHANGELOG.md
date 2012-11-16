@@ -1,3 +1,10 @@
+## Challah 0.8.3
+
+* Various internal cleanup and preparations for future flexabilty
+* Added `Authenticators` classes to ease transition for other authentication methods in the future
+* Added `Validators` classes to allow for more fine-tuned control over email and password validation. Note: Email addresses are now validated to look like emails. Override `Challah.options[:email_validator]` to use a different `ActiveModel::EachValidator` for specific needs.
+* Removed `User.search()` method. Leaving this detail up to the app instead of hiding it in a gem.
+
 ## Challah 0.8.2
 
 * Removing default_scope from user model.

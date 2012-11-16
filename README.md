@@ -14,9 +14,7 @@ Challah doesn’t provide any fancy controllers or views that clutter your app o
 
 ## Installation
 
-    gem install challah
-
-Or, in your `Gemfile`
+In your `Gemfile`
 
 ```ruby
 gem 'challah'

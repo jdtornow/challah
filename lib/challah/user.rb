@@ -173,8 +173,8 @@ module Challah
             @password = nil
           end
 
-          self.persistence_token = ::Challah::Random.token(125) if self.persistence_token.to_s.blank?
-          self.api_key = ::Challah::Random.token(50) if self.api_key.to_s.blank?
+          self.persistence_token = Random.token(125) if self.persistence_token.to_s.blank?
+          self.api_key = Random.token(50) if self.api_key.to_s.blank?
         end
 
         # If the email was changed, hash it for use with gravatar and other services.

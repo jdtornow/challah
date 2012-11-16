@@ -88,24 +88,22 @@ module Challah
         if args.length > 1
           method = args.shift
 
-          if respond_to?("authenticate_with_#{method}")
-            return self.send("authenticate_with_#{method}", *args)
+          if Challah.authenticators[method]
+            return Challah.authenticators[method].match?(self, *args)
           end
 
           false
         else
-          authenticate_with_password(args[0])
+          self.authenticate(:password, args[0])
         end
       end
 
-      # Pass in an api_key, and if it matches this user account, return true.
-      def authenticate_with_api_key(api_key)
-        self.api_key == api_key
+      def authenticate_with_password(plain_password)
+        authenticate(:password, plain_password)
       end
 
-      # Pass in a password, and if it matches this user's account, return true.
-      def authenticate_with_password(plain_password)
-        ::Challah::Encrypter.compare(self.crypted_password, plain_password)
+      def authenticate_with_api_key(api_key)
+        authenticate(:api_key, api_key)
       end
 
       # The default url where this user should be redirected to after logging in. Override
@@ -169,7 +167,7 @@ module Challah
         # called before_save on the User model, actually encrypts the password with a new generated salt
         def before_save_password
           if @password_updated and valid?
-            self.crypted_password = ::Challah::Encrypter.encrypt(@password)
+            self.crypted_password = Encrypter.encrypt(@password)
 
             @password_updated = false
             @password = nil

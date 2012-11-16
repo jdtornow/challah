@@ -6,6 +6,7 @@ module Challah
   autoload :CookieStore,                      'challah/cookie_store'
   autoload :SimpleCookieStore,                'challah/simple_cookie_store'
 
+  autoload :Authenticators,                   'challah/authenticators'
   autoload :Controller,                       'challah/controller'
   autoload :Encrypter,                        'challah/encrypter'
   autoload :Techniques,                       'challah/techniques'
@@ -44,8 +45,17 @@ module Challah
   register_technique :api_key,        ApiKeyTechnique
   register_technique :password,       PasswordTechnique
 
+  # Set up plugin registering capability
   extend Plugins
   @plugins ||= {}
+
+  # Set up authenticators
+  extend Authenticators
+  @authenticators ||= {}
+
+  # Default registered authentication techiques.
+  register_authenticator :api_key,    Authenticators::ApiKey
+  register_authenticator :password,   Authenticators::Password
 end
 
 require 'challah/railtie' if defined?(Rails)

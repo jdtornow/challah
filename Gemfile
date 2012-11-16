@@ -3,6 +3,8 @@ source :rubygems
 gemspec
 
 group :test do
+  gem 'minitest'
+  gem 'turn'
   gem 'factory_girl', '>= 3.0'
   gem 'mocha', '>= 0.10', :require => false
   gem 'shoulda', '>= 3.0'

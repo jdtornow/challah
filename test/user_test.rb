@@ -128,6 +128,16 @@ class UserTest < ActiveSupport::TestCase
       assert user.errors.full_messages.include?("Password does not match the confirmation password.")
     end
 
+    should "reasonable validate an email address" do
+      user = build(:user)
+
+      user.email = 'john@challah.me'
+      assert_equal true, user.valid?
+
+      user.email = 'john@challah.m@me.e'
+      assert_equal false, user.valid?
+    end
+
     should "always lower case a username when setting" do
       user = build(:user)
       user.username = 'JimBob'

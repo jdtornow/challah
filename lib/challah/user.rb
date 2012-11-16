@@ -26,7 +26,10 @@ module Challah
         # Validation
         ################################################################
 
-        validates :email,           :presence => true, :uniqueness => true
+        validates :email,           :presence => true,
+                                    :uniqueness => true,
+                                    Challah.options[:email_validator].to_s.underscore => true
+
         validates :first_name,      :presence => true
         validates :last_name,       :presence => true
         validates :username,        :presence => true, :uniqueness => true
@@ -142,6 +145,11 @@ module Challah
         @password_confirmation = value
       end
 
+      # Was the password updated
+      def password_changed?
+        !!@password
+      end
+
       # shortened name, just includes the first name and last initial
       def small_name
         "#{first_name.to_s.titleize} #{last_name.to_s.first.upcase}."
@@ -202,9 +210,9 @@ module Challah
 
         # validation call for new passwords, make sure the password is confirmed, and is >= 4 characters
         def validate_new_password
-          if new_record? and self.read_attribute(:crypted_password).to_s.blank? and !@password_updated
+          if new_record? and self.read_attribute(:crypted_password).to_s.blank? and !password_changed?
             errors.add :password, :blank
-          elsif @password_updated
+          elsif password_changed?
             if @password.to_s.size < 4
               errors.add :password, :invalid_password
             elsif @password.to_s != @password_confirmation.to_s

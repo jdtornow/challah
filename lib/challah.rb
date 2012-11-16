@@ -15,6 +15,8 @@ module Challah
   autoload :Session,                          'challah/session'
   autoload :Techniques,                       'challah/techniques'
 
+  autoload :EmailValidator,                   'challah/validators/email_validator'
+
   autoload :User,                             'challah/user'
 
   # Configuration options
@@ -32,7 +34,8 @@ module Challah
         :cookie_prefix => 'challah',
         :access_denied_view => 'sessions/access_denied',
         :storage_class => SimpleCookieStore,
-        :skip_routes => false
+        :skip_routes => false,
+        :email_validator => 'challah/email'
       }
     end
   end

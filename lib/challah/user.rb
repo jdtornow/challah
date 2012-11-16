@@ -184,8 +184,7 @@ module Challah
         def check_email_hash
           if self.class.column_names.include?("email_hash")
             if email_changed?
-              require 'digest/md5'
-              self.email_hash = Digest::MD5.hexdigest(self.email.to_s.downcase.strip)
+              self.email_hash = Encrypter.md5(email.to_s.downcase.strip)
             end
           end
         end

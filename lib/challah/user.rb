@@ -1,6 +1,7 @@
 require 'challah/user/attributes'
 require 'challah/user/authentication'
 require 'challah/user/finders'
+require 'challah/user/password'
 
 module Challah
   module User
@@ -8,6 +9,7 @@ module Challah
       unless included_modules.include?(InstanceMethods)
         include Attributes
         include Authentication
+        include Password
         include InstanceMethods
         extend Finders
       end
@@ -56,33 +58,6 @@ module Challah
 
     # Instance methods to be included once challah_user is set up.
     module InstanceMethods
-      # Set the password and password_confirmation in one shortcut method.
-      def password!(new_password)
-        self.password = new_password
-        self.password_confirmation = new_password
-      end
-
-      # Set a password for this user
-      def password=(value)
-        if value.to_s.blank?
-          @password = nil
-          @password_updated = false
-        else
-          @password = value
-          @password_updated = true
-        end
-      end
-
-      # Set the confirmation when changing a password
-      def password_confirmation=(value)
-        @password_confirmation = value
-      end
-
-      # Was the password updated
-      def password_changed?
-        !!@password
-      end
-
       protected
         # called before_save on the User model, actually encrypts the password with a new generated salt
         def before_save_password

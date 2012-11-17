@@ -6,13 +6,13 @@ module Challah
       app.routes_reloader.paths.insert(0, File.expand_path(File.join(File.dirname(__FILE__), 'routes.rb')))
     end
 
-    initializer 'challah.active_record' do |app|
+    initializer 'challah.active_record' do
       ActiveSupport.on_load :active_record do
         Challah::Engine.setup_active_record!
       end
     end
 
-    initializer 'challah.action_controller' do |app|
+    initializer 'challah.action_controller' do
       ActiveSupport.on_load :action_controller do
         Challah::Engine.setup_action_controller!
       end

@@ -6,12 +6,6 @@ module Challah::User
       !!self.active
     end
 
-    # The default url where this user should be redirected to after logging in. Override
-    # this method to change this behavior.
-    def default_path
-      '/'
-    end
-
     # First name and last name together
     def name
       "#{first_name} #{last_name}".strip

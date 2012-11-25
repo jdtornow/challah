@@ -1,6 +1,7 @@
 require 'challah/user/attributes'
 require 'challah/user/authentication'
 require 'challah/user/finders'
+require 'challah/user/providers'
 require 'challah/user/password'
 
 module Challah
@@ -9,8 +10,9 @@ module Challah
       unless included_modules.include?(InstanceMethods)
         include Attributes
         include Authentication
-        include Password
         include InstanceMethods
+        include Providers
+        include Password
         extend Finders
       end
 
@@ -34,8 +36,6 @@ module Challah
         validates :email,           email_validation_hash
         validates :first_name,      presence: true
         validates :last_name,       presence: true
-        validates :username,        presence: true,
-                                    uniqueness: true
 
         validates_with Challah.options[:password_validator]
 
@@ -48,9 +48,8 @@ module Challah
         # Callbacks
         ################################################################
 
-        before_save         :check_tokens
-        before_save         :check_email_hash
-        before_validation   :sync_username
+        before_save :check_tokens
+        after_save  :check_for_password_updates
       end
 
       Challah.include_user_plugins!
@@ -58,16 +57,31 @@ module Challah
 
     # Instance methods to be included once challah_user is set up.
     module InstanceMethods
+      def method_missing(method, *args)
+        method_name = method.to_s
+
+        if method_name =~ /^([a-z]*)_provider\?$/
+          return provider?($1)
+        elsif method_name =~ /^([a-z]*)_provider$/
+          return provider($1)
+        end
+
+        super
+      end
+
       protected
-        # If the email was changed, hash it for use with gravatar and other services.
-        #
-        # For backwards compatibilty, this column may not always exist, so just ignore
-        # this if the column doesn't exist.
-        def check_email_hash
-          if self.class.column_names.include?("email_hash")
-            if email_changed?
-              self.email_hash = Encrypter.md5(email.to_s.downcase.strip)
-            end
+        # If password or username was changed, update the authorization record
+        def check_for_password_updates
+          if @password_updated or @username_updated
+            Challah::PasswordProvider.set({
+              uid: username,
+              token: @password,
+              user_id: self.id
+            })
+
+            @password_updated = false
+            @username_updated = false
+            @password = nil
           end
         end
 
@@ -81,24 +95,12 @@ module Challah
             self.api_key = Random.token(50)
           end
 
-          # TODO move this elsewhere since it is just for password provider
-          if @password_updated and valid?
-            self.crypted_password = Challah::Encrypter.encrypt(@password)
-
-            @password_updated = false
-            @password = nil
+          # Store a hashed email if the column exists
+          if respond_to?("email_hash=")
+            if email_changed?
+              self.email_hash = Encrypter.md5(email.to_s.downcase.strip)
+            end
           end
-        end
-
-        # Called before validations, if no username was provided but an email was, copy it over to the
-        # username field.
-        def sync_username
-          if self.username.to_s.blank? and !self.email.to_s.blank?
-            self.username = self.email
-          end
-
-          # Make sure username stored is always stripped of whitespace and downcased
-          self.username = self.username.to_s.strip.downcase
         end
     end
   end

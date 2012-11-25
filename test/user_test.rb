@@ -4,7 +4,6 @@ class UserTest < ActiveSupport::TestCase
   should validate_presence_of :email
   should validate_presence_of :first_name
   should validate_presence_of :last_name
-  should validate_presence_of :username
 
   context "With an existing user" do
     setup do
@@ -12,13 +11,18 @@ class UserTest < ActiveSupport::TestCase
     end
 
     should validate_uniqueness_of :email
-    should validate_uniqueness_of :username
   end
 
   context "A User class" do
     should "find a user by username or email" do
-      user_one = create(:user, :username => ' Test-user ', :email => 'tester@example.com')
-      user_two = create(:user, :username => 'test-user-2  ', :email => 'tester2@example.com')
+      user_one = build(:user, :username => ' Test-user ', :email => 'tester@example.com')
+      user_two = build(:user, :username => 'test-user-2  ', :email => 'tester2@example.com')
+
+      user_one.password!('test123')
+      user_two.password!('test123')
+
+      user_one.save
+      user_two.save
 
       assert_equal user_one, ::User.find_for_session('test-user')
       assert_equal user_one, ::User.find_for_session('tester@example.com')
@@ -43,11 +47,6 @@ class UserTest < ActiveSupport::TestCase
 
       assert_equal "Cal Ripken", user.name
       assert_equal "Cal R.", user.small_name
-    end
-
-    should "have a default_path where this user will be sent upon login" do
-      user = ::User.new
-      assert_equal '/', user.default_path
     end
 
     should "have an active? user flag" do
@@ -147,7 +146,6 @@ class UserTest < ActiveSupport::TestCase
     should "always lower case a username when setting" do
       user = build(:user)
       user.username = 'JimBob'
-      assert user.save
       assert_equal 'jimbob', user.username
     end
 

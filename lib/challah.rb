@@ -21,6 +21,8 @@ module Challah
   autoload :Authorization,                    'challah/authorization'
   autoload :User,                             'challah/user'
 
+  autoload :PasswordProvider,                 'challah/providers/password_provider'
+
   # Configuration options
   class << self
     # Get or set options for the current Challah instance. In most cases these should be

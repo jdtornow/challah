@@ -1,3 +1,9 @@
+## Challah 0.9.0 (Unreleased)
+
+* Removed some legacy support for default login paths
+* Added authorizations table support. Shifting to flexible model for providers instead of always relying on username and password support.
+* Users no longer require usernames and passwords for creation.
+
 ## Challah 0.8.3
 
 * Various internal cleanup and preparations for future flexabilty

@@ -3,10 +3,8 @@ class CreateUsers < ActiveRecord::Migration
     create_table :users do |t|
       t.string      :first_name
       t.string      :last_name
-      t.string      :username
       t.string      :email
       t.string      :email_hash
-      t.string      :crypted_password
       t.string      :persistence_token
       t.string      :api_key
       t.integer     :role_id, default: 0 # Not used by default, install challah-rolls to utilize this
@@ -22,7 +20,6 @@ class CreateUsers < ActiveRecord::Migration
       t.timestamps  null: true
     end
 
-    add_index :users, :username
     add_index :users, :first_name
     add_index :users, :last_name
     add_index :users, :email

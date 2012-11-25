@@ -7,11 +7,15 @@ module Challah::User
 
       result = nil
 
-      result = where(username: username_or_email.to_s.strip.downcase).first
+      if username_or_email.to_s.include?('@')
+        result = where(email: username_or_email).first
+      end
 
-      unless result
-        if username_or_email.to_s.include?('@')
-          result = where(email: username_or_email).first
+      if !result
+        authorization = ::Authorization.where(provider: :password, uid: username_or_email.to_s.downcase.strip).first
+
+        if authorization
+          result = authorization.user
         end
       end
 

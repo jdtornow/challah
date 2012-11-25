@@ -6,6 +6,7 @@ script: bundle exec rake test
 branches:
   only:
     - master
+    - providers
 gemfile:
   - Gemfile
   - gemfiles/rails3_1.gemfile

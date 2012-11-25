@@ -4,6 +4,13 @@ class SessionTest < ActiveSupport::TestCase
   include Challah
 
   context "An Challah::Session class" do
+    should "have an inspected view" do
+      user = create(:user)
+      session = Session.create(user)
+
+      assert /#<Session/ =~ session.inspect
+    end
+
     should "use the test storage method" do
       assert_equal TestSessionStore, Challah.options[:storage_class]
     end

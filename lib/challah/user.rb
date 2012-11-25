@@ -48,7 +48,7 @@ module Challah
         # Callbacks
         ################################################################
 
-        before_save         :before_save_password
+        before_save         :check_tokens
         before_save         :check_email_hash
         before_validation   :sync_username
       end
@@ -59,19 +59,6 @@ module Challah
     # Instance methods to be included once challah_user is set up.
     module InstanceMethods
       protected
-        # called before_save on the User model, actually encrypts the password with a new generated salt
-        def before_save_password
-          if @password_updated and valid?
-            self.crypted_password = Encrypter.encrypt(@password)
-
-            @password_updated = false
-            @password = nil
-          end
-
-          self.persistence_token = Random.token(125) if self.persistence_token.to_s.blank?
-          self.api_key = Random.token(50) if self.api_key.to_s.blank?
-        end
-
         # If the email was changed, hash it for use with gravatar and other services.
         #
         # For backwards compatibilty, this column may not always exist, so just ignore
@@ -81,6 +68,25 @@ module Challah
             if email_changed?
               self.email_hash = Encrypter.md5(email.to_s.downcase.strip)
             end
+          end
+        end
+
+        # Before a record is saved, make sure all tokens are set properly
+        def check_tokens
+          if self.persistence_token.to_s.blank?
+            self.persistence_token = Random.token(125)
+          end
+
+          if self.api_key.to_s.blank?
+            self.api_key = Random.token(50)
+          end
+
+          # TODO move this elsewhere since it is just for password provider
+          if @password_updated and valid?
+            self.crypted_password = Challah::Encrypter.encrypt(@password)
+
+            @password_updated = false
+            @password = nil
           end
         end
 

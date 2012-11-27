@@ -50,6 +50,8 @@ module Challah
 
         before_save :check_tokens
         after_save  :check_for_password_updates
+        after_save  :clear_cache
+        before_destroy :clear_authorizations
       end
 
       Challah.include_user_plugins!
@@ -101,6 +103,14 @@ module Challah
               self.email_hash = Encrypter.md5(email.to_s.downcase.strip)
             end
           end
+        end
+
+        def clear_authorizations
+          authorizations.destroy_all
+        end
+
+        def clear_cache
+          @providers = nil
         end
     end
   end

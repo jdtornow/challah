@@ -105,7 +105,9 @@ class SessionTest < ActiveSupport::TestCase
     end
 
     should "validate with a password" do
-      user = create(:user, :username => 'test-user')
+      user = build(:user, :username => 'test-user')
+      user.password!('abc123')
+      user.save
 
       ::User.stubs(:find_for_session).returns(user)
 
@@ -152,7 +154,9 @@ class SessionTest < ActiveSupport::TestCase
     end
 
     should "reject if password is incorrect" do
-      user = create(:user, :username => 'test-user')
+      user = build(:user, :username => 'test-user')
+      user.password!('abc123')
+      user.save
 
       ::User.stubs(:find_for_session).returns(user)
 
@@ -166,18 +170,6 @@ class SessionTest < ActiveSupport::TestCase
       assert_equal nil, session.user
 
       ::User.unstub(:find_for_session)
-    end
-
-    should "have a default_path attribute" do
-      user = create(:user, :username => 'test-user')
-
-      user.stubs(:default_path).returns("/user-path")
-
-      session = Session.new
-      assert_equal '/', session.default_path
-
-      session = Session.create(user)
-      assert_equal '/user-path', session.default_path
     end
   end
 end

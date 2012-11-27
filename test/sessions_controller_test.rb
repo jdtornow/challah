@@ -5,7 +5,9 @@ class SessionsControllerTest < ActionController::TestCase
 
   context "The sessions controller" do
     setup do
-      @user = create(:user, :username => 'sessions-user-test')
+      @user = build(:user, :username => 'sessions-user-test')
+      @user.password! 'abc123'
+      @user.save
     end
 
     should "have a sign-in page" do

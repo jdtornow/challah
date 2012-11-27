@@ -12,11 +12,6 @@ module Challah
       @store = Challah.options[:storage_class].new(self)
     end
 
-    # The path where a user will be redirected to upon login
-    def default_path
-      self.user ? self.user.default_path : '/'
-    end
-
     def destroy
       self.store.destroy
 

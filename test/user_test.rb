@@ -91,13 +91,18 @@ class UserTest < ActiveSupport::TestCase
 
       assert user.save
 
+      assert_equal true, user.provider?(:password)
+      assert_not_nil user.provider(:password)
+
       assert_equal true, user.authenticate('abc123')
       assert_equal true, user.authenticate(:password, 'abc123')
       assert_equal false, user.authenticate('test123')
     end
 
     should "be able to update a user without changing their password" do
-      user = create(:user)
+      user = build(:user)
+      user.password!('abc123')
+      user.save
 
       assert_equal true, user.authenticate('abc123')
 
@@ -109,8 +114,10 @@ class UserTest < ActiveSupport::TestCase
 
     should "validate a password" do
       user = build(:user)
+      user.password!('abc123')
       assert_equal true, user.valid?
 
+      user.username = 'user123'
       user.password = ''
       user.password_confirmation = ''
       assert_equal false, user.valid?
@@ -149,8 +156,15 @@ class UserTest < ActiveSupport::TestCase
       assert_equal 'jimbob', user.username
     end
 
-    should "authenticate through various means by default" do
+    should "not authenticate with a password if none is given" do
       user = create(:user)
+      assert_equal false, user.authenticate_with_password('abc123')
+    end
+
+    should "authenticate through various means by default" do
+      user = build(:user)
+      user.password!('abc123')
+      user.save
 
       # By password
       assert_equal false, user.authenticate_with_password('test123')
@@ -202,6 +216,61 @@ class UserTest < ActiveSupport::TestCase
       user.email = 'tester-too@challah.me'
       assert user.save
       assert_equal '45ab23dd8eb9a00f61cef27004b38b01', user.email_hash
+    end
+
+    should "have custom authorization providers" do
+      user = create(:user)
+
+      auth = Authorization.set({
+        :user_id => user.id,
+        :provider => 'custom',
+        :uid => '12345',
+        :token => 'abcdef1234569'
+      })
+
+      assert_equal false, user.provider?(:password)
+      assert_equal nil, user.provider(:password)
+
+      expected_auth = {
+        :id => auth.id,
+        :uid => '12345',
+        :token => 'abcdef1234569'
+      }
+
+      assert_equal true, user.provider?(:custom)
+      assert_equal true, user.custom_provider?
+
+      assert_equal expected_auth, user.provider(:custom)
+      assert_equal expected_auth, user.custom_provider
+    end
+
+    should "have default method_missing when not looking for a provider" do
+      user = create(:user)
+      assert_equal false, user.custom_provider?
+
+      assert_raise NoMethodError do
+        user.does_not_exist?
+      end
+    end
+
+    should "clear authorizations when removing a user" do
+      user = create(:user)
+
+      Authorization.set({
+        :user_id => user.id,
+        :provider => 'custom',
+        :uid => '12345',
+        :token => 'abcdef1234569'
+      })
+
+      user.password!('test123')
+      user.save
+
+      assert_difference 'User.count', -1 do
+        assert_difference 'Authorization.count', -2 do
+          user.destroy
+        end
+      end
     end
   end
 end

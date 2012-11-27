@@ -11,6 +11,10 @@ module Challah::User
       !!providers[:password]
     end
 
+    def password_provider
+      providers[:password] || Hash.new
+    end
+
     # Set a password for this user
     def password=(value)
       if value.to_s.blank?
@@ -33,7 +37,7 @@ module Challah::User
     end
 
     def username
-      @username ||= password_provider? ? password_provider[:uid] : ''
+      @username ||= password_provider? ? password_provider.fetch(:uid, '') : ''
     end
 
     def username=(value)

@@ -10,7 +10,7 @@ module Challah::User
         method = args.shift
 
         if Challah.authenticators[method]
-          return Challah.authenticators[method].match?(self, *args)
+          return Challah.authenticators[method].match?(self, providers[method], *args)
         end
 
         false

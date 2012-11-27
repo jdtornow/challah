@@ -75,7 +75,7 @@ module Challah
         # If password or username was changed, update the authorization record
         def check_for_password_updates
           if @password_updated or @username_updated
-            Challah::PasswordProvider.set({
+            Challah.providers[:password].set({
               uid: username,
               token: @password,
               user_id: self.id

@@ -1,9 +1,9 @@
 module Challah
   module Authenticators
     class Password
-      def self.match?(user, plain_password)
-        if user.password_provider?
-          crypted_password = user.password_provider[:token]
+      def self.match?(user, provider, plain_password)
+        if provider
+          crypted_password = provider.fetch(:token)
           return Encrypter.compare(crypted_password, plain_password)
         end
 

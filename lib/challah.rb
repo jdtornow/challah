@@ -9,10 +9,11 @@ module Challah
   autoload :Authenticators,                   'challah/authenticators'
   autoload :Controller,                       'challah/controller'
   autoload :Encrypter,                        'challah/encrypter'
-  autoload :Techniques,                       'challah/techniques'
   autoload :Plugins,                          'challah/plugins'
+  autoload :Providers,                        'challah/providers'
   autoload :Random,                           'challah/random'
   autoload :Session,                          'challah/session'
+  autoload :Techniques,                       'challah/techniques'
   autoload :Techniques,                       'challah/techniques'
 
   autoload :EmailValidator,                   'challah/validators/email_validator'
@@ -67,6 +68,12 @@ module Challah
   # Default registered authentication techiques.
   register_authenticator :api_key,    Authenticators::ApiKey
   register_authenticator :password,   Authenticators::Password
+
+  # Set up authorization providers
+  extend Providers
+  @providers ||= {}
+
+  register_provider :password, PasswordProvider
 end
 
 require 'challah/railtie' if defined?(Rails)

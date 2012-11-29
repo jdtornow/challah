@@ -23,6 +23,14 @@ module Challah
         where(provider: provider, user_id: user_id).delete_all
       end
 
+      # Grab the user/provider record
+      def get(options = {})
+        provider  = options.fetch(:provider)
+        user_id   = options.fetch(:user_id)
+
+        where(provider: provider, user_id: user_id).first
+      end
+
       # Create a new authorization record for the given user
       def set(options = {})
         provider  = options.fetch(:provider)

@@ -188,6 +188,29 @@ class UserTest < ActiveSupport::TestCase
       assert_equal false, user.authenticate(:blah, 'sdsd', 'sdlsk')
     end
 
+    should "be able to change a username" do
+      user = create(:user)
+
+      user.password!('test123')
+      user.username = 'john'
+      user.save
+
+      # reload
+      user = User.find_by_id(user.id)
+
+      assert_equal true, user.authenticate('test123')
+      assert_equal 'john', user.username
+
+      user.username = 'johndoe'
+      user.save
+
+      # reload
+      user = User.find_by_id(user.id)
+
+      assert_equal true, user.authenticate('test123')
+      assert_equal 'johndoe', user.username
+    end
+
     should "have successful and failed authentication methods" do
       user = create(:user)
 

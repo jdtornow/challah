@@ -5,7 +5,18 @@ module Challah
       uid     = options.fetch(:uid, '')
       token   = options.fetch(:token, '')
 
-      token = Challah::Encrypter.encrypt(token)
+      if token.to_s.blank?
+        authorization = ::Authorization.get({
+          user_id:  user_id,
+          provider: :password
+        })
+
+        if authorization
+          token = authorization.token
+        end
+      else
+        token = Challah::Encrypter.encrypt(token)
+      end
 
       ::Authorization.set({
         provider: :password,

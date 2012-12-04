@@ -33,18 +33,20 @@ module Challah
 
       # Create a new authorization record for the given user
       def set(options = {})
-        provider  = options.fetch(:provider)
-        user_id   = options.fetch(:user_id)
-        uid       = options.fetch(:uid)
-        token     = options.fetch(:token)
+        provider    = options.fetch(:provider)
+        user_id     = options.fetch(:user_id).to_i
+        uid         = options.fetch(:uid)
+        token       = options.fetch(:token)
+        expires_at  = options.fetch(:expires_at, nil)
 
         del(options)
 
         create!({
-          provider: provider,
-          user_id:  user_id,
-          uid:      uid,
-          token:    token
+          provider:   provider,
+          user_id:    user_id,
+          uid:        uid,
+          token:      token,
+          expires_at: expires_at
         }, without_protection: true)
       end
     end

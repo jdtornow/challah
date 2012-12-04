@@ -5,9 +5,10 @@ gemspec
 group :test do
   gem 'minitest'
   gem 'turn'
-  gem 'factory_girl', '>= 3.0'
+  gem 'factory_girl'
+  gem 'minitest'
   gem 'mocha', '>= 0.10', :require => false
-  gem 'shoulda', '>= 3.0'
+  gem 'shoulda'
   gem 'simplecov', :require => false
   gem 'sqlite3'
 end

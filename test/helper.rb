@@ -15,7 +15,7 @@ require "#{sample_root}/config/environment"
 
 # Some other dependencies for testing w/ shoulda and factory girl
 require 'shoulda'
-require 'mocha/setup'
+require 'mocha'
 require 'factory_girl'
 require 'factories'
 require 'rails/test_help'

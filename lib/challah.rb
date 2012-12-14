@@ -13,6 +13,7 @@ module Challah
   autoload :Providers,                        'challah/providers'
   autoload :Random,                           'challah/random'
   autoload :Session,                          'challah/session'
+  autoload :Signup,                           'challah/signup'
   autoload :Techniques,                       'challah/techniques'
   autoload :Techniques,                       'challah/techniques'
 

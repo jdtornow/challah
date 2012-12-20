@@ -42,9 +42,9 @@ class SignupTest < ActiveSupport::TestCase
 
     should "not sign up without a password" do
       signup = Challah::Signup.new
-      signup.first_name             = 'Avon'
-      signup.last_name              = 'Barksdale'
-      signup.email                  = 'avon@challah.me'
+      signup.first_name   = 'Avon'
+      signup.last_name    = 'Barksdale'
+      signup.email        = 'avon@challah.me'
 
       assert_no_difference [ 'User.count', 'Authorization.count' ] do
         assert_equal false, signup.save

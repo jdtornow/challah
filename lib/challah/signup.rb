@@ -21,9 +21,9 @@ module Challah
       end
     end
 
-    def method_missing(method, *attrs, &block)
+    def method_missing(method, *attrs)
       if user.respond_to?(method)
-        return user.send(method, *attrs, &block)
+        return user.send(method, *attrs)
       else
         super
       end
@@ -35,14 +35,11 @@ module Challah
 
     def password=(value)
       @provider = :password
+      user.password = value
     end
 
     def provider?
       Challah.providers.keys.include?(@provider)
-    end
-
-    def provider
-      @provider ||= :password
     end
 
     def provider=(value)

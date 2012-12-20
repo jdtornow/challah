@@ -1,5 +1,9 @@
 module Challah
   class PasswordProvider
+    def self.save(user)
+      set(uid: user.username, token: user.password, user_id: user.id)
+    end
+
     def self.set(options = {})
       user_id = options.fetch(:user_id)
       uid     = options.fetch(:uid, '')
@@ -24,6 +28,11 @@ module Challah
         uid:      uid,
         token:    token
       })
+    end
+
+    def self.valid?(user)
+      password_validator = Challah.options[:password_validator]
+      password_validator.new(force: true).validate(user)
     end
   end
 end

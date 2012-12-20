@@ -10,7 +10,6 @@ module Challah
       self.user = ::User.new
       self.attributes = attributes
       self.provider = :password
-      @errors = ActiveModel::Errors.new(self)
     end
 
     def attributes=(value)
@@ -22,15 +21,7 @@ module Challah
     end
 
     def method_missing(method, *attrs)
-      if user.respond_to?(method)
-        return user.send(method, *attrs)
-      else
-        super
-      end
-    end
-
-    def name
-      "Signup"
+      user.send(method, *attrs)
     end
 
     def password=(value)
@@ -38,47 +29,32 @@ module Challah
       user.password = value
     end
 
-    def provider?
-      Challah.providers.keys.include?(@provider)
+    def valid_provider?
+      user.valid_provider?(provider)
     end
 
     def provider=(value)
-      @provider = value.to_sym
-    end
-
-    def read_attribute_for_validation(attr)
-      send(attr)
+      if value.respond_to?(:to_sym)
+        @provider = value.to_sym
+      else
+        @provider = nil
+      end
     end
 
     def save
       if valid?
         user.save
-      end
-    end
-
-    def valid?
-      if user.valid? and provider?
-        true
       else
-        @errors = ActiveModel::Errors.new(self)
-
-        user.errors.messages.each do |k, v|
-          v.each do |msg|
-            @errors.add(k, msg)
-          end
-        end
-
         false
       end
     end
 
-    class << self
-      def human_attribute_name(attr, options = {})
-        attr.to_s.humanize
-      end
-
-      def lookup_ancestors
-        [ self ]
+    def valid?
+      if user.valid? and provider and valid_provider?
+        true
+      else
+        @errors = user.errors.clone
+        false
       end
     end
   end

@@ -28,7 +28,8 @@ module Challah
         # Attributes
         ################################################################
 
-        attr_reader :password, :password_confirmation
+        attr_reader :password, :password_confirmation, :password_updated
+        attr_accessible :provider_attributes
 
         # Validation
         ################################################################
@@ -37,7 +38,7 @@ module Challah
         validates :first_name,      presence: true
         validates :last_name,       presence: true
 
-        validates_with Challah.options[:password_validator]
+        validates_with Challah.options[:password_validator], force: false
 
         # Scoped Finders
         ################################################################
@@ -49,7 +50,7 @@ module Challah
         ################################################################
 
         before_save :check_tokens
-        after_save  :check_for_password_updates
+        after_save  :save_updated_providers
         after_save  :clear_cache
         before_destroy :clear_authorizations
       end
@@ -73,17 +74,24 @@ module Challah
 
       protected
         # If password or username was changed, update the authorization record
-        def check_for_password_updates
+        def save_updated_providers
+          # Save password provider
           if @password_updated or @username_updated
-            Challah.providers[:password].set({
-              uid: username,
-              token: @password,
-              user_id: self.id
-            })
-
+            Challah.providers[:password].save(self)
             @password_updated = false
             @username_updated = false
             @password = nil
+          end
+
+          # Save any other providers
+          Challah.custom_providers.each do |name, klass|
+            custom_provider_attributes = provider_attributes[name]
+
+            if custom_provider_attributes.respond_to?(:fetch)
+              if klass.valid?(self)
+                klass.save(self)
+              end
+            end
           end
         end
 

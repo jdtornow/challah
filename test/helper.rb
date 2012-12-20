@@ -104,6 +104,31 @@ class MockRequest
   end
 end
 
+class FakeProvider
+  def self.save(record)
+    set(record.fake_provider.merge(user_id: record.id))
+  end
+
+  def self.set(options = {})
+    user_id = options.fetch(:user_id)
+    uid     = options.fetch(:uid, '')
+    token   = options.fetch(:token, '')
+
+    Authorization.set({
+      provider: :fake,
+      user_id:  user_id,
+      uid:      uid,
+      token:    token
+    })
+  end
+
+  def self.valid?(record)
+    record.fake_provider? and record.fake_provider.fetch(:token) == 'me'
+  end
+end
+
+Challah.register_provider :fake, FakeProvider
+
 # Monkey patch fix for shoulda and Rails 3.1+.
 module Shoulda
   module ActiveRecord

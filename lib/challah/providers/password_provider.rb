@@ -33,7 +33,7 @@ module Challah
     def self.valid?(record)
       password_validator = Challah.options[:password_validator]
       password_validator.new(force: true).validate(record)
-      record.errors.size.zero?
+      record.errors[:password].size.zero?
     end
   end
 end

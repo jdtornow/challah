@@ -8,8 +8,9 @@ module Challah
 
     def initialize(attributes = {})
       self.user = ::User.new
-      self.attributes = attributes
       self.provider = :password
+      self.attributes = attributes
+      @errors = []
     end
 
     def attributes=(value)
@@ -25,7 +26,7 @@ module Challah
     end
 
     def password=(value)
-      @provider = :password
+      @provider = :password unless value.to_s.blank?
       user.password = value
     end
 
@@ -50,12 +51,25 @@ module Challah
     end
 
     def valid?
-      if user.valid? and provider and valid_provider?
-        true
-      else
-        @errors = user.errors.clone
-        false
+      @errors = ActiveModel::Errors.new(user)
+
+      result = true
+
+      unless user.valid?
+        result = false
+        user.errors.each { |a, e| @errors.add(a, e) }
       end
+
+      if !provider or !valid_provider?
+        result = false
+        user.errors.each { |a, e| @errors.add(a, e) unless @errors.added?(a, e) }
+      end
+
+      result
+    end
+
+    def self.model_name
+      ActiveModel::Name.new(Challah::Signup, Challah, "Signup")
     end
   end
 end

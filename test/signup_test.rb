@@ -1,6 +1,12 @@
 require 'helper'
 
 class SignupTest < ActiveSupport::TestCase
+  context "A signup instance" do
+    should "be properly named" do
+      assert_equal "Signup", Challah::Signup.model_name
+    end
+  end
+
   context "A user" do
     should "sign up for an app with a password" do
       signup = Challah::Signup.new
@@ -61,6 +67,8 @@ class SignupTest < ActiveSupport::TestCase
       signup.last_name    = 'Barksdale'
       signup.email        = 'avon@challah.me'
       signup.provider     = "fake"
+      signup.password     = ""
+      signup.password_confirmation = ""
       signup.provider_attributes = { "fake" => { "uid" => "1", "token" => "me" } }
 
       assert_difference [ 'User.count', 'Authorization.count' ], 1 do
@@ -102,6 +110,13 @@ class SignupTest < ActiveSupport::TestCase
       assert_equal true, signup.new_record?
       assert_equal "Avon Barksdale", signup.user.name
       assert_equal :blank, signup.provider
+    end
+
+    should "consolidate error messages" do
+      signup = Challah::Signup.new
+      assert_equal false, signup.save
+      expected_error_fields = [ :first_name, :last_name, :email, :password ].sort
+      assert_equal expected_error_fields, signup.errors.messages.keys.sort
     end
   end
 end

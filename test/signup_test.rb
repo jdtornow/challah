@@ -1,8 +1,6 @@
 require 'helper'
 
 class SignupTest < ActiveSupport::TestCase
-
-
   context "A user" do
     should "sign up for an app with a password" do
       signup = Challah::Signup.new

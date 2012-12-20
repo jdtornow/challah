@@ -295,5 +295,37 @@ class UserTest < ActiveSupport::TestCase
         end
       end
     end
+
+    should "set provider attributes" do
+      user = build(:user)
+
+      user.provider_attributes = {
+        :fake => { :uid => "1", "token" => 'me' }
+      }
+
+      assert_equal true, user.provider?(:fake)
+      assert_equal true, user.valid_provider?(:fake)
+
+      assert_difference [ 'User.count', 'Authorization.count' ], 1 do
+        assert user.save
+      end
+    end
+
+    should "not add invalid providers" do
+      provider_attributes = {
+        "fake" => { :uid => "1", "token" => 'not-me' }
+      }
+
+      user = build(:user, :provider_attributes => provider_attributes)
+
+      assert_equal true, user.provider?(:fake)
+      assert_equal false, user.valid_provider?(:fake)
+
+      assert_difference [ 'User.count' ], 1 do
+        assert_no_difference [ 'Authorization.count' ] do
+          assert user.save
+        end
+      end
+    end
   end
 end

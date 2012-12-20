@@ -53,7 +53,6 @@ module Challah::User
 
       if Challah.providers.keys.include?(name)
         Challah.providers[name].valid?(self)
-        return self.errors.size.zero?
       else
         false
       end

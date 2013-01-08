@@ -1,3 +1,7 @@
+## Challah 0.9.1
+
+* Compatibility with Rails 4. Removed support for `attr_accessible` in newer versions of Rails.
+
 ## Challah 0.9.0
 
 * Removed some legacy support for default login paths

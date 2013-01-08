@@ -1,3 +1,4 @@
+bin/*
 .bundle
 .DS_Store
 .rbenv-version

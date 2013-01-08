@@ -1,6 +1,6 @@
 ## Challah 0.9.1
 
-* Compatibility with Rails 4. Removed support for `attr_accessible` in newer versions of Rails.
+* Basic compatibility with Rails 4. Removed support for `attr_accessible` in newer versions of Rails. Testing and a few other operations not yet support, but the gem is functional on Rails 4.
 
 ## Challah 0.9.0
 

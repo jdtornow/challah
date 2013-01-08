@@ -2,6 +2,7 @@ bin/*
 .bundle
 .DS_Store
 .rbenv-version
+.ruby-version
 .rvmrc
 .yardoc
 challah-*.gem

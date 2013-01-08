@@ -39,14 +39,12 @@ namespace :challah do
         end
       end
 
-      user = ::User.new({
-        :first_name => first_name,
-        :last_name => last_name,
-        :email => email,
-        :username => username,
-        :role_id => role_id,
-        :password => password,
-        :password_confirmation => password }, :without_protection => true)
+      user = ::User.new
+      user.first_name = first_name
+      user.last_name = last_name
+      user.email = email
+      user.username = username unless username == email
+      user.password!(password)
 
       puts "\n"
 

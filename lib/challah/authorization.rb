@@ -41,13 +41,14 @@ module Challah
 
         del(options)
 
-        create!({
-          provider:   provider,
-          user_id:    user_id,
-          uid:        uid,
-          token:      token,
-          expires_at: expires_at
-        }, without_protection: true)
+        record = self.new()
+        record.provider = provider
+        record.user_id = user_id
+        record.uid = uid
+        record.token = token
+        record.expires_at = expires_at
+        record.save!
+        record
       end
     end
   end

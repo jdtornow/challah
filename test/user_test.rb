@@ -106,7 +106,10 @@ class UserTest < ActiveSupport::TestCase
 
       assert_equal true, user.authenticate('abc123')
 
-      assert user.update_attributes(:first_name => 'New', :password => '', :password_confirmation => '')
+      user.first_name = 'New'
+      user.password = ''
+      user.password_confirmation = ''
+      assert user.save
 
       assert_equal 'New', user.first_name
       assert_equal true, user.authenticate('abc123')

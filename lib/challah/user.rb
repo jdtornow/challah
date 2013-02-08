@@ -38,11 +38,13 @@ module Challah
         # Validation
         ################################################################
 
-        validates :email,           email_validation_hash
-        validates :first_name,      presence: true
-        validates :last_name,       presence: true
+        unless Challah.options[:skip_user_validations]
+          validates :email,           email_validation_hash
+          validates :first_name,      presence: true
+          validates :last_name,       presence: true
 
-        validates_with Challah.options[:password_validator], force: false
+          validates_with Challah.options[:password_validator], force: false
+        end
 
         # Scoped Finders
         ################################################################

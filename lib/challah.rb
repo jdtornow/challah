@@ -39,13 +39,14 @@ module Challah
     # @option options [Class] :password_validator (Challah::PasswordValidator) Pass in a class to use for password validation.
     def options
       @options ||= {
-        access_denied_view:   'sessions/access_denied',
-        api_key_enabled:      false,
-        cookie_prefix:        'challah',
-        email_validator:      'challah/email',
-        password_validator:   PasswordValidator,
-        skip_routes:          false,
-        storage_class:        SimpleCookieStore
+        access_denied_view:     'sessions/access_denied',
+        api_key_enabled:        false,
+        cookie_prefix:          'challah',
+        email_validator:        'challah/email',
+        password_validator:     PasswordValidator,
+        skip_routes:            false,
+        skip_user_validations:  false,
+        storage_class:          SimpleCookieStore
       }
     end
   end

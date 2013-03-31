@@ -98,7 +98,7 @@ class AuditTest < ActiveSupport::TestCase
       @model.created_by = 1
       @model.updated_by = 2
 
-      @model.initialize_dup(nil)
+      @model.send(:initialize_dup, nil)
 
       assert_equal nil, @model.created_by
       assert_equal nil, @model.updated_by

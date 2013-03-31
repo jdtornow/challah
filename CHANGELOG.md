@@ -1,3 +1,9 @@
+## Challah 1.0.0.beta
+
+* Ruby 2.0 compatibility
+* Add option to disable built-in validations
+* Rails 4.0.0 beta support, use lambdas for model scopes
+
 ## Challah 0.9.1
 
 * Basic compatibility with Rails 4. Removed support for `attr_accessible` in newer versions of Rails. Testing and a few other operations not yet support, but the gem is functional on Rails 4.

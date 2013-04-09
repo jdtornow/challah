@@ -4,7 +4,7 @@ Rails.application.routes.draw do
     get '/sign-in',     to: 'sessions#new',       as: 'signin'
     get '/sign-out',    to: 'sessions#destroy',   as: 'signout'
 
-    post '/login',      to: 'sessions#create'
+    post '/login',      to: 'sessions#create',    as: 'submit_login'
     get '/login',       to: 'sessions#new',       as: 'login'
     get '/logout',      to: 'sessions#destroy',   as: 'logout'
   end

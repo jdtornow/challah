@@ -63,23 +63,26 @@ class UserTest < ActiveSupport::TestCase
       assert_equal false, user.valid_session?
     end
 
-    should "not allow updating of certain protected attributes" do
-      user = create(:user, :first_name => 'Old', :last_name => 'Nombre')
+    # Only for Rails 3
+    if defined?(ActiveModel::MassAssignmentSecurity::Error)
+      should "not allow updating of certain protected attributes" do
+        user = create(:user, :first_name => 'Old', :last_name => 'Nombre')
 
-      assert_equal false, user.new_record?
+        assert_equal false, user.new_record?
 
-      assert_equal 0, user.created_by
-      assert_equal 'Old Nombre', user.name
+        assert_equal 0, user.created_by
+        assert_equal 'Old Nombre', user.name
 
-      assert_raise ActiveModel::MassAssignmentSecurity::Error do
-        user.update_attributes({
-          :created_by => 1,
-          :first_name => 'New',
-          :last_name => 'Name'
-        })
+        assert_raise ActiveModel::MassAssignmentSecurity::Error do
+          user.update_attributes({
+            :created_by => 1,
+            :first_name => 'New',
+            :last_name => 'Name'
+          })
+        end
+
+        assert_equal 0, user.created_by
       end
-
-      assert_equal 0, user.created_by
     end
 
     should "create a user with password and authenticate them" do

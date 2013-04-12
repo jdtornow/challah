@@ -11,4 +11,6 @@ gem 'shoulda'
 gem 'simplecov', :require => false
 gem 'sqlite3'
 
+gem 'yard'
+
 gemspec :path => '../'

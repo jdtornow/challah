@@ -1,6 +1,5 @@
 require 'rubygems'
 require 'rake'
-require 'yard'
 
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), *%w(lib)))
 
@@ -14,6 +13,7 @@ Rake::TestTask.new(:test) do |test|
   test.verbose = true
 end
 
+require 'yard'
 require 'rdoc/task'
 
 YARD::Rake::YardocTask.new { |t| }

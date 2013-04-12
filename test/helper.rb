@@ -40,6 +40,10 @@ class ActiveSupport::TestCase
   self.use_transactional_fixtures = true
 end
 
+if Rails::VERSION::MAJOR >= 4
+  require 'edge_helper'
+end
+
 class MockController
   include Challah::Controller
 

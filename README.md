@@ -8,7 +8,7 @@ Challah doesn’t provide any fancy controllers or views that clutter your app o
 
 ## Requirements
 
-* Ruby 1.9.2+
+* Ruby 1.9.3+
 * Bundler
 * Rails 3.1+
 

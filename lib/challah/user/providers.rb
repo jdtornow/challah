@@ -10,9 +10,11 @@ module Challah::User
 
       @providers = {}
 
+      attributes = ::Authorization.hashable_attributes
+
       # Grab providers from existing authorization records
       @providers = authorizations.inject({}) do |hash, m|
-        hash[m.provider.to_sym] = { id: m.id, uid: m.uid, token: m.token }
+        hash[m.provider.to_sym] = attributes.inject({}) { |p, a| p[a.to_sym] = m.send(a); p }
         hash
       end
 

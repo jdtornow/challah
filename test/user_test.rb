@@ -263,7 +263,8 @@ class UserTest < ActiveSupport::TestCase
       expected_auth = {
         :id => auth.id,
         :uid => '12345',
-        :token => 'abcdef1234569'
+        :token => 'abcdef1234569',
+        :expires_at => nil
       }
 
       assert_equal true, user.provider?(:custom)

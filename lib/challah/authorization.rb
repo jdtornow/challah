@@ -15,6 +15,10 @@ module Challah
     end
 
     module ClassMethods
+      def hashable_attributes
+        @hashable_attributes ||= self.columns.map(&:name) - %w( user_id provider last_session_at last_session_ip session_count created_at updated_at )
+      end
+
       # Remove an authorization
       def del(options = {})
         provider  = options.fetch(:provider)
@@ -33,13 +37,13 @@ module Challah
 
       # Create a new authorization record for the given user
       def set(options = {})
-        provider    = options.fetch(:provider)
-        user_id     = options.fetch(:user_id).to_i
-        uid         = options.fetch(:uid)
-        token       = options.fetch(:token)
-        expires_at  = options.fetch(:expires_at, nil)
+        provider    = options.delete(:provider)
+        user_id     = options.delete(:user_id).to_i
+        uid         = options.delete(:uid)
+        token       = options.delete(:token)
+        expires_at  = options.delete(:expires_at) || nil
 
-        del(options)
+        del(provider: provider, user_id: user_id)
 
         record = self.new()
         record.provider = provider
@@ -47,6 +51,9 @@ module Challah
         record.uid = uid
         record.token = token
         record.expires_at = expires_at
+
+        record.attributes = options if options.any?
+
         record.save!
         record
       end

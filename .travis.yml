@@ -13,4 +13,4 @@ gemfile:
   - gemfiles/rails3_2_0.gemfile
   - gemfiles/rails3_2_3.gemfile
   - gemfiles/rails3_2_x.gemfile
-  - gemfiles/rails_edge.gemfile
+  - gemfiles/rails4_0.gemfile

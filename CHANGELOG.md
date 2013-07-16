@@ -1,8 +1,8 @@
-## Challah 1.0.0.beta
+## Challah 1.0.0
 
 * Ruby 2.0 compatibility
 * Add option to disable built-in validations
-* Rails 4.0.0 beta support, use lambdas for model scopes
+* Rails 4.0.0 is the only supported Rails version
 
 ## Challah 0.9.1
 

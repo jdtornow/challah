@@ -30,11 +30,6 @@ module Challah
 
         attr_reader :password, :password_confirmation, :password_updated
 
-        # Kind of hacky, is there a better way to do this?
-        if Rails::VERSION::MAJOR < 4
-          attr_accessible :provider_attributes
-        end
-
         # Validation
         ################################################################
 

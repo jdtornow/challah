@@ -4,7 +4,7 @@ require 'simplecov'
 # Setup a sample rails app for testing rails modules
 sample_root = File.expand_path(File.join(File.dirname(__FILE__), '..', 'tmp', 'sampleapp'))
 FileUtils.rm_rf(sample_root) if File.exists?(sample_root)
-`rails new #{sample_root} --skip-bundle --skip-sprockets`
+`./bin/rails new #{sample_root} --skip-bundle --skip-sprockets`
 
 # Setup environment variables for the Rails instance
 ENV['RAILS_ENV'] = 'test'

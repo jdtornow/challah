@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.homepage      = "http://github.com/jdtornow/challah"
   s.summary       = "A simple gem for authorization and session management in Rails."
   s.description   = %Q{A simple gem for authorization and session management in Rails.}
-  s.files         = Dir.glob("{app,config,db,test,lib,vendor}/**/*") + %w(README.md CHANGELOG.md)
+  s.files         = Dir.glob("{app,config,db,test,lib}/**/*") + %w(README.md CHANGELOG.md)
   s.require_paths = ["lib"]
 
   s.add_dependency 'highline'
@@ -21,5 +21,5 @@ Gem::Specification.new do |s|
   s.add_dependency 'rake', '>= 0.9.2'
   s.add_dependency 'bcrypt-ruby', '>= 0'
 
-  s.required_ruby_version     = Gem::Requirement.new('>= 1.9.2')
+  s.required_ruby_version = Gem::Requirement.new('>= 1.9.2')
 end

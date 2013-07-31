@@ -28,8 +28,7 @@ namespace :challah do
   namespace :setup do
     task :migrations do
       puts "Copying migrations..."
-      ENV['FROM'] = 'challah_engine'
-      Rake::Task['railties:install:migrations'].invoke
+      Rake::Task['challah_engine:install:migrations'].invoke
     end
 
     task :seeds => :environment do

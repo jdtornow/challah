@@ -1,4 +1,5 @@
 module Challah::User
+
   module Finders
     # Find a user instance by username first, or email address if needed.
     # If no user is found matching, return nil
@@ -12,7 +13,11 @@ module Challah::User
       end
 
       if !result
-        authorization = ::Authorization.where(provider: :password, uid: username_or_email.to_s.downcase.strip).first
+        uid = username_or_email.to_s.downcase.strip
+
+        authorization = self.authorization_model
+        authorization = authorization.where(provider: :password, uid: uid)
+        authorization = authorization.first
 
         if authorization
           result = authorization.user
@@ -22,4 +27,5 @@ module Challah::User
       result
     end
   end
+
 end

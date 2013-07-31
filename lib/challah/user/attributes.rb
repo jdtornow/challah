@@ -1,4 +1,5 @@
 module Challah::User
+
   module Attributes
     # Returns true if this user is active, and should be able to log in. If
     # the active column is false, the user will not be able to authenticate
@@ -23,4 +24,5 @@ module Challah::User
       self.active?
     end
   end
+
 end

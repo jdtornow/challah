@@ -14,6 +14,7 @@ class UserTest < ActiveSupport::TestCase
   end
 
   context "A User class" do
+
     should "find a user by username or email" do
       user_one = build(:user, :username => ' Test-user ', :email => 'tester@example.com')
       user_two = build(:user, :username => 'test-user-2  ', :email => 'tester2@example.com')
@@ -36,6 +37,12 @@ class UserTest < ActiveSupport::TestCase
       assert_equal nil, ::User.find_for_session(' ')
       assert_equal nil, ::User.find_for_session('not-existing')
     end
+
+    should "have a reference to the authorizations model" do
+      assert_equal Authorization, User.authorization_model
+      assert_equal 'authorizations', User.authorizations_table_name
+    end
+
   end
 
   context "A user instance" do

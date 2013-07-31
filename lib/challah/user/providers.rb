@@ -1,8 +1,9 @@
 module Challah::User
   module Providers
+
     def authorizations
       return [] if new_record?
-      ::Authorization.where(user_id: self.id)
+      self.class.authorization_model.where(user_id: self.id)
     end
 
     def providers
@@ -10,7 +11,7 @@ module Challah::User
 
       @providers = {}
 
-      attributes = ::Authorization.hashable_attributes
+      attributes = self.class.authorization_model.hashable_attributes
 
       # Grab providers from existing authorization records
       @providers = authorizations.inject({}) do |hash, m|
@@ -60,4 +61,5 @@ module Challah::User
       end
     end
   end
+
 end

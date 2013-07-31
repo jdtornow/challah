@@ -1,5 +1,6 @@
 module Challah
   module Authorization
+
     def challah_authorization
       unless included_modules.include?(InstanceMethods)
         include InstanceMethods
@@ -10,13 +11,14 @@ module Challah
     module InstanceMethods
       def user
         return nil unless self.user_id
-        @user ||= ::User.where(id: self.user_id).first
+        @user ||= self.class.user_model.where(id: self.user_id).first
       end
     end
 
     module ClassMethods
       def hashable_attributes
-        @hashable_attributes ||= self.columns.map(&:name) - %w( user_id provider last_session_at last_session_ip session_count created_at updated_at )
+        protected_attributes = %w( user_id provider last_session_at last_session_ip session_count created_at updated_at )
+        @hashable_attributes ||= self.columns.map(&:name) - protected_attributes
       end
 
       # Remove an authorization
@@ -58,5 +60,14 @@ module Challah
         record
       end
     end
+
+    def users_table_name
+      @users_table_name ||= user_model.table_name
+    end
+
+    def user_model
+      @user_model ||= ::User
+    end
+
   end
 end

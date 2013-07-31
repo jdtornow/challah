@@ -1,8 +1,9 @@
 require 'challah/user/attributes'
 require 'challah/user/authentication'
 require 'challah/user/finders'
-require 'challah/user/providers'
 require 'challah/user/password'
+require 'challah/user/providers'
+require 'challah/user/reflector'
 
 module Challah
   module User
@@ -14,6 +15,7 @@ module Challah
         include Providers
         include Password
         extend Finders
+        extend Reflector
       end
 
       email_validation_hash = {

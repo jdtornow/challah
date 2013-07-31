@@ -78,4 +78,4 @@ module Challah
   register_provider :password, PasswordProvider
 end
 
-require 'challah/railtie' if defined?(Rails)
+require 'challah/engine' if defined?(Rails)

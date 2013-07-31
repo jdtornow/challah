@@ -1,7 +1,9 @@
-module Challah
-  require 'abstract_controller/rendering'
+require 'abstract_controller/rendering'
 
-  class Engine < Rails::Engine
+module Challah
+
+  class Engine < ::Rails::Engine
+
     initializer 'challah.router' do |app|
       app.routes_reloader.paths.insert(0, File.expand_path(File.join(File.dirname(__FILE__), 'routes.rb')))
     end
@@ -59,4 +61,5 @@ module Challah
       end
     end
   end
+
 end

@@ -1,3 +1,8 @@
+## Challah 1.1.0
+
+* Allow challah to authenticate with User and Authorization tables that using namespaces
+* Multiple accounts can be signed in at once using multiple user tables
+
 ## Challah 1.0.0
 
 * Ruby 2.0 compatibility

@@ -10,7 +10,7 @@ Challah doesn’t provide any fancy controllers or views that clutter your app o
 
 * Ruby 1.9.3+
 * Bundler
-* Rails 3.1+
+* Rails 4.0+
 
 ## Installation
 
@@ -52,10 +52,6 @@ Challah provides the core `User` model for your app, and a database migration to
 A user is anyone that needs to be able to authenticate (sign in) to the application. Each user requires a first name, last name, email address, username, and password.
 
 By default a user is marked as “active” and is able to log in to your application. If the active status column is toggled to false, then this user is no longer able to log in. The active status column can be used as a soft-delete function for users.
-
-### Permissions and Roles
-
-As of version 0.7.0 of Challah, permissions and roles have been moved to their own gem in [Challah Rolls](https://github.com/jdtornow/challah-rolls). Add this gem to your project to get additional functionality for permissions and role based restrictions.
 
 ## Checking for a current user
 

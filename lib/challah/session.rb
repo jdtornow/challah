@@ -4,11 +4,12 @@ module Challah
     include ActiveModel::Conversion
 
     attr_accessor :return_to, :ip, :user, :store, :persist
-    attr_reader :params, :request
+    attr_reader :params, :request, :user_model
 
-    def initialize(request = nil, params = {})
+    def initialize(request = nil, params = {}, user_model = nil)
       @request = request
       @params = params || {}
+      @user_model = user_model || Challah.user
       @store = Challah.options[:storage_class].new(self)
     end
 
@@ -42,7 +43,7 @@ module Challah
       persistence_token, user_id = self.store.read
       return false if persistence_token.nil? or user_id.nil?
 
-      store_user = ::User.unscoped.where(id: user_id).first
+      store_user = user_model.unscoped.where(id: user_id).first
 
       if store_user and store_user.active? and store_user.persistence_token == persistence_token
         if store_user.valid_session?
@@ -97,10 +98,12 @@ module Challah
 
     class << self
       # Manually create a new Session
-      def create(user_or_user_id, request = nil, params = nil)
-        user_record = ::User === user_or_user_id ? user_or_user_id : ::User.find_by_id(user_or_user_id)
+      def create(user_or_user_id, request = nil, params = nil, user_model = nil)
+        user_model = Challah.user if user_model.nil?
 
-        session = Session.new(request, params)
+        user_record = user_model === user_or_user_id ? user_or_user_id : user_model.find_by_id(user_or_user_id)
+
+        session = Session.new(request, params, user_model)
 
         if user_record and user_record.active?
           session.user = user_record
@@ -111,8 +114,8 @@ module Challah
       end
 
       # Manually create a session, and save it.
-      def create!(user_or_user_id, request = nil, params = nil)
-        session = create(user_or_user_id, request, params)
+      def create!(user_or_user_id, request = nil, params = nil, user_model = nil)
+        session = create(user_or_user_id, request, params, user_model)
         session.save
         session
       end
@@ -138,6 +141,8 @@ module Challah
       def authenticate!
         Challah.techniques.values.each do |klass|
           technique = klass.new(self)
+          technique.user_model = user_model if technique.respond_to?(:"user_model=")
+
           @user = technique.authenticate
 
           if @user

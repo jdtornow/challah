@@ -3,6 +3,18 @@ require 'helper'
 class SessionTest < ActiveSupport::TestCase
   include Challah
 
+  class FakeUserModel
+
+    def id
+      999
+    end
+
+    def active?
+      true
+    end
+
+  end
+
   context "An Challah::Session class" do
     should "have an inspected view" do
       user = create(:user)
@@ -49,6 +61,16 @@ class SessionTest < ActiveSupport::TestCase
       session_three = Session.find
       assert_equal false, session_three.valid?
       assert_equal nil, session_three.user
+    end
+
+    should "accept a user model" do
+      user = create(:user)
+      session = Session.create(user, {}, {}, ::User)
+      assert_equal ::User, session.user_model
+
+      user = FakeUserModel.new
+      session = Session.create(user, {}, {}, FakeUserModel)
+      assert_equal FakeUserModel, session.user_model
     end
   end
 

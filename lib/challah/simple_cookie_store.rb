@@ -41,6 +41,10 @@ module Challah
         request.cookie_jar
       end
 
+      def default_cookie_prefix
+        Challah.options[:cookie_prefix]
+      end
+
       def domain
         request.session_options[:domain]
       end
@@ -70,7 +74,7 @@ module Challah
       end
 
       def prefix
-        @prefix ||= Challah.options[:cookie_prefix]
+        @prefix ||= [ default_cookie_prefix, user_model_id ].compact.join('-')
       end
 
       def request
@@ -88,6 +92,12 @@ module Challah
 
       def session_cookie_value
         "#@token#{joiner}#@user_id"
+      end
+
+      def user_model_id
+        if @session && @session.user_model && @session.user_model.table_name != 'users'
+          Encrypter.md5(@session.user_model.table_name).slice(0..5)
+        end
       end
 
       def validation_cookie

@@ -43,11 +43,11 @@ module Challah
   def self.include_user_plugins!
     Challah.plugins.values.each do |plugin|
       plugin.user_extensions.each do |mod|
-        ::User.send(:extend, mod)
+        Challah.user.send(:extend, mod)
       end
 
       plugin.user_init_methods.each do |method_name|
-        ::User.send(method_name)
+        Challah.user.send(method_name)
       end
     end
   end

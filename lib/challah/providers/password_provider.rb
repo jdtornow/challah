@@ -1,16 +1,17 @@
 module Challah
   class PasswordProvider
     def self.save(user)
-      set(uid: user.username, token: user.password, user_id: user.id)
+      set(uid: user.username, token: user.password, user_id: user.id, authorization: user.class.authorization_model)
     end
 
     def self.set(options = {})
-      user_id = options.fetch(:user_id)
-      uid     = options.fetch(:uid, '')
-      token   = options.fetch(:token, '')
+      user_id     = options.fetch(:user_id)
+      uid         = options.fetch(:uid, '')
+      token       = options.fetch(:token, '')
+      auth_model  = options.fetch(:authorization, ::Authorization)
 
       if token.to_s.blank?
-        authorization = ::Authorization.get({
+        authorization = auth_model.get({
           user_id:  user_id,
           provider: :password
         })
@@ -22,7 +23,7 @@ module Challah
         token = Challah::Encrypter.encrypt(token)
       end
 
-      ::Authorization.set({
+      auth_model.set({
         provider: :password,
         user_id:  user_id,
         uid:      uid,

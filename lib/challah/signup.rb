@@ -7,7 +7,7 @@ module Challah
     attr_accessor :provider, :user
 
     def initialize(attributes = {})
-      self.user = ::User.new
+      self.user = Challah.user.new
       self.provider = :password
       self.attributes = attributes
       @errors = []

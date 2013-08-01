@@ -46,8 +46,13 @@ module Challah
         password_validator:     PasswordValidator,
         skip_routes:            false,
         skip_user_validations:  false,
-        storage_class:          SimpleCookieStore
+        storage_class:          SimpleCookieStore,
+        user:                   :User
       }
+    end
+
+    def user
+      @user ||= options[:user].to_s.safe_constantize
     end
   end
 

@@ -1,16 +1,20 @@
 module Challah
+
   # Allows authentication by username and password.
   class PasswordTechnique
+
+    attr_accessor :user_model
+
     # grab the params we want from this request
     def initialize(session)
-      @username = session.username? ? session.username : nil
-      @password = session.password? ? session.password : nil
+      @username   = session.username? ? session.username : nil
+      @password   = session.password? ? session.password : nil
     end
 
     # if we can successfully authenticate, return a User instance, otherwise nil
     def authenticate
       if username? and password?
-        user = ::User.find_for_session(username)
+        user = user_model.find_for_session(username)
 
         if user
           if user.active?
@@ -35,6 +39,10 @@ module Challah
       true
     end
 
+    def user_model
+      @user_model ||= Challah.user
+    end
+
     def username?
       !!@username
     end
@@ -43,4 +51,5 @@ module Challah
       @username
     end
   end
+
 end

@@ -77,7 +77,7 @@ module Challah
         #
         # @return [Session] The current browser session.
         def current_user_session
-          @current_user_session ||= Challah::Session.find(request, params)
+          @current_user_session ||= Challah::Session.find(request, params, user_model)
         end
 
         # Restrict a controller to only authenticated users. If someone tries to access
@@ -110,6 +110,10 @@ module Challah
           end
         end
         alias_method :login_required, :signin_required
+
+        def user_model
+          @_user_model ||= Challah.user
+        end
     end
   end
 end

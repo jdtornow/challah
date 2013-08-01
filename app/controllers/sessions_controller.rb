@@ -29,13 +29,14 @@ class SessionsController < ApplicationController
   end
 
   protected
-    def destroy_session
-      current_user_session.destroy
-    end
 
-    def return_to_path(default_path = '/')
-      result = session[:return_to]
-      result = nil if result and result == "http://#{request.domain}/"
-      result || default_path
-    end
+  def destroy_session
+    current_user_session.destroy
+  end
+
+  def return_to_path(default_path = '/')
+    result = session[:return_to]
+    result = nil if result and result == "http://#{request.domain}/"
+    result || default_path
+  end
 end

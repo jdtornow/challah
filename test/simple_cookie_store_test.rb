@@ -3,6 +3,14 @@ require 'helper'
 class SimpleCookieStoreTest < ActiveSupport::TestCase
   include Challah
 
+  class FakeUserModel
+
+    def self.table_name
+      'fake_user_peoples'
+    end
+
+  end
+
   context "The SimpleCookieStore class" do
     setup do
       @user = create(:user)
@@ -24,6 +32,23 @@ class SimpleCookieStoreTest < ActiveSupport::TestCase
 
       assert_equal Encrypter.md5("#{@user.persistence_token}@#{@user.id}"), @request.cookies['challah-v'][:value]
       assert_equal "test.dev", @request.cookies['challah-v'][:domain]
+    end
+
+    should "save session in a namespaced cookie store for non user tables" do
+      assert_equal [], @request.cookies.keys
+
+      session = Session.new(@request, {}, FakeUserModel)
+      session.store = SimpleCookieStore.new(session)
+      session.persist = true
+      session.user = @user
+      session.save
+
+      assert_equal %w( challah-d635fd-s challah-d635fd-v ), @request.cookies.keys.sort
+      assert_equal "#{@user.persistence_token}@#{@user.id}", @request.cookies['challah-d635fd-s'][:value]
+      assert_equal "test.dev", @request.cookies['challah-d635fd-s'][:domain]
+
+      assert_equal Encrypter.md5("#{@user.persistence_token}@#{@user.id}"), @request.cookies['challah-d635fd-v'][:value]
+      assert_equal "test.dev", @request.cookies['challah-d635fd-v'][:domain]
     end
 
     should "be able to inspect the store" do

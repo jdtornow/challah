@@ -66,7 +66,7 @@ module Challah
     end
 
     def user_model
-      @user_model ||= ::User
+      @user_model ||= Challah.user
     end
 
   end

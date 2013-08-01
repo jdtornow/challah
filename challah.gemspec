@@ -11,9 +11,10 @@ Gem::Specification.new do |s|
   s.authors       = ["John Tornow"]
   s.email         = ["john@johntornow.com"]
   s.homepage      = "http://github.com/jdtornow/challah"
-  s.summary       = "A simple gem for authorization and session management in Rails."
-  s.description   = %Q{A simple gem for authorization and session management in Rails.}
-  s.files         = Dir.glob("{app,config,db,test,lib}/**/*") + %w(README.md CHANGELOG.md)
+  s.summary       = "Rails 4 authentication and sessions"
+  s.description   = "A simple gem for authorization and session management in Rails."
+  s.license       = 'MIT'
+  s.files         = Dir.glob("{app,config,db,test,lib}/**/*") + %w( README.md CHANGELOG.md )
   s.require_paths = ["lib"]
 
   s.add_dependency 'highline'

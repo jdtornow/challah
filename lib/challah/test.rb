@@ -1,3 +1,10 @@
+require 'challah/test/helpers'
+require 'challah/test/unit'
+
+if defined?(RSpec)
+  require 'challah/test/rspec'
+end
+
 # Used to persist session data in test mode instead of using cookies. Stores the session
 # data lazily in a global var, accessible across the testing environment.
 class TestSessionStore
@@ -25,21 +32,3 @@ end
 
 Challah.options[:storage_class] = TestSessionStore
 
-class ActiveSupport::TestCase
-  # Sign the given user instance in
-  def signin_as(user)
-    Challah::Session.create!(user)
-  end
-  alias_method :login_as, :signin_as
-
-  # Sign the given user instance out
-  def signout
-    Challah::Session.destroy
-  end
-  alias_method :logout, :signout
-
-  setup do
-    # Reset any challah user sessions for each test.
-    $challah_test_session = nil
-  end
-end

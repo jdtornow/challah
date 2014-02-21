@@ -1,5 +1,3 @@
-require 'abstract_controller/rendering'
-
 module Challah
 
   class Engine < ::Rails::Engine

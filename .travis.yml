@@ -2,10 +2,11 @@ language: ruby
 rvm:
   - 1.9.3
   - 2.0.0
+  - 2.1.0
 script: bundle exec rake test
 branches:
   only:
     - master
-    - providers
 gemfile:
   - Gemfile
+  - gemfiles/rails40.gemfile

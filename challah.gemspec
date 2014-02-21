@@ -18,9 +18,9 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   s.add_dependency 'highline'
-  s.add_dependency 'rails', '>= 4.0'
-  s.add_dependency 'rake', '>= 0.9.2'
-  s.add_dependency 'bcrypt-ruby', '>= 0'
+  s.add_dependency 'rails', '~> 4'
+  s.add_dependency 'rake', '>= 0.9'
+  s.add_dependency 'bcrypt-ruby', '~> 3.0'
 
   s.required_ruby_version = Gem::Requirement.new('>= 1.9.2')
 end

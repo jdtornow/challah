@@ -28,7 +28,7 @@ Challah.options[:storage_class] = TestSessionStore
 class ActiveSupport::TestCase
   # Sign the given user instance in
   def signin_as(user)
-    Challah::Session.create!(user)
+    Challah::Session.create!(user, nil, nil, user.class)
   end
   alias_method :login_as, :signin_as
 

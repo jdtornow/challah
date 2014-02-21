@@ -33,115 +33,15 @@ end
 `rake --rakefile #{ File.expand_path("../dummy/Rakefile",  __FILE__) } challah_engine:install:migrations`
 `rake --rakefile #{ File.expand_path("../dummy/Rakefile",  __FILE__) } db:migrate`
 
-require 'edge_helper'
+Dir["#{ File.dirname(__FILE__) }/support/**/*.rb"].each { |f| require f }
 
-# Use ActiveSupport::TestCase for any tests using factories and database saving,
-# so we can have a transactional rollback after each test.
 class ActiveSupport::TestCase
+  ActiveRecord::Migration.check_pending!
+
+  fixtures :all
+
   include FactoryGirl::Syntax::Methods
 
   self.use_transactional_fixtures = true
 end
 
-class MockController
-  include Challah::Controller
-
-  attr_accessor :request, :session, :params
-
-  def initialize()
-    @request = MockRequest.new
-    @session ||= {}
-    @params ||= {}
-  end
-
-  def redirect_to(*args)
-    # do nothing
-  end
-
-  def login_path
-    "/login"
-  end
-
-  def logout_path
-    "/logout"
-  end
-
-  def signin_path
-    "/sign-in"
-  end
-
-  def signout_path
-    "/sign-out"
-  end
-end
-
-class MockRequest
-  attr_accessor :cookie_jar, :session_options, :url
-
-  class MockCookieJar < Hash
-    def delete(key, options = {})
-      super(key)
-    end
-  end
-
-  def initialize
-    @cookie_jar = MockCookieJar.new
-    @session_options = { :domain => 'test.dev' }
-    @url = "http://example.com/"
-  end
-
-  def cookies
-    @cookie_jar
-  end
-
-  def cookies=(value)
-    @cookie_jar = value
-  end
-
-  def remote_ip
-    "8.8.8.8"
-  end
-
-  def user_agent
-    "Some Cool Browser"
-  end
-end
-
-class FakeProvider
-  def self.save(record)
-    set(record.fake_provider.merge(user_id: record.id))
-  end
-
-  def self.set(options = {})
-    user_id = options.fetch(:user_id)
-    uid     = options.fetch(:uid, '')
-    token   = options.fetch(:token, '')
-
-    Authorization.set({
-      provider: :fake,
-      user_id:  user_id,
-      uid:      uid,
-      token:    token
-    })
-  end
-
-  def self.valid?(record)
-    record.fake_provider? and record.fake_provider.fetch(:token) == 'me'
-  end
-end
-
-Challah.register_provider :fake, FakeProvider
-
-# Monkey patch fix for shoulda and Rails 3.1+.
-module Shoulda
-  module ActiveRecord
-    module Matchers
-      class AssociationMatcher
-        protected
-          def foreign_key
-            reflection.foreign_key
-          end
-      end
-    end
-  end
-end

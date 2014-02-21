@@ -4,7 +4,6 @@ gemspec
 
 group :test do
   gem 'minitest'
-  gem 'turn'
   gem 'factory_girl'
   gem 'mocha', '>= 0.10', :require => false
   gem 'shoulda'

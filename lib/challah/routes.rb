@@ -8,9 +8,4 @@ Rails.application.routes.draw do
     get '/login',       to: 'sessions#new',       as: 'login'
     get '/logout',      to: 'sessions#destroy',   as: 'logout'
   end
-
-  # These are used for testing purposes only.
-  if Rails.env.test?
-    get '/challah/:action', controller: 'challah/test/restrictions'
-  end
 end

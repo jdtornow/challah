@@ -4,7 +4,7 @@ require 'simplecov'
 # Setup a sample rails app for testing rails modules
 sample_root = File.expand_path(File.join(File.dirname(__FILE__), '..', 'tmp', 'sampleapp'))
 FileUtils.rm_rf(sample_root) if File.exists?(sample_root)
-`./bin/rails new #{sample_root} --skip-bundle --skip-sprockets`
+`bundle exec rails new #{sample_root} --skip-bundle --skip-sprockets`
 
 # Setup environment variables for the Rails instance
 ENV['RAILS_ENV'] = 'test'
@@ -26,7 +26,7 @@ require 'challah/test'
 
 # Setup the challah app, including running migrations within the rails app
 # TODO - this causes some annoying output in 1.9.3, still works, but would like to suppress
-`rake --rakefile #{File.join(sample_root, 'Rakefile')} challah:setup:migrations`
+`bundle exec rake --rakefile #{File.join(sample_root, 'Rakefile')} challah:setup:migrations`
 
 # Run migrations for the sample app, hiding output
 ActiveRecord::Migration.verbose = false

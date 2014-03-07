@@ -19,3 +19,10 @@ test/dummy/db/*.sqlite3
 test/dummy/db/migrate/*.challah_engine.rb
 test/dummy/log
 test/dummy/public/system
+
+
+spec/dummy/db/schema.rb
+spec/dummy/db/*.sqlite3
+spec/dummy/db/migrate/*.challah_engine.rb
+spec/dummy/log
+spec/dummy/public/system

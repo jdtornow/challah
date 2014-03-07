@@ -1,3 +1,12 @@
+## Challah 1.1.2 (Not Released)
+
+* Convert tests to RSpec
+
+## Challah 1.1.1
+
+* Internal clean up of tests and gem dependencies
+* Enable compatibility with Rails 4.1.0.rc1
+
 ## Challah 1.1.0
 
 * Allow challah to authenticate with User and Authorization tables that using namespaces

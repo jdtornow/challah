@@ -16,6 +16,6 @@ vendor/bundle
 *.gem
 test/dummy/db/schema.rb
 test/dummy/db/*.sqlite3
-test/dummy/db/migrate/*.bakery.rb
+test/dummy/db/migrate/*.challah_engine.rb
 test/dummy/log
 test/dummy/public/system

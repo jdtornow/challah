@@ -144,9 +144,9 @@ If you have any issues or find bugs running Challah, please [report them on Gith
 
 ### Testing
 
-Challah is fully tested using Test Unit, Shoulda and Mocha. To run the test suite, `bundle install` then run:
+Challah is fully tested using RSpec. To run the test suite, `bundle install` then run:
 
-    rake test
+    rspec
 
 ## License
 

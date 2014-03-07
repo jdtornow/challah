@@ -4,9 +4,11 @@ rvm:
   - 2.0.0
   - 2.1.0
 script: bundle exec rspec
+cache: bundler
 branches:
   only:
     - master
 gemfile:
   - Gemfile
   - gemfiles/rails40.gemfile
+  - gemfiles/rails41.gemfile

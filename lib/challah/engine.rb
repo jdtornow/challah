@@ -45,7 +45,7 @@ module Challah
         if defined?(ActiveRecord)
           Challah.options[:logger] = ActiveRecord::Base.logger
 
-          #ActiveRecord::Base.send(:extend, Challah::User)
+          ActiveRecord::Base.send(:include, Challah::ActiveRecordExtensions)
           ActiveRecord::Base.send(:extend, Challah::Authorization)
           ActiveRecord::Base.send(:include, Challah::Audit)
 

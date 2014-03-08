@@ -11,7 +11,5 @@ class User < ActiveRecord::Base
   # For a list of all methods included into User, see:
   #
   # http://rubydoc.info/gems/challah
-  #challah_user
-
   include Challah::Userable
 end

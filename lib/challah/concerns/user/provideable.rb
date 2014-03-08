@@ -1,9 +1,22 @@
-module Challah::User
-  module Providers
+module Challah
+  module UserProvideable
+    extend ActiveSupport::Concern
 
-    def authorizations
-      return [] if new_record?
-      self.class.authorization_model.where(user_id: self.id)
+    included do
+      after_save :update_modified_providers_after_save
+      after_save :clear_cached_providers_after_save
+    end
+
+    def method_missing(method, *args)
+      method_name = method.to_s
+
+      if method_name =~ /^([a-z]*)_provider\?$/
+        return provider?($1)
+      elsif method_name =~ /^([a-z]*)_provider$/
+        return provider($1)
+      end
+
+      super
     end
 
     def providers
@@ -60,6 +73,33 @@ module Challah::User
         false
       end
     end
-  end
 
+    protected
+
+    def clear_cached_providers_after_save
+      @providers = nil
+    end
+
+    # If password or username was changed, update the authorization record
+    def update_modified_providers_after_save
+      # Save password provider
+      if @password_updated or @username_updated
+        Challah.providers[:password].save(self)
+        @password_updated = false
+        @username_updated = false
+        @password = nil
+      end
+
+      # Save any other providers
+      Challah.custom_providers.each do |name, klass|
+        custom_provider_attributes = provider_attributes[name]
+
+        if custom_provider_attributes.respond_to?(:fetch)
+          if klass.valid?(self)
+            klass.save(self)
+          end
+        end
+      end
+    end
+  end
 end

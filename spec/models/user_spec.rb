@@ -2,7 +2,7 @@ require "spec_helper"
 
 module Challah
   # TODO make these specs not look like unit tests
-  describe ::User do
+  describe User do
     it "should find a user by username or email" do
       user_one = build(:user, :username => ' Test-user ', :email => 'tester@example.com')
       user_two = build(:user, :username => 'test-user-2  ', :email => 'tester2@example.com')
@@ -13,26 +13,26 @@ module Challah
       user_one.save
       user_two.save
 
-      assert_equal user_one, ::User.find_for_session('test-user')
-      assert_equal user_one, ::User.find_for_session('tester@example.com')
+      assert_equal user_one, User.find_for_session('test-user')
+      assert_equal user_one, User.find_for_session('tester@example.com')
 
-      assert_equal user_one, ::User.find_for_session('Test-user')
-      assert_equal user_one, ::User.find_for_session('tester@example.com')
+      assert_equal user_one, User.find_for_session('Test-user')
+      assert_equal user_one, User.find_for_session('tester@example.com')
 
-      assert_equal user_two, ::User.find_for_session('test-user-2')
-      assert_equal user_two, ::User.find_for_session('tester2@example.com')
+      assert_equal user_two, User.find_for_session('test-user-2')
+      assert_equal user_two, User.find_for_session('tester2@example.com')
 
-      assert_equal nil, ::User.find_for_session(' ')
-      assert_equal nil, ::User.find_for_session('not-existing')
+      assert_equal nil, User.find_for_session(' ')
+      assert_equal nil, User.find_for_session('not-existing')
     end
 
     it "should have a reference to the authorizations model" do
-      assert_equal ::Authorization, ::User.authorization_model
-      assert_equal 'authorizations', ::User.authorizations_table_name
+      assert_equal ::Authorization, User.authorization_model
+      assert_equal 'authorizations', User.authorizations_table_name
     end
 
     it "should have a name attribute that returns the full name" do
-      user = ::User.new
+      user = User.new
 
       user.stubs(:first_name).returns('Cal')
       user.stubs(:last_name).returns('Ripken')
@@ -42,7 +42,7 @@ module Challah
     end
 
     it "should have an active? user flag" do
-      user = ::User.new
+      user = User.new
 
       user.active = true
       assert_equal true, user.active
@@ -172,7 +172,7 @@ module Challah
       user.save
 
       # reload
-      user = ::User.find_by_id(user.id)
+      user = User.find_by_id(user.id)
 
       assert_equal true, user.authenticate('test123')
       assert_equal 'john', user.username
@@ -181,7 +181,7 @@ module Challah
       user.save
 
       # reload
-      user = ::User.find_by_id(user.id)
+      user = User.find_by_id(user.id)
 
       assert_equal true, user.authenticate('test123')
       assert_equal 'johndoe', user.username
@@ -272,7 +272,7 @@ module Challah
       assert_equal true, user.provider?(:fake)
       assert_equal true, user.valid_provider?(:fake)
 
-      expect { user.save }.to change { ::User.count }.by(1)
+      expect { user.save }.to change { User.count }.by(1)
     end
 
     it "should not add invalid providers" do
@@ -296,7 +296,7 @@ module Challah
         user.password_confirmation = 'abc123'
         assert_equal 'abc123', user.password
 
-        expect { user.save }.to change { ::User.count }.by(1)
+        expect { user.save }.to change { User.count }.by(1)
 
         expect(user.provider?(:password)).to be_true
         expect(user.provider(:password)).to_not be_nil
@@ -320,6 +320,36 @@ module Challah
           expect(duplicate.valid?).to be_false
           expect(duplicate.errors).to include(:email)
         end
+      end
+    end
+
+    describe ".active" do
+      before do
+        create_list(:user, 3, active: true)
+        create_list(:user, 2, active: false)
+      end
+
+      it "is a relation" do
+        expect(User.active).to be_kind_of(ActiveRecord::Relation)
+      end
+
+      it "returns the active users" do
+        expect(User.active.count).to eq(3)
+      end
+    end
+
+    describe ".inactive" do
+      before do
+        create_list(:user, 3, active: true)
+        create_list(:user, 2, active: false)
+      end
+
+      it "is a relation" do
+        expect(User.inactive).to be_kind_of(ActiveRecord::Relation)
+      end
+
+      it "returns the inactive users" do
+        expect(User.inactive.count).to eq(2)
       end
     end
   end

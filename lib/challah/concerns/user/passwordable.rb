@@ -1,5 +1,5 @@
-module Challah::User
-  module Password
+module Challah
+  module UserPasswordable
     # Set the password and password_confirmation in one shortcut method.
     def password!(new_password)
       self.password = new_password

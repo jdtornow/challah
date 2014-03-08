@@ -1,6 +1,8 @@
-## Challah 1.1.2 (Not Released)
+## Challah (Not Released)
 
 * Convert tests to RSpec
+* Remove use of `challah_user` and replace with concerns
+* Internal clean up of included modules
 
 ## Challah 1.1.1
 

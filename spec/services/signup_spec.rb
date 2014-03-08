@@ -16,7 +16,7 @@ module Challah
       signup.password               = 'test123'
       signup.password_confirmation  = 'test123'
 
-      expect { signup.save }.to change { ::User.count }.by(1)
+      expect { signup.save }.to change { User.count }.by(1)
 
       assert_equal false, signup.new_record?
       assert_equal "Avon Barksdale", signup.user.name
@@ -35,7 +35,7 @@ module Challah
 
       signup = Challah::Signup.new(user_params)
 
-      expect { signup.save }.to change { ::User.count }.by(1)
+      expect { signup.save }.to change { User.count }.by(1)
 
       assert_equal false, signup.new_record?
       assert_equal 'Stringer Bell', signup.user.name
@@ -48,7 +48,7 @@ module Challah
       signup.last_name    = 'Barksdale'
       signup.email        = 'avon@challah.me'
 
-      expect { signup.save }.to_not change { ::User.count }
+      expect { signup.save }.to_not change { User.count }
 
       assert_equal true, signup.new_record?
       assert_equal "Avon Barksdale", signup.user.name
@@ -65,7 +65,7 @@ module Challah
       signup.password_confirmation = ""
       signup.provider_attributes = { "fake" => { "uid" => "1", "token" => "me" } }
 
-      expect { signup.save }.to change { ::User.count }.by(1)
+      expect { signup.save }.to change { User.count }.by(1)
 
       assert_equal :fake, signup.provider
       assert_equal "me", signup.user.providers[:fake].fetch(:token)
@@ -78,7 +78,7 @@ module Challah
       signup.email        = 'avon@challah.me'
       signup.provider     = nil
 
-      expect { signup.save }.to_not change { ::User.count }
+      expect { signup.save }.to_not change { User.count }
 
       assert_equal true, signup.new_record?
       assert_equal "Avon Barksdale", signup.user.name
@@ -93,7 +93,7 @@ module Challah
       signup.provider     = "blank"
       signup.provider_attributes = { "blank" => { "uid" => "1", "token" => "1" } }
 
-      expect { signup.save }.to_not change { ::User.count }
+      expect { signup.save }.to_not change { User.count }
 
       assert_equal true, signup.new_record?
       assert_equal "Avon Barksdale", signup.user.name

@@ -26,34 +26,32 @@ module Challah
   autoload :PasswordProvider,                 'challah/providers/password_provider'
 
   # Configuration options
-  class << self
-    # Get or set options for the current Challah instance. In most cases these should be
-    # changed within a config/initializers/ file in your app.
-    #
-    # @param [Hash] options The options to get or set
-    # @option options [String] :cookie_prefix ('challah') A prefix to put in the names of the cookies that will be set.
-    # @option options [String] :access_denied_view ('challah/sessions/access_denied')Relative path to the view that will be used to show access denied method.
-    # @option options [Class] :storage_class (SimpleCookieStore) The class to use for persistence of sessions.
-    # @option options [Boolean] :skip_routes (false) Pass in true to not add any routes into your Rails app by default.
-    # @option options [String] :email_validator ('challah/email') Pass in a string name of the class to use for email validation. Class should inherit from ActiveModel::EachValidator
-    # @option options [Class] :password_validator (Challah::PasswordValidator) Pass in a class to use for password validation.
-    def options
-      @options ||= {
-        access_denied_view:     'sessions/access_denied',
-        api_key_enabled:        false,
-        cookie_prefix:          'challah',
-        email_validator:        'challah/email',
-        password_validator:     PasswordValidator,
-        skip_routes:            false,
-        skip_user_validations:  false,
-        storage_class:          SimpleCookieStore,
-        user:                   :User
-      }
-    end
+  # Get or set options for the current Challah instance. In most cases these should be
+  # changed within a config/initializers/ file in your app.
+  #
+  # @param [Hash] options The options to get or set
+  # @option options [String] :cookie_prefix ('challah') A prefix to put in the names of the cookies that will be set.
+  # @option options [String] :access_denied_view ('challah/sessions/access_denied')Relative path to the view that will be used to show access denied method.
+  # @option options [Class] :storage_class (SimpleCookieStore) The class to use for persistence of sessions.
+  # @option options [Boolean] :skip_routes (false) Pass in true to not add any routes into your Rails app by default.
+  # @option options [String] :email_validator ('challah/email') Pass in a string name of the class to use for email validation. Class should inherit from ActiveModel::EachValidator
+  # @option options [Class] :password_validator (Challah::PasswordValidator) Pass in a class to use for password validation.
+  def self.options
+    @options ||= {
+      access_denied_view:     'sessions/access_denied',
+      api_key_enabled:        false,
+      cookie_prefix:          'challah',
+      email_validator:        'challah/email',
+      password_validator:     PasswordValidator,
+      skip_routes:            false,
+      skip_user_validations:  false,
+      storage_class:          SimpleCookieStore,
+      user:                   :User
+    }
+  end
 
-    def user
-      @user ||= options[:user].to_s.safe_constantize
-    end
+  def self.user
+    @user ||= options[:user].to_s.safe_constantize
   end
 
   # Set up techniques engines

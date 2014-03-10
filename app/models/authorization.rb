@@ -1,3 +1,3 @@
 class Authorization < ActiveRecord::Base
-  challah_authorization
+  include Challah::Authorizeable
 end

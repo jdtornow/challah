@@ -20,12 +20,11 @@ module Challah
   autoload :EmailValidator,                   "challah/validators/email_validator"
   autoload :PasswordValidator,                "challah/validators/password_validator"
 
-  autoload :Authorization,                    "challah/authorization"
-
   autoload :PasswordProvider,                 "challah/providers/password_provider"
 
   autoload :ActiveRecordExtensions,           "challah/active_record_extensions"
 
+  autoload :Authorizeable,                    "challah/concerns/authorizeable"
   autoload :Userable,                         "challah/concerns/userable"
   autoload :UserAttributeable,                "challah/concerns/user/attributeable"
   autoload :UserAuthenticateable,             "challah/concerns/user/authenticateable"

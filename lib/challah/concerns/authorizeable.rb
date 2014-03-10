@@ -1,18 +1,14 @@
 module Challah
-  module Authorization
+  module Authorizeable
+    extend ActiveSupport::Concern
 
-    def challah_authorization
-      unless included_modules.include?(InstanceMethods)
-        include InstanceMethods
-        extend ClassMethods
-      end
+    included do
+      extend ClassMethods
     end
 
-    module InstanceMethods
-      def user
-        return nil unless self.user_id
-        @user ||= self.class.user_model.where(id: self.user_id).first
-      end
+    def user
+      return nil unless self.user_id
+      @user ||= self.class.user_model.where(id: self.user_id).first
     end
 
     module ClassMethods
@@ -59,15 +55,14 @@ module Challah
         record.save!
         record
       end
-    end
 
-    def users_table_name
-      @users_table_name ||= user_model.table_name
-    end
+      def users_table_name
+        @users_table_name ||= user_model.table_name
+      end
 
-    def user_model
-      @user_model ||= Challah.user
+      def user_model
+        @user_model ||= Challah.user
+      end
     end
-
   end
 end

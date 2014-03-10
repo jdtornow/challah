@@ -1,11 +1,3 @@
-require_relative "user/attributeable"
-require_relative "user/authenticateable"
-require_relative "user/authorizable"
-require_relative "user/findable"
-require_relative "user/passwordable"
-require_relative "user/provideable"
-require_relative "user/validateable"
-
 module Challah
   module Userable
     extend ActiveSupport::Concern

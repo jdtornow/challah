@@ -24,8 +24,16 @@ module Challah
 
   autoload :PasswordProvider,                 "challah/providers/password_provider"
 
-  autoload :Userable,                         "challah/concerns/userable"
   autoload :ActiveRecordExtensions,           "challah/active_record_extensions"
+
+  autoload :Userable,                         "challah/concerns/userable"
+  autoload :UserAttributeable,                "challah/concerns/user/attributeable"
+  autoload :UserAuthenticateable,             "challah/concerns/user/authenticateable"
+  autoload :UserAuthorizable,                 "challah/concerns/user/authorizable"
+  autoload :UserFindable,                     "challah/concerns/user/findable"
+  autoload :UserPasswordable,                 "challah/concerns/user/passwordable"
+  autoload :UserProvideable,                  "challah/concerns/user/provideable"
+  autoload :UserValidateable,                 "challah/concerns/user/validateable"
 
   # Configuration options
   # Get or set options for the current Challah instance. In most cases these should be

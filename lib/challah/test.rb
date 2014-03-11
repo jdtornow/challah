@@ -41,9 +41,16 @@ module Challah
   end
 end
 
-class ActiveSupport::TestCase
-  include Challah::Testing
-  setup :signout
+if defined?(ActionController::TestCase)
+  Challah.options[:storage_class] = Challah::TestSessionStore
+
+  class ActionController::TestCase
+    include Challah::Testing
+
+    setup do
+      $challah_test_session = nil
+    end
+  end
 end
 
 if defined?(RSpec)

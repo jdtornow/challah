@@ -1,3 +1,7 @@
+## Challah 1.2.1
+
+* Bug fixed when loading `challah/test` in minitest.
+
 ## Challah 1.2.0
 
 * Convert tests to RSpec

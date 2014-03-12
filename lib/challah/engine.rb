@@ -1,5 +1,4 @@
 module Challah
-
   class Engine < ::Rails::Engine
 
     initializer 'challah.router' do |app|
@@ -18,45 +17,42 @@ module Challah
       end
     end
 
-    class << self
-      # Set up controller methods
-      def setup_action_controller!
-        if defined?(ActionController)
-          ActionController::Base.send(:include, Challah::Controller)
-          ActionController::Base.send(:helper_method,
-            :current_user_session,
-            :current_user,
-            :current_user?,
-            :logged_in?,
-            :signed_in?
-          )
+    # Set up controller methods
+    def self.setup_action_controller!
+      if defined?(ActionController)
+        ActionController::Base.send(:include, Challah::Controller)
+        ActionController::Base.send(:helper_method,
+          :current_user_session,
+          :current_user,
+          :current_user?,
+          :logged_in?,
+          :signed_in?
+        )
 
-          # Load any ActionController/Challah plugins
-          Challah.plugins.values.each do |plugin|
-            plugin.action_controller.each do |proc|
-              proc.call
-            end
+        # Load any ActionController/Challah plugins
+        Challah.plugins.values.each do |plugin|
+          plugin.action_controller.each do |proc|
+            proc.call
           end
         end
       end
+    end
 
-      # Set up active record with Challah methods
-      def setup_active_record!
-        if defined?(ActiveRecord)
-          Challah.options[:logger] = ActiveRecord::Base.logger
+    # Set up active record with Challah methods
+    def self.setup_active_record!
+      if defined?(ActiveRecord)
+        Challah.options[:logger] = ActiveRecord::Base.logger
 
-          ActiveRecord::Base.send(:include, Challah::ActiveRecordExtensions)
-          ActiveRecord::Base.send(:include, Challah::Audit)
+        ActiveRecord::Base.send(:include, Challah::ActiveRecordExtensions)
+        ActiveRecord::Base.send(:include, Challah::Audit)
 
-          # Load any ActiveRecord/Challah plugins
-          Challah.plugins.values.each do |plugin|
-            plugin.active_record.each do |proc|
-              proc.call
-            end
+        # Load any ActiveRecord/Challah plugins
+        Challah.plugins.values.each do |plugin|
+          plugin.active_record.each do |proc|
+            proc.call
           end
         end
       end
     end
   end
-
 end

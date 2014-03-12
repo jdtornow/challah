@@ -28,107 +28,108 @@ module Challah
     end
 
     private
-      def clear
-        cookies.delete(session_cookie_name, domain: domain)
-        cookies.delete(validation_cookie_name, domain: domain)
-      end
 
-      def cookie_values
-        session_cookie && session_cookie.to_s.split(joiner)
-      end
+    def clear
+      cookies.delete(session_cookie_name, domain: domain)
+      cookies.delete(validation_cookie_name, domain: domain)
+    end
 
-      def cookies
-        request.cookie_jar
-      end
+    def cookie_values
+      session_cookie && session_cookie.to_s.split(joiner)
+    end
 
-      def default_cookie_prefix
-        Challah.options[:cookie_prefix]
-      end
+    def cookies
+      request.cookie_jar
+    end
 
-      def domain
-        request.session_options[:domain]
-      end
+    def default_cookie_prefix
+      Challah.options[:cookie_prefix]
+    end
 
-      # Do the cookies exist, and are they valid?
-      def existing?
-        exists = false
+    def domain
+      request.session_options[:domain]
+    end
 
-        if session_cookie and validation_cookie
-          session_tmp = session_cookie.to_s
-          validation_tmp = validation_cookie.to_s
+    # Do the cookies exist, and are they valid?
+    def existing?
+      exists = false
 
-          if validation_tmp == validation_cookie_value(session_tmp)
-            exists = true
-          end
-        end
+      if session_cookie and validation_cookie
+        session_tmp = session_cookie.to_s
+        validation_tmp = validation_cookie.to_s
 
-        exists
-      end
-
-      def expiration
-        @expiration ||= 1.month.from_now
-      end
-
-      def joiner
-        '@'
-      end
-
-      def prefix
-        @prefix ||= [ default_cookie_prefix, user_model_id ].compact.join('-')
-      end
-
-      def request
-        raise "No Request Provided" unless @session and @session.request
-        @session.request
-      end
-
-      def session_cookie
-        cookies[session_cookie_name]
-      end
-
-      def session_cookie_name
-        "#{prefix}-s"
-      end
-
-      def session_cookie_value
-        "#@token#{joiner}#@user_id"
-      end
-
-      def user_model_id
-        if @session && @session.user_model && @session.user_model.table_name != 'users'
-          Encrypter.md5(@session.user_model.table_name).slice(0..5)
+        if validation_tmp == validation_cookie_value(session_tmp)
+          exists = true
         end
       end
 
-      def validation_cookie
-        cookies[validation_cookie_name]
-      end
+      exists
+    end
 
-      def validation_cookie_name
-        "#{prefix}-v"
-      end
+    def expiration
+      @expiration ||= 1.month.from_now
+    end
 
-      def validation_cookie_value(value = nil)
-        value = session_cookie_value unless value
-        Encrypter.md5(value)
-      end
+    def joiner
+      '@'
+    end
 
-      def write_cookies!
-        cookies[session_cookie_name] = {
-          value:      session_cookie_value,
-          expires:    expiration,
-          secure:     false,
-          httponly:   true,
-          domain:     domain
-        }
+    def prefix
+      @prefix ||= [ default_cookie_prefix, user_model_id ].compact.join('-')
+    end
 
-        cookies[validation_cookie_name] = {
-          value:      validation_cookie_value,
-          expires:    expiration,
-          secure:     false,
-          httponly:   true,
-          domain:     domain
-        }
+    def request
+      raise "No Request Provided" unless @session and @session.request
+      @session.request
+    end
+
+    def session_cookie
+      cookies[session_cookie_name]
+    end
+
+    def session_cookie_name
+      "#{prefix}-s"
+    end
+
+    def session_cookie_value
+      "#@token#{joiner}#@user_id"
+    end
+
+    def user_model_id
+      if @session && @session.user_model && @session.user_model.table_name != 'users'
+        Encrypter.md5(@session.user_model.table_name).slice(0..5)
       end
+    end
+
+    def validation_cookie
+      cookies[validation_cookie_name]
+    end
+
+    def validation_cookie_name
+      "#{prefix}-v"
+    end
+
+    def validation_cookie_value(value = nil)
+      value = session_cookie_value unless value
+      Encrypter.md5(value)
+    end
+
+    def write_cookies!
+      cookies[session_cookie_name] = {
+        value:      session_cookie_value,
+        expires:    expiration,
+        secure:     false,
+        httponly:   true,
+        domain:     domain
+      }
+
+      cookies[validation_cookie_name] = {
+        value:      validation_cookie_value,
+        expires:    expiration,
+        secure:     false,
+        httponly:   true,
+        domain:     domain
+      }
+    end
   end
 end

@@ -96,72 +96,71 @@ module Challah
       super(sym, *args, &block)
     end
 
-    class << self
-      # Manually create a new Session
-      def create(user_or_user_id, request = nil, params = nil, user_model = nil)
-        user_model = Challah.user if user_model.nil?
+    # Manually create a new Session
+    def self.create(user_or_user_id, request = nil, params = nil, user_model = nil)
+      user_model = Challah.user if user_model.nil?
 
-        user_record = user_model === user_or_user_id ? user_or_user_id : user_model.find_by_id(user_or_user_id)
+      user_record = user_model === user_or_user_id ? user_or_user_id : user_model.find_by_id(user_or_user_id)
 
-        session = Session.new(request, params, user_model)
+      session = Session.new(request, params, user_model)
 
-        if user_record and user_record.active?
-          session.user = user_record
-          session.persist = true
-        end
-
-        session
+      if user_record and user_record.active?
+        session.user = user_record
+        session.persist = true
       end
 
-      # Manually create a session, and save it.
-      def create!(user_or_user_id, request = nil, params = nil, user_model = nil)
-        session = create(user_or_user_id, request, params, user_model)
-        session.save
-        session
-      end
+      session
+    end
 
-      # Clear out any existing sessions
-      def destroy
-        session = Session.find
-        session.destroy if session
-        session
-      end
+    # Manually create a session, and save it.
+    def self.create!(user_or_user_id, request = nil, params = nil, user_model = nil)
+      session = create(user_or_user_id, request, params, user_model)
+      session.save
+      session
+    end
 
-      # Load any existing session from the session store
-      def find(*args)
-        session = Session.new(*args)
-        session.find
-        session
-      end
+    # Clear out any existing sessions
+    def self.destroy
+      session = Session.find
+      session.destroy if session
+      session
+    end
+
+    # Load any existing session from the session store
+    def self.find(*args)
+      session = Session.new(*args)
+      session.find
+      session
     end
 
     protected
-      # Try and authenticate against the various auth techniques. If one
-      # technique works, then just exist and make the session active.
-      def authenticate!
-        Challah.techniques.values.each do |klass|
-          technique = klass.new(self)
-          technique.user_model = user_model if technique.respond_to?(:"user_model=")
 
-          @user = technique.authenticate
+    # Try and authenticate against the various auth techniques. If one
+    # technique works, then just exist and make the session active.
+    def authenticate!
+      Challah.techniques.values.each do |klass|
+        technique = klass.new(self)
+        technique.user_model = user_model if technique.respond_to?(:"user_model=")
 
-          if @user
-            @persist = technique.respond_to?(:persist?) ? technique.persist? : false
-            break
-          end
-        end
+        @user = technique.authenticate
 
         if @user
-          # Only update user record if persistence is on for the technique.
-          # Otherwise this builds up quick (one session for each API call)
-          if @persist
-            @user.successful_authentication!(ip)
-          end
+          @persist = technique.respond_to?(:persist?) ? technique.persist? : false
+          break
+        end
+      end
 
-          return @valid = true
+      if @user
+        # Only update user record if persistence is on for the technique.
+        # Otherwise this builds up quick (one session for each API call)
+        if @persist
+          @user.successful_authentication!(ip)
         end
 
-        @valid = false
+        return @valid = true
       end
+
+      @valid = false
+    end
   end
 end

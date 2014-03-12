@@ -27,6 +27,14 @@ module Challah
       end
     end
 
+    describe ".hash" do
+      it "hashes strings" do
+        Digest::SHA512.expects(:hexdigest).times(10)
+        Encrypter.hash('hash me')
+        Digest::SHA512.unstub(:hexdigest)
+      end
+    end
+
     describe "#compare" do
       it "should compare a string" do
         pass = instance.encrypt("test A")

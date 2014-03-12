@@ -39,11 +39,20 @@ module Challah
       false
     end
 
-    class << self
-      # Setup some pass through convenience methods that use default options
-      %w( hash md5 encrypt compare ).each do |f|
-        class_eval "def #{f}(*args); new.#{f}(*args); end"
-      end
+    def self.compare(*args)
+      new().compare(*args)
+    end
+
+    def self.encrypt(*args)
+      new().encrypt(*args)
+    end
+
+    def self.hash(*args)
+      new().hash(*args)
+    end
+
+    def self.md5(*args)
+      new().md5(*args)
     end
   end
 end

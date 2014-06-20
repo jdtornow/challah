@@ -13,8 +13,8 @@ module Challah
       user_one.save
       user_two.save
 
-      assert_equal user_one, User.find_for_session('test-user')
-      assert_equal user_one, User.find_for_session('tester@example.com')
+      assert_equal user_one, User.find_for_session('test-user   ')
+      assert_equal user_one, User.find_for_session('tester@example.com   ')
 
       assert_equal user_one, User.find_for_session('Test-user')
       assert_equal user_one, User.find_for_session('tester@example.com')
@@ -24,6 +24,16 @@ module Challah
 
       assert_equal nil, User.find_for_session(' ')
       assert_equal nil, User.find_for_session('not-existing')
+      assert_equal nil, User.find_for_session(nil)
+    end
+
+    it "should find by username or email regardless of case" do
+      user = build(:user, :username => 'test-user', :email => 'tester@example.com')
+      user.password!('test123')
+      user.save
+
+      assert_equal user, User.find_for_session('TEST-user')
+      assert_equal user, User.find_for_session('TESTER@example.com')
     end
 
     it "should have a reference to the authorizations model" do

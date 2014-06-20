@@ -14,31 +14,29 @@ module Challah
       # Find a user instance by username first, or email address if needed.
       # If no user is found matching, return nil
       def find_for_session(username_or_email)
-        return nil if username_or_email.to_s.blank?
+        return if username_or_email.to_s.blank?
 
-        result = nil
-
-        if username_or_email.to_s.include?('@')
-          result = where(email: username_or_email).first
-        end
-
-        if !result
-          uid = username_or_email.to_s.downcase.strip
-
-          authorization = self.authorization_model
-          authorization = authorization.where(provider: :password, uid: uid)
-          authorization = authorization.first
-
-          if authorization
-            result = authorization.user
-          end
-        end
-
-        result
+        username_or_email = username_or_email.downcase.strip
+        find_by_email(username_or_email) || find_by_authorization(username_or_email)
       end
 
       def inactive
         where.not(active: true)
+      end
+
+      protected
+
+      def find_by_authorization(uid)
+        authorization = self.authorization_model
+        result = authorization.where(provider: :password, uid: uid).first
+        if result
+          result.user
+        end
+      end
+
+      def find_by_email(email)
+        return unless email.include?('@')
+        where(email: email).first
       end
     end
   end

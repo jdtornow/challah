@@ -60,7 +60,7 @@ module Challah
   end
 
   def self.user
-    @user ||= options[:user].to_s.safe_constantize
+    options[:user].to_s.safe_constantize
   end
 
   # Set up techniques engines

@@ -1,3 +1,7 @@
+## Challah 1.2.2
+
+* Bug fix for “A copy of User has been removed from the module tree but is still active!” error in Rails development mode. Fix was to not cache the `User` model reference from within the engine.
+
 ## Challah 1.2.1
 
 * Bug fixed when loading `challah/test` in minitest.

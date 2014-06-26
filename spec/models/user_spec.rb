@@ -252,7 +252,7 @@ module Challah
 
     it "should have default method_missing when not looking for a provider" do
       user = create(:user)
-      expect(user.custom_provider?).to be_false
+      expect(user.custom_provider?).to eq(false)
       expect { user.does_not_exist? }.to raise_error(NoMethodError)
     end
 
@@ -308,12 +308,12 @@ module Challah
 
         expect { user.save }.to change { User.count }.by(1)
 
-        expect(user.provider?(:password)).to be_true
+        expect(user.provider?(:password)).to eq(true)
         expect(user.provider(:password)).to_not be_nil
 
-        expect(user.authenticate('abc123')).to be_true
-        expect(user.authenticate(:password, 'abc123')).to be_true
-        expect(user.authenticate('test123')).to be_false
+        expect(user.authenticate('abc123')).to eq(true)
+        expect(user.authenticate(:password, 'abc123')).to eq(true)
+        expect(user.authenticate('test123')).to eq(false)
       end
     end
 
@@ -327,7 +327,7 @@ module Challah
         end
 
         it "requires a unique email" do
-          expect(duplicate.valid?).to be_false
+          expect(duplicate.valid?).to eq(false)
           expect(duplicate.errors).to include(:email)
         end
       end

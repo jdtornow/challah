@@ -79,7 +79,7 @@ module Challah
       expect(session.request).to_not be_nil
       expect(session.params).to_not be_nil
 
-      expect(session.username?).to be_true
+      expect(session.username?).to eq(true)
     end
 
     it "should be able to set a username" do

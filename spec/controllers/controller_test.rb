@@ -14,13 +14,13 @@ module Challah
         end
 
         it "is signed in" do
-          expect(controller.send(:current_user?)).to be_true
+          expect(controller.send(:current_user?)).to eq(true)
         end
       end
 
       context "without a session" do
         it "is signed out by default" do
-          expect(controller.send(:current_user?)).to be_false
+          expect(controller.send(:current_user?)).to eq(false)
         end
       end
     end
@@ -46,7 +46,7 @@ module Challah
         end
 
         it "has method" do
-          expect(controller.send(:signed_in?)).to be_true
+          expect(controller.send(:signed_in?)).to eq(true)
         end
       end
 

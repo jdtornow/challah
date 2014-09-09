@@ -44,11 +44,24 @@ module Challah
   #     Challah.register_technique(:shared_password, SharedPasswordTechnique)
   #
   # The first parameter is just a key for that technique, the second p param is the class name to use.
+  #
+  # You can remove an existing technique by calling +remove_technique+:
+  #
+  #     Challah.remove_technique(:shared_password)
+  #
+  # This is useful for removing the techniques included by default +PasswordTechnique+ and
+  # +ApiKeyTechnique+.
+  #
   module Techniques
     # Register a new technique class. Pass in a name as an identifier, and the class to use
     # when attempting to authenticate.
     def register_technique(name, klass)
       @techniques[name] = klass
+    end
+
+    # Remove an existing technique class. Pass in the identifier used in +register_techinque+
+    def remove_technique(name)
+      @techniques.delete(name)
     end
 
     # Get the list of all techniques that have been registered.

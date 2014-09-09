@@ -1,3 +1,7 @@
+## Chalah 1.2.3
+
+* Allow default techniques to be removed in the host app. [PR #9](https://github.com/jdtornow/challah/pull/9) @philtr
+
 ## Challah 1.2.2
 
 * Bug fix for “A copy of User has been removed from the module tree but is still active!” error in Rails development mode. Fix was to not cache the `User` model reference from within the engine.

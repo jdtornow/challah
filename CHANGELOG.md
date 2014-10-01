@@ -1,3 +1,7 @@
+## Challah 1.2.4
+
+* Modify `bcrypt` dependency [PR #10](https://github.com/jdtornow/challah/pull/10) @philtr
+
 ## Chalah 1.2.3
 
 * Allow default techniques to be removed in the host app. [PR #9](https://github.com/jdtornow/challah/pull/9) @philtr

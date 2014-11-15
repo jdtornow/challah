@@ -24,7 +24,9 @@ module Challah
       self.read
 
       # If no session was found, try and authenticate
-      unless valid?
+      valid?
+
+      if @valid.nil?
         self.authenticate!
       end
 

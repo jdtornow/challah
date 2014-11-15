@@ -4,6 +4,8 @@ module Challah
   # TODO make these specs not look like unit tests
   describe Session do
 
+    let!(:user) { create(:user) }
+
     class FakeUserModel
 
       def id
@@ -16,11 +18,47 @@ module Challah
 
     end
 
-    it "should have an inspected view" do
-      user = create(:user)
-      session = Session.create(user)
+    describe "#inspect" do
+      let(:session) { session = Session.create(user) }
 
-      assert /#<Session/ =~ session.inspect
+      it "has a pretty inspection" do
+        expect(session.inspect).to match(/#<Session/)
+      end
+    end
+
+    describe ".find" do
+      let(:session) { Session.find }
+
+      context "without a session" do
+        it "returns an invalid session" do
+          expect(session).to be_kind_of(Session)
+          expect(session.valid?).to eq(false)
+        end
+
+        it "attempts to authenticate once" do
+          expect_any_instance_of(Challah::Session).to receive(:authenticate!).once.and_call_original
+          session
+        end
+      end
+
+      context "with a session" do
+        before do
+          Session.create!(user)
+        end
+
+        after do
+          Session.destroy
+        end
+
+        it "returns a valid session object" do
+          expect(session).to be_kind_of(Session)
+          expect(session.valid?).to eq(true)
+        end
+
+        it "contains the proper user" do
+          expect(session.user).to eq(user)
+        end
+      end
     end
 
     it "should use the test storage method" do

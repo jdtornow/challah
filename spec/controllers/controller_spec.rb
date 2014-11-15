@@ -53,11 +53,11 @@ module Challah
       context "without a session" do
         before do
           controller.request.url = 'http://example.com/protected-page'
-          controller.stubs(:signed_in?).returns(false)
+          allow(controller).to receive(:signed_in?).and_return(false)
         end
 
         it "redirects to the login page" do
-          controller.expects(:redirect_to)
+          expect(controller).to receive(:redirect_to).once
           controller.send(:signin_required)
 
           expect(controller.session).to include(:return_to)

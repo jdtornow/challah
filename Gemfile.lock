@@ -3,9 +3,9 @@ PATH
   specs:
     challah (1.2.5.pre)
       bcrypt (~> 3.1)
-      highline
+      highline (~> 1.6)
       rails (~> 4)
-      rake (>= 0.9)
+      rake (~> 10.3)
 
 GEM
   remote: https://rubygems.org/
@@ -133,5 +133,5 @@ DEPENDENCIES
   rdiscount
   rspec-rails (~> 3.1)
   simplecov
-  sqlite3 (>= 1.0)
+  sqlite3 (~> 1.3)
   yard

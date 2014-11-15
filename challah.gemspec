@@ -1,8 +1,8 @@
 # -*- encoding: utf-8 -*-
-lib = File.expand_path('../lib/', __FILE__)
+lib = File.expand_path("../lib/", __FILE__)
 $:.unshift lib unless $:.include?(lib)
 
-require 'challah/version'
+require "challah/version"
 
 Gem::Specification.new do |s|
   s.name          = "challah"
@@ -13,18 +13,18 @@ Gem::Specification.new do |s|
   s.homepage      = "http://github.com/jdtornow/challah"
   s.summary       = "Rails 4 authentication and sessions"
   s.description   = "A simple gem for authorization and session management in Rails."
-  s.license       = 'MIT'
+  s.license       = "MIT"
   s.files         = Dir.glob("{app,config,db,test,lib}/**/*") + %w( README.md CHANGELOG.md )
   s.require_paths = ["lib"]
 
-  s.add_dependency 'highline'
-  s.add_dependency 'rails', '~> 4'
-  s.add_dependency 'rake', '>= 0.9'
-  s.add_dependency 'bcrypt', '~> 3.1'
+  s.add_dependency "highline", "~> 1.6"
+  s.add_dependency "rails", "~> 4"
+  s.add_dependency "rake", "~> 10.3"
+  s.add_dependency "bcrypt", "~> 3.1"
 
   s.add_development_dependency "rspec-rails", "~> 3.1"
   s.add_development_dependency "factory_girl_rails", "~> 4.5"
-  s.add_development_dependency "sqlite3", ">= 1.0"
+  s.add_development_dependency "sqlite3", "~> 1.3"
 
-  s.required_ruby_version = Gem::Requirement.new('>= 1.9.2')
+  s.required_ruby_version = Gem::Requirement.new(">= 1.9.2")
 end

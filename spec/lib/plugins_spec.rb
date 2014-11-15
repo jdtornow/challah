@@ -69,8 +69,8 @@ module Challah
         end
 
         it "registers components with the engine" do
-          PluginContext.expects(:setup_active_record).once
-          PluginContext.expects(:setup_controllers).once
+          expect(PluginContext).to receive(:setup_active_record).once
+          expect(PluginContext).to receive(:setup_controllers).once
 
           Engine.setup_active_record!
           Engine.setup_action_controller!

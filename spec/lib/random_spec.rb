@@ -14,11 +14,11 @@ module Challah
 
       context "without ActiveSupport" do
         before do
-          Random.stubs(:secure_random?).returns(false)
+          allow(Random).to receive(:secure_random?).and_return(false)
         end
 
         it "provides a random string" do
-          SecureRandom.expects(:hex).never
+          expect(SecureRandom).to_not receive(:hex)
 
           result = Random.token(10)
 

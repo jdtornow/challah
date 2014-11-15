@@ -44,8 +44,8 @@ module Challah
     it "should have a name attribute that returns the full name" do
       user = User.new
 
-      user.stubs(:first_name).returns('Cal')
-      user.stubs(:last_name).returns('Ripken')
+      allow(user).to receive(:first_name).and_return('Cal')
+      allow(user).to receive(:last_name).and_return('Ripken')
 
       assert_equal "Cal Ripken", user.name
       assert_equal "Cal R.", user.small_name
@@ -162,7 +162,7 @@ module Challah
       assert_equal true, user.authenticate('abc123')
 
       # By api key
-      user.stubs(:api_key).returns('this-is-my-api-key')
+      allow(user).to receive(:api_key).and_return('this-is-my-api-key')
 
       assert_equal true, user.authenticate_with_api_key('this-is-my-api-key')
       assert_equal true, user.authenticate_with_api_key('this-is-my-api-key')

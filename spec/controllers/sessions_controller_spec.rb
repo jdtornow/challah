@@ -21,7 +21,7 @@ module Challah
     describe "POST /sign-in" do
       context "with valid credentials" do
         before do
-          Session.any_instance.stubs(:save).returns(true)
+          allow_any_instance_of(Session).to receive(:save).and_return(true)
           post :create, username: 'sessions-user-test', password: 'abc123'
         end
 
@@ -32,7 +32,7 @@ module Challah
 
       context "with invalid credentials" do
         before do
-          Session.any_instance.stubs(:save).returns(false)
+          allow_any_instance_of(Session).to receive(:save).and_return(false)
           post :create, username: 'sessions-user-test', password: ''
         end
 

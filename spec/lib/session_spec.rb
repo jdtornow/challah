@@ -129,7 +129,7 @@ module Challah
       user.password!('abc123')
       user.save
 
-      User.stubs(:find_for_session).returns(user)
+      allow(User).to receive(:find_for_session).and_return(user)
 
       session = Session.new
       session.ip = '127.0.0.1'
@@ -144,8 +144,6 @@ module Challah
       assert_equal user.id, session.user_id
       assert_equal true, session.persist?
       assert_equal true, session.save
-
-      User.unstub(:find_for_session)
     end
 
     it "should validate with an api key" do
@@ -153,7 +151,7 @@ module Challah
 
       user = create(:user, :api_key => '123456abcdefg')
 
-      User.stubs(:find_for_session).returns(user)
+      allow(User).to receive(:find_for_session).and_return(user)
 
       session = Session.new
       session.ip = '127.0.0.1'
@@ -166,8 +164,6 @@ module Challah
       assert_equal false, session.persist?
       assert_equal false, session.save
 
-      User.unstub(:find_for_session)
-
       Challah.options[:api_key_enabled] = false
     end
 
@@ -176,18 +172,16 @@ module Challah
       user.password!('abc123')
       user.save
 
-      User.stubs(:find_for_session).returns(user)
+      allow(User).to receive(:find_for_session).and_return(user)
 
       session = Session.new
       session.username = 'test-user'
       session.password = 'bad-pass'
 
-      user.expects(:failed_authentication!).once
+      expect(user).to receive(:failed_authentication!).once
 
       assert_equal false, session.valid?
       assert_equal nil, session.user
-
-      User.unstub(:find_for_session)
     end
   end
 end

@@ -12,9 +12,8 @@ module Challah
       end
 
       it "uses bcrypt to encrypt a string" do
-        BCrypt::Password.expects(:create).with('testing 123', :cost => 10)
+        expect(BCrypt::Password).to receive(:create).with('testing 123', :cost => 10).once
         Encrypter.encrypt("testing 123")
-        BCrypt::Password.unstub(:create)
       end
     end
 
@@ -29,9 +28,8 @@ module Challah
 
     describe ".hash" do
       it "hashes strings" do
-        Digest::SHA512.expects(:hexdigest).times(10)
+        expect(Digest::SHA512).to receive(:hexdigest).exactly(10).times
         Encrypter.hash('hash me')
-        Digest::SHA512.unstub(:hexdigest)
       end
     end
 
@@ -60,9 +58,8 @@ module Challah
 
     describe "#hash" do
       it "hashes some strings a given number of times" do
-        Digest::SHA512.expects(:hexdigest).times(10)
+        expect(Digest::SHA512).to receive(:hexdigest).exactly(10).times
         instance.hash('hash me')
-        Digest::SHA512.unstub(:hexdigest)
       end
     end
 

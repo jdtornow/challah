@@ -2,13 +2,7 @@ require 'spec_helper'
 
 module Challah
   # TODO make these specs not look like unit tests
-  describe SimpleCookieStore do
-
-    class FakeUserModel
-      def self.table_name
-        'fake_user_peoples'
-      end
-    end
+  describe CookieStore do
 
     let(:user) { create(:user) }
     let(:request) { MockRequest.new }
@@ -17,7 +11,7 @@ module Challah
       assert_equal [], request.cookies.keys
 
       session = Session.new(request)
-      session.store = SimpleCookieStore.new(session)
+      session.store = CookieStore.new(session)
       session.persist = true
       session.user = user
       session.save
@@ -26,47 +20,30 @@ module Challah
       assert_equal "#{user.persistence_token}@#{user.id}", request.cookies['challah-s'][:value]
       assert_equal "test.dev", request.cookies['challah-s'][:domain]
 
-      assert_equal Encrypter.md5("#{user.persistence_token}@#{user.id}"), request.cookies['challah-v'][:value]
+      assert_equal Encrypter.md5("#{user.persistence_token}@#{user.id}", request.user_agent, request.remote_ip), request.cookies['challah-v'][:value]
       assert_equal "test.dev", request.cookies['challah-v'][:domain]
-    end
-
-    it "should save session in a namespaced cookie store for non user tables" do
-      assert_equal [], request.cookies.keys
-
-      session = Session.new(request, {}, FakeUserModel)
-      session.store = SimpleCookieStore.new(session)
-      session.persist = true
-      session.user = user
-      session.save
-
-      assert_equal %w( challah-d635fd-s challah-d635fd-v ), request.cookies.keys.sort
-      assert_equal "#{user.persistence_token}@#{user.id}", request.cookies['challah-d635fd-s'][:value]
-      assert_equal "test.dev", request.cookies['challah-d635fd-s'][:domain]
-
-      assert_equal Encrypter.md5("#{user.persistence_token}@#{user.id}"), request.cookies['challah-d635fd-v'][:value]
-      assert_equal "test.dev", request.cookies['challah-d635fd-v'][:domain]
     end
 
     it "should be able to inspect the store" do
       session = Session.new(request)
-      session.store = SimpleCookieStore.new(session)
+      session.store = CookieStore.new(session)
       session.persist = true
       session.user = user
       session.save
 
-      assert session.store.inspect =~ /<SimpleCookieStore:(.*?)>/, 'Does not match'
+      assert session.store.inspect =~ /<CookieStore:(.*?)>/, 'Does not match'
     end
 
     it "should read cookies and detect tampered verification cookies" do
       assert_equal [], request.cookies.keys
 
       session = Session.new(request)
-      session.store = SimpleCookieStore.new(session)
+      session.store = CookieStore.new(session)
       session.persist = true
       session.user = user
       session.save
 
-      validation_cookie_val = Encrypter.md5("#{user.persistence_token}@#{user.id}")
+      validation_cookie_val = Encrypter.md5("#{user.persistence_token}@#{user.id}", request.user_agent, request.remote_ip)
       session_cookie_val = "#{user.persistence_token}@#{user.id}"
 
       assert_equal session_cookie_val, request.cookies['challah-s'][:value]
@@ -74,8 +51,8 @@ module Challah
       assert_equal validation_cookie_val, request.cookies['challah-v'][:value]
       assert_equal validation_cookie_val, session.store.send(:validation_cookie)[:value]
 
-      session.store.stubs(:validation_cookie).returns(validation_cookie_val)
-      session.store.stubs(:session_cookie).returns(session_cookie_val)
+      allow(session.store).to receive(:validation_cookie).and_return(validation_cookie_val)
+      allow(session.store).to receive(:session_cookie).and_return(session_cookie_val)
 
       session2 = Session.new(request)
       session2.persist = true
@@ -86,7 +63,7 @@ module Challah
       assert_equal true, session2.valid?
       assert_equal user.id, session2.user_id
 
-      session.store.stubs(:validation_cookie).returns('bad-value')
+      allow(session.store).to receive(:validation_cookie).and_return('bad-value')
 
       session3 = Session.new(request)
       session3.store = session.store
@@ -98,7 +75,7 @@ module Challah
 
     it "should delete sessions from cookies" do
       session = Session.new(request)
-      session.store = SimpleCookieStore.new(session)
+      session.store = CookieStore.new(session)
       session.user = user
       session.persist = true
 

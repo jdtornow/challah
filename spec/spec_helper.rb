@@ -5,9 +5,7 @@ ENV["RAILS_ENV"] ||= "test"
 
 require File.expand_path("../dummy/config/environment.rb",  __FILE__)
 require "rspec/rails"
-require "rspec/autorun"
 require "factory_girl"
-require "mocha/setup"
 require "challah/test"
 require "pry"
 
@@ -32,13 +30,8 @@ end
 `rake --rakefile #{ File.expand_path("../dummy/Rakefile",  __FILE__) } db:migrate db:test:prepare`
 
 RSpec.configure do |config|
-
   config.fixture_path = "#{ ::Rails.root }/spec/fixtures"
-  config.mock_with :mocha
   config.use_transactional_fixtures = true
-
   config.include FactoryGirl::Syntax::Methods
-
   config.infer_spec_type_from_file_location!
-
 end

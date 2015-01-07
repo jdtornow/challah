@@ -59,18 +59,14 @@ module Challah
 
     def before_save_audit
       if new_record?
-        all_audit_attributes.each do |attr_name|
-          attr_name = attr_name.to_s
-          column = column_for_attribute(attr_name)
-
-          if column || @attributes.has_key?(attr_name)
-            write_attribute(attr_name, current_user_id)
+        all_audit_attributes.map(&:to_s).each do |column|
+          if respond_to?(column) && respond_to?("#{ column }=")
+            write_attribute(column, current_user_id)
           end
         end
       else
-        audit_attributes_for_update.each do |column|
+        audit_attributes_for_update.map(&:to_s).each do |column|
           if respond_to?(column) && respond_to?("#{ column }=")
-            column = column.to_s
             next if attribute_changed?(column) # don't update the column if we already manually did
             write_attribute(column, current_user_id)
           end

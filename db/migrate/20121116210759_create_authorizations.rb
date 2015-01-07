@@ -9,7 +9,7 @@ class CreateAuthorizations < ActiveRecord::Migration
       t.datetime    :last_session_at
       t.string      :last_session_ip
       t.integer     :session_count, default: 0
-      t.timestamps
+      t.timestamps  null: true
     end
 
     add_index :authorizations, :user_id

@@ -1,3 +1,8 @@
+## Challah 1.2.5
+
+* Modified audit tracker for Rails 4.2 `ActiveRecord::AttributeSet`
+* Added `timestamps null: true` to Authorizations table to remove deprecation warning
+
 ## Challah 1.2.4
 
 * Modify `bcrypt` dependency [PR #10](https://github.com/jdtornow/challah/pull/10) @philtr

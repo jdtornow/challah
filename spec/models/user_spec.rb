@@ -3,6 +3,12 @@ require "spec_helper"
 module Challah
   # TODO make these specs not look like unit tests
   describe User do
+    it "should normalize the user's email" do
+      user = build(:user, email: "  YELLING@example.com  ")
+      user.save
+      expect(user.email).to eq "yelling@example.com"
+    end
+
     it "should find a user by username or email" do
       user_one = build(:user, :username => ' Test-user ', :email => 'tester@example.com')
       user_two = build(:user, :username => 'test-user-2  ', :email => 'tester2@example.com')

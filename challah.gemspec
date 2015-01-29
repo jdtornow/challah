@@ -8,8 +8,8 @@ Gem::Specification.new do |s|
   s.name          = "challah"
   s.version       = Challah::VERSION
   s.platform      = Gem::Platform::RUBY
-  s.authors       = ["John Tornow", "Phillip Ridlen"]
-  s.email         = ["john@johntornow.com", "p@rdln.net"]
+  s.authors       = ["John Tornow", "Phillip Ridlen", "Nathaniel Watts"]
+  s.email         = ["john@johntornow.com", "p@rdln.net", "reg@nathanielwatts.com"]
   s.homepage      = "http://github.com/jdtornow/challah"
   s.summary       = "Rails 4 authentication and sessions"
   s.description   = "A simple gem for authorization and session management in Rails."

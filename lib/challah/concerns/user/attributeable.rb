@@ -8,6 +8,7 @@ module Challah
       attr_reader :password_updated
 
       before_save :ensure_user_tokens
+      before_validation :normalize_user_email
     end
 
     # Returns true if this user is active, and should be able to log in. If
@@ -69,5 +70,10 @@ module Challah
       end
     end
 
+    # Downcase email and strip if of whitespace
+    # Ex: "   HELLO@example.com   " => "hello@example.com"
+    def normalize_user_email
+      self.email = self.email.to_s.downcase.strip
+    end
   end
 end

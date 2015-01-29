@@ -1,3 +1,7 @@
+## Challah 1.2.6
+
+* Normalize email address before writing to database [PR #13](https://github.com/jdtornow/challah/pull/13) @thewatts
+
 ## Challah 1.2.5
 
 * Modified audit tracker for Rails 4.2 `ActiveRecord::AttributeSet`

@@ -9,7 +9,7 @@ module Challah
     # Called automatically by ActiveModel validation..
     def validate_each(record, attribute, value)
       unless value =~ EmailValidator.pattern
-        record.errors.add(attribute, options[:message] || 'is not a valid email address')
+        record.errors.add(attribute, options[:message] || :invalid_email)
       end
     end
 

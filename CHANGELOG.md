@@ -1,3 +1,7 @@
+## Challah 1.2.8
+
+* Localize invalid email message [PR #15](https://github.com/jdtornow/challah/pull/15) @thewatts
+
 ## Challah 1.2.7
 
 * Gem updates [PR #14](https://github.com/jdtornow/challah/pull/14) @philtr

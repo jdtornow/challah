@@ -1,5 +1,3 @@
-require 'challah/router'
-
 module Challah
   class Engine < ::Rails::Engine
 

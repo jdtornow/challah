@@ -53,11 +53,11 @@ Dummy::Application.routes.draw do
   #     # (app/controllers/admin/products_controller.rb)
   #     resources :products
   #   end
-  authenticate User, ->(u) { u.admin? } do
+  constraints Challah::AuthenticatedRoutingConstraint.new { |u| u.role_id == 1} do
     get '/admin/dashboard', to: 'restrictions#index'
   end
 
-  authenticate do
+  constraints Challah::AuthenticatedRoutingConstraint.new do
     get '/profile', to: 'restrictions#index'
   end
 

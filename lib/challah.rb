@@ -22,6 +22,8 @@ module Challah
 
   autoload :PasswordProvider,                 "challah/providers/password_provider"
 
+  autoload :AuthenticatedRoutingConstraint,   "challah/routing/authenticated_constraint"
+
   autoload :ActiveRecordExtensions,           "challah/active_record_extensions"
 
   autoload :Authorizeable,                    "challah/concerns/authorizeable"

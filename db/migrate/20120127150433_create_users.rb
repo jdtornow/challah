@@ -17,7 +17,6 @@ class CreateUsers < ActiveRecord::Migration
       t.datetime    :created_at
       t.datetime    :updated_at
       t.boolean     :active, default: true
-      t.boolean     :admin, default: false
       t.timestamps  null: true
     end
 

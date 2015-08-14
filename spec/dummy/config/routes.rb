@@ -57,7 +57,7 @@ Dummy::Application.routes.draw do
     get '/admin/dashboard', to: 'restrictions#index'
   end
 
-  constraints Challah::AuthenticatedRoutingConstraint.new do
+  constraints Challah::AuthenticatedRoutingConstraint do
     get '/profile', to: 'restrictions#index'
   end
 

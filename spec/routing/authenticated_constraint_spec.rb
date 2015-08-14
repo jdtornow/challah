@@ -16,7 +16,7 @@ module Challah
     end
 
     context "with a signed in user that is not an admin" do
-      before(:each) do
+      before do
         signin_as(user)
       end
 

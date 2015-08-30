@@ -23,6 +23,7 @@ Gem::Specification.new do |s|
   s.add_dependency "bcrypt", "~> 3.1"
 
   s.add_development_dependency "rspec-rails", "~> 3.1"
+  s.add_development_dependency "rubocop", "~> 0.33.0"
   s.add_development_dependency "factory_girl_rails", "~> 4.5"
   s.add_development_dependency "sqlite3", "~> 1.3"
 

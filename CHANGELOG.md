@@ -1,3 +1,11 @@
+## Challah 1.2.10
+
+* Adds an `email` parameter for sign-in in addition to `username`. [PR #18](https://github.com/jdtornow/challah/pull/18) @thewatts
+
+## Challah 1.2.9
+
+* Adds support for apps that do not contain an `ApplicationController` in the main rails app. For example, if all of the app logic is contained within engines.
+
 ## Challah 1.2.8
 
 * Localize invalid email message [PR #15](https://github.com/jdtornow/challah/pull/15) @thewatts

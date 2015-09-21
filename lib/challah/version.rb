@@ -1,3 +1,5 @@
 module Challah
-  VERSION = "1.2.9" unless defined?(::Challah::VERSION)
+  unless defined?(Challah::VERSION)
+    VERSION = File.read(File.expand_path('../../../VERSION', __FILE__)).strip.freeze
+  end
 end

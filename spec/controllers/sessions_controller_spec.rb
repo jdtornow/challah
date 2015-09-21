@@ -1,4 +1,5 @@
 require "spec_helper"
+require "./spec/dummy/app/controllers/application_controller"
 
 module Challah
   describe SessionsController do

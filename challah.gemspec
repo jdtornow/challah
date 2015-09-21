@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
   s.summary       = "Rails 4 authentication and sessions"
   s.description   = "A simple gem for authorization and session management in Rails."
   s.license       = "MIT"
-  s.files         = Dir.glob("{app,config,db,test,lib}/**/*") + %w( README.md CHANGELOG.md )
+  s.files         = Dir.glob("{app,config,db,test,lib}/**/*") + %w( README.md CHANGELOG.md VERSION )
   s.require_paths = ["lib"]
 
   s.add_dependency "highline", "~> 1.7", ">= 1.7.1"

@@ -74,7 +74,11 @@ module Challah
     end
 
     def username
-      params[:username] || ""
+      params[:username] || params[:email] || ""
+    end
+
+    def username?
+      !username.empty?
     end
 
     # Returns true if this session has been authenticated and is ready to save.

@@ -120,6 +120,16 @@ module Challah
       expect(session.username?).to eq(true)
     end
 
+    it "should associate an email param as the 'username' for finding a user" do
+      session = Session.new(MockRequest.new, {
+        email: "test@example.com",
+        password: "test123"
+      })
+
+      expect(session.username?).to eq true
+      expect(session.username).to eq "test@example.com"
+    end
+
     it "should be able to set a username" do
       session = Session.new
 
@@ -155,6 +165,7 @@ module Challah
       session.other = true
       expected = { :username => 'test-user', :password => 'abc123', :api_key => '122345873847', :other => true }
       assert_equal expected, session.params
+
       assert_equal true, session.other?
 
       assert_raises NoMethodError do
@@ -220,6 +231,26 @@ module Challah
 
       assert_equal false, session.valid?
       assert_equal nil, session.user
+    end
+
+    it "should validate correctly with an email and password" do
+      user = build(:user, :email => 'test-user@example.com')
+      user.password!('abc123')
+      user.save
+
+      allow(User).to receive(:find_for_session).and_return(user)
+
+      session = Session.new(MockRequest.new, {
+        email: "test-user@example.com",
+        password: "abc123",
+      })
+
+      expect { session.valid? }.to change { user.session_count }.by(1)
+
+      assert_equal user, session.user
+      assert_equal user.id, session.user_id
+      assert_equal true, session.persist?
+      assert_equal true, session.save
     end
   end
 end

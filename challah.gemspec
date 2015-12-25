@@ -11,14 +11,14 @@ Gem::Specification.new do |s|
   s.authors       = ["John Tornow", "Phillip Ridlen", "Nathaniel Watts"]
   s.email         = ["john@johntornow.com", "p@rdln.net", "reg@nathanielwatts.com"]
   s.homepage      = "http://github.com/jdtornow/challah"
-  s.summary       = "Rails 4 authentication and sessions"
+  s.summary       = "Rails authentication and sessions"
   s.description   = "A simple gem for authorization and session management in Rails."
   s.license       = "MIT"
   s.files         = Dir.glob("{app,config,db,test,lib}/**/*") + %w( README.md CHANGELOG.md VERSION )
   s.require_paths = ["lib"]
 
   s.add_dependency "highline", "~> 1.7", ">= 1.7.1"
-  s.add_dependency "rails", "~> 4"
+  s.add_dependency "rails", ">= 4.0.0"
   s.add_dependency "rake", "~> 10.3"
   s.add_dependency "bcrypt", "~> 3.1"
 

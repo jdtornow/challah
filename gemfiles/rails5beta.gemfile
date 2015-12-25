@@ -1,0 +1,25 @@
+source "https://rubygems.org"
+
+gemspec path: "../"
+
+gem "rails", "5.0.0.beta1"
+
+group :test do
+  gem "factory_girl"
+  gem "mocha", :require => false
+  gem "simplecov", :require => false
+  gem "sqlite3"
+
+  gem "rails-controller-testing"
+  gem "rspec-rails", github: "rspec/rspec-rails"
+
+  %w[rspec-core rspec-expectations rspec-mocks rspec-support].each do |lib|
+    gem lib, github: "rspec/#{ lib }"
+  end
+end
+
+group :development do
+  gem "pry-rails"
+  gem "rdiscount"
+  gem "yard"
+end

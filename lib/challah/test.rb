@@ -67,6 +67,7 @@ if defined?(RSpec)
     end
 
     config.include Challah::Testing, type: :controller
+    config.include Challah::Testing, type: :routing
 
   end
 end

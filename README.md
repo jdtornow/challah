@@ -118,6 +118,36 @@ If you’d prefer to set up your own “sign in” and “sign out” actions, y
 
 Note: These routes have changed from previous versions of Challah. `signin_path` and `signout_path` are now the preferred routes, instead of the legacy `login_path` and `logout_path`. However, the legacy routes still remain for backward compatibility.
 
+## Routing constraints
+
+While we're talking about routes, you can use Challah's `AuthenticatedRoutingConstraint` class to wrap routes you don't want being accessed except by a logged in user.  It is not able to redirect the user to a login form, it will just render a 404, as though the routes don't exist.  It's the perfect tool to hide mounted engines, like Sidekiq's Web UI.  You can use it as a class, or instantiate it, and pass in some options.
+
+```ruby
+require 'sidekiq/web'
+Dummy::Application.routes.draw do
+  # This will make sure that a Challah User is logged in
+  constraints(Challah::AuthenticatedRoutingConstraint) do
+    mount Sidekiq::Web => '/sidekiq'
+  end
+
+  # This will make sure that an Admin::User is logged in
+  constraints(Challah::AuthenticatedRoutingConstraint.new(Admin::User)) do
+    mount Sidekiq::Web => '/sidekiq'
+  end
+
+  # You can also pass an optional block to add further constraints to the user
+  constraints(Challah::AuthenticatedRoutingConstraint.new { |user| user.role_id == 3 }) do
+    mount Sidekiq::Web => '/sidekiq'
+  end
+
+  # And of course, you can combine all of these options if you need to
+  constraints(Challah::AuthenticatedRoutingConstraint.new(Employee) { |e| e.developer? }) do
+    mount Sidekiq::Web => '/sidekiq'
+  end
+
+end
+```
+
 ## Sign In Form
 
 By default, the sign in form is tucked away within the Challah gem. If you’d like to customize the markup or functionality of the sign in form, you can unpack it into your app by running:

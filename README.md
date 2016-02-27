@@ -71,11 +71,11 @@ For example, restrict the second list item to only users that have logged in:
 </ul>
 ```
 
-Controllers can also be restricted using `before_filter`:
+Controllers can also be restricted using `before_action`:
 
 ```ruby
 class WidgetsController < ApplicationController
-  before_filter :signin_required
+  before_action :signin_required
 
   # ...
 end
@@ -91,7 +91,7 @@ class WidgetsController < ApplicationController
 end
 ```
 
-All normal Rails `before_filter` options apply, so you can always limit this restriction to a specific action:
+All normal Rails `before_action` options apply, so you can always limit this restriction to a specific action:
 
 
 ```ruby

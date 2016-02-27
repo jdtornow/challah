@@ -1,6 +1,6 @@
 if defined?(ApplicationController)
   class SessionsController < ApplicationController
-    before_filter :destroy_session, except: :create
+    before_action :destroy_session, except: :create
 
     unloadable
 

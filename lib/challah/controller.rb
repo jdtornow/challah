@@ -11,7 +11,7 @@ module Challah
     module ClassMethods
       # Restrict the current controller to only users that have authenticated. All actions
       # in the controller will be restricted unless otherwise stated. All normal options
-      # for a before_filter are observed.
+      # for a before_action are observed.
       #
       # @example
       #   class YourController < ApplicationController
@@ -29,7 +29,7 @@ module Challah
       #
       # @see Controller::InstanceMethods#signin_required signin_required
       def restrict_to_authenticated(options = {})
-        before_filter(options) do |controller|
+        before_action(options) do |controller|
           controller.send(:signin_required)
         end
       end
@@ -90,14 +90,14 @@ module Challah
     #
     # @example
     #   class YourController < ApplicationController
-    #     before_filter :login_required
+    #     before_action :login_required
     #
     #     # ...
     #   end
     #
     # @example Specifing certain actions.
     #   class YourOtherController < ApplicationController
-    #     before_filter :login_required, :only => [ :create, :update, :destroy ]
+    #     before_action :login_required, :only => [ :create, :update, :destroy ]
     #
     #     # ...
     #   end

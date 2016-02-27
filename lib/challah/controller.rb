@@ -29,8 +29,14 @@ module Challah
       #
       # @see Controller::InstanceMethods#signin_required signin_required
       def restrict_to_authenticated(options = {})
-        before_action(options) do |controller|
-          controller.send(:signin_required)
+        block = proc { |controller| controller.send(:signin_required) }
+
+        if respond_to?(:before_action)
+          # Rails >= 4.0
+          before_action(options, &block)
+        else
+          # Rails <= 3.2
+          before_filter(options, &block)
         end
       end
 

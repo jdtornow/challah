@@ -106,7 +106,11 @@ module Challah
     def self.create(user_or_user_id, request = nil, params = nil, user_model = nil)
       user_model = Challah.user if user_model.nil?
 
-      user_record = user_model === user_or_user_id ? user_or_user_id : user_model.find_by_id(user_or_user_id)
+      user_record = if user_model === user_or_user_id
+        user_or_user_id
+      else
+        GlobalID::Locator.locate user_or_user_id
+      end
 
       session = Session.new(request, params, user_model)
 

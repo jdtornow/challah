@@ -3,13 +3,7 @@ if File.exist?(Rails.root.join("controllers/application_controller"))
 end
 
 class SessionsController < (defined?(ApplicationController) ? ApplicationController : ActionController::Base)
-  if respond_to?(:before_action)
-    # Rails >= 4.0
-    before_action :destroy_session, except: :create
-  else
-    # Rails <= 3.2
-    before_filter :destroy_session, except: :create
-  end
+  before_action :destroy_session, except: :create
 
   # GET /login
   # GET /sign-in
@@ -48,4 +42,3 @@ class SessionsController < (defined?(ApplicationController) ? ApplicationControl
     result || default_path
   end
 end
-

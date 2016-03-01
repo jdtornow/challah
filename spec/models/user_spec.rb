@@ -390,13 +390,6 @@ module Challah
       end
     end
 
-    describe ".challah_user" do
-      it "includes the Userable module" do
-        User.challah_user
-        expect(User.included_modules).to include(Challah::Userable)
-      end
-    end
-
     describe ".inactive" do
       before do
         create_list(:user, 3, status: :active)

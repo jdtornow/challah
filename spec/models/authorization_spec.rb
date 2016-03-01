@@ -11,13 +11,6 @@ module Challah
       end
     end
 
-    describe ".challah_user" do
-      it "includes the Authorizeable module" do
-        Authorization.challah_authorization
-        expect(Authorization.included_modules).to include(Challah::Authorizeable)
-      end
-    end
-
     describe ".del" do
       it "removes a record" do
         Authorization.set(user_id: 1, provider: :test, token: "test123")

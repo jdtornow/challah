@@ -17,10 +17,10 @@ module Challah
       session.save
 
       assert_equal %w( challah-s challah-v ), request.cookies.keys.sort
-      assert_equal "#{user.persistence_token}@#{user.id}", request.cookies['challah-s'][:value]
+      assert_equal "#{user.persistence_token}@#{user.to_global_id}", request.cookies['challah-s'][:value]
       assert_equal "test.dev", request.cookies['challah-s'][:domain]
 
-      assert_equal Encrypter.md5("#{user.persistence_token}@#{user.id}", request.user_agent, request.remote_ip), request.cookies['challah-v'][:value]
+      assert_equal Encrypter.md5("#{user.persistence_token}@#{user.to_global_id}", request.user_agent, request.remote_ip), request.cookies['challah-v'][:value]
       assert_equal "test.dev", request.cookies['challah-v'][:domain]
     end
 
@@ -43,8 +43,8 @@ module Challah
       session.user = user
       session.save
 
-      validation_cookie_val = Encrypter.md5("#{user.persistence_token}@#{user.id}", request.user_agent, request.remote_ip)
-      session_cookie_val = "#{user.persistence_token}@#{user.id}"
+      validation_cookie_val = Encrypter.md5("#{user.persistence_token}@#{user.to_global_id}", request.user_agent, request.remote_ip)
+      session_cookie_val = "#{user.persistence_token}@#{user.to_global_id}"
 
       assert_equal session_cookie_val, request.cookies['challah-s'][:value]
       assert_equal session_cookie_val, session.store.send(:session_cookie)[:value]
@@ -61,7 +61,7 @@ module Challah
 
       assert_equal true, session2.store.send(:existing?)
       assert_equal true, session2.valid?
-      assert_equal user.id, session2.user_id
+      assert_equal user.to_global_id, session2.user_id
 
       allow(session.store).to receive(:validation_cookie).and_return('bad-value')
 

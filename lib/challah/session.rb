@@ -45,7 +45,7 @@ module Challah
       persistence_token, user_id = self.store.read
       return false if persistence_token.nil? or user_id.nil?
 
-      store_user = user_model.unscoped.where(id: user_id).first
+      store_user = GlobalID::Locator.locate(user_id)
 
       if store_user and store_user.active? and store_user.persistence_token == persistence_token
         if store_user.valid_session?
@@ -70,7 +70,7 @@ module Challah
 
     # Id of the current user.
     def user_id
-      @user_id ||= self.user ? self.user[:id] : nil
+      @user_id ||= self.user ? self.user.to_global_id : nil
     end
 
     def username
@@ -106,7 +106,11 @@ module Challah
     def self.create(user_or_user_id, request = nil, params = nil, user_model = nil)
       user_model = Challah.user if user_model.nil?
 
-      user_record = user_model === user_or_user_id ? user_or_user_id : user_model.find_by_id(user_or_user_id)
+      user_record = if user_model === user_or_user_id
+        user_or_user_id
+      else
+        GlobalID::Locator.locate user_or_user_id
+      end
 
       session = Session.new(request, params, user_model)
 
@@ -142,7 +146,7 @@ module Challah
     protected
 
     # Try and authenticate against the various auth techniques. If one
-    # technique works, then just exist and make the session active.
+    # technique works, then just exit and make the session active.
     def authenticate!
       Challah.techniques.values.each do |klass|
         technique = klass.new(self)

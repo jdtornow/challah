@@ -1,4 +1,5 @@
 class CreateAuthorizations < ActiveRecord::Migration
+
   def change
     create_table :authorizations do |t|
       t.integer     :user_id
@@ -17,4 +18,5 @@ class CreateAuthorizations < ActiveRecord::Migration
     add_index :authorizations, :uid
     add_index :authorizations, :token
   end
+
 end

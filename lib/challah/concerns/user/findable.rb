@@ -2,14 +2,7 @@ module Challah
   module UserFindable
     extend ActiveSupport::Concern
 
-    included do
-      extend ClassMethods
-    end
-
     module ClassMethods
-      def active
-        where(active: true)
-      end
 
       # Find a user instance by username first, or email address if needed.
       # If no user is found matching, return nil
@@ -18,10 +11,6 @@ module Challah
 
         username_or_email = username_or_email.downcase.strip
         find_by_email(username_or_email) || find_by_authorization(username_or_email)
-      end
-
-      def inactive
-        where.not(active: true)
       end
 
       protected

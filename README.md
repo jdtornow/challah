@@ -8,16 +8,16 @@ Challah doesn’t provide any fancy controllers or views that clutter your app o
 
 ## Requirements
 
-* Ruby 1.9.3+
+* Ruby 2.1.2+
 * Bundler
-* Rails 4.0+
+* Rails 4.2+
 
 ## Installation
 
 In your `Gemfile`
 
 ```ruby
-gem 'challah'
+gem "challah"
 ```
 
 ## Set up
@@ -116,8 +116,6 @@ If you’d prefer to set up your own “sign in” and “sign out” actions, y
 
     Challah.options[:skip_routes] = true
 
-Note: These routes have changed from previous versions of Challah. `signin_path` and `signout_path` are now the preferred routes, instead of the legacy `login_path` and `logout_path`. However, the legacy routes still remain for backward compatibility.
-
 ## Sign In Form
 
 By default, the sign in form is tucked away within the Challah gem. If you’d like to customize the markup or functionality of the sign in form, you can unpack it into your app by running:
@@ -131,12 +129,6 @@ If necessary, the sessions controller which handles creating new sessions and si
 ## Full documentation
 
 Documentation is available at: [http://rubydoc.info/gems/challah](http://rubydoc.info/gems/challah)
-
-## Example App
-
-A fully-functional example app, complete with some basic tests, is available at [http://challah-example.herokuapp.com/](http://challah-example.herokuapp.com/).
-
-The source code to the example is available at [https://github.com/jdtornow/challah-example](https://github.com/jdtornow/challah-example).
 
 ### Issues
 

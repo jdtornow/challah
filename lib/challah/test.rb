@@ -12,14 +12,14 @@ module Challah
 
     def read
       if $challah_test_session
-        return $challah_test_session.to_s.split(":")
+        return $challah_test_session.to_s.split("@")
       end
 
       nil
     end
 
     def save(token, user_id)
-      $challah_test_session = "#{ token }:#{ user_id }"
+      $challah_test_session = "#{ token }@#{ user_id }"
       true
     end
   end

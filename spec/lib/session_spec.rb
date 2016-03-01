@@ -72,7 +72,7 @@ module Challah
 
       session = Session.create(user)
       assert_equal true, session.valid?
-      assert_equal user.id, session.user_id
+      assert_equal user.to_global_id, session.user_id
     end
 
     it "should create a blank but invalid session for a non-existant or inactive user" do
@@ -190,7 +190,7 @@ module Challah
       expect { session.valid? }.to change { user.session_count }.by(1)
 
       assert_equal user, session.user
-      assert_equal user.id, session.user_id
+      assert_equal user.to_global_id, session.user_id
       assert_equal true, session.persist?
       assert_equal true, session.save
     end
@@ -209,7 +209,7 @@ module Challah
       expect { session.valid? }.to_not change { user.session_count }
 
       assert_equal user, session.user
-      assert_equal user.id, session.user_id
+      assert_equal user.to_global_id, session.user_id
       assert_equal false, session.persist?
       assert_equal false, session.save
 
@@ -248,7 +248,7 @@ module Challah
       expect { session.valid? }.to change { user.session_count }.by(1)
 
       assert_equal user, session.user
-      assert_equal user.id, session.user_id
+      assert_equal user.to_global_id, session.user_id
       assert_equal true, session.persist?
       assert_equal true, session.save
     end

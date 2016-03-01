@@ -146,7 +146,7 @@ module Challah
     protected
 
     # Try and authenticate against the various auth techniques. If one
-    # technique works, then just exist and make the session active.
+    # technique works, then just exit and make the session active.
     def authenticate!
       Challah.techniques.values.each do |klass|
         technique = klass.new(self)

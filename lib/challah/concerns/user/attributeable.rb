@@ -7,14 +7,19 @@ module Challah
       attr_reader :password_confirmation
       attr_reader :password_updated
 
+      enum status: %w( active inactive )
+
       before_save :ensure_user_tokens
       before_validation :normalize_user_email
     end
 
-    # Returns true if this user is active, and should be able to log in. If
-    # the active column is false, the user will not be able to authenticate
-    def active?
-      !!self.active
+    # Fallback to pre-enum active column
+    def active=(enabled)
+      self.status = (!!enabled ? :active : :inactive)
+    end
+
+    def active
+      active?
     end
 
     # First name and last name together
@@ -31,7 +36,7 @@ module Challah
     #
     # Override this method if you need to check for a particular configuration on each page request.
     def valid_session?
-      self.active?
+      active?
     end
 
     protected

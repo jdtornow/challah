@@ -8,7 +8,6 @@ class CreateUsers < ActiveRecord::Migration
       t.string      :email_hash
       t.string      :persistence_token
       t.string      :api_key
-      t.integer     :role_id, default: 0 # Not used by default, install challah-rolls to utilize this
       t.datetime    :last_session_at
       t.string      :last_session_ip
       t.integer     :session_count, default: 0
@@ -17,7 +16,7 @@ class CreateUsers < ActiveRecord::Migration
       t.integer     :updated_by, default: 0
       t.datetime    :created_at
       t.datetime    :updated_at
-      t.boolean     :active, default: true
+      t.integer     :status, default: 0 # defaults to :active
       t.timestamps  null: true
     end
 
@@ -25,7 +24,6 @@ class CreateUsers < ActiveRecord::Migration
     add_index :users, :last_name
     add_index :users, :email
     add_index :users, :api_key
-    add_index :users, :role_id
   end
 
 end

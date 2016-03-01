@@ -1,12 +1,6 @@
 if defined?(ApplicationController)
   class SessionsController < ApplicationController
-    if respond_to?(:before_action)
-      # Rails >= 4.0
-      before_action :destroy_session, except: :create
-    else
-      # Rails <= 3.2
-      before_filter :destroy_session, except: :create
-    end
+    before_action :destroy_session, except: :create
 
     unloadable
 

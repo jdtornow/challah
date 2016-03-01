@@ -1,3 +1,7 @@
+## Challah 1.3.0
+
+* Compatibility with Rails5 (beta3)
+
 ## Challah 1.2.10/11
 
 * Adds an `email` parameter for sign-in in addition to `username`. [PR #18](https://github.com/jdtornow/challah/pull/18) @thewatts

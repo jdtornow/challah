@@ -45,7 +45,13 @@ module Challah
       persistence_token, user_id = self.store.read
       return false if persistence_token.nil? or user_id.nil?
 
-      store_user = GlobalID::Locator.locate(user_id)
+      store_user = nil
+
+      begin
+        store_user = GlobalID::Locator.locate(user_id)
+      rescue ActiveRecord::RecordNotFound
+        nil
+      end
 
       if store_user and store_user.active? and store_user.persistence_token == persistence_token
         if store_user.valid_session?
@@ -104,15 +110,21 @@ module Challah
 
     # Manually create a new Session
     def self.create(user_or_user_id, request = nil, params = nil, user_model = nil)
-      user_model = Challah.user if user_model.nil?
+      if user_model.nil?
+        user_model = Challah.user
+      end
+
+      session = Session.new(request, params, user_model)
 
       user_record = if user_model === user_or_user_id
         user_or_user_id
       else
-        GlobalID::Locator.locate user_or_user_id
+        begin
+          GlobalID::Locator.locate(user_or_user_id)
+        rescue ActiveRecord::RecordNotFound
+          nil
+        end
       end
-
-      session = Session.new(request, params, user_model)
 
       if user_record and user_record.active?
         session.user = user_record

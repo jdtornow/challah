@@ -42,3 +42,4 @@ class SessionsController < (defined?(ApplicationController) ? ApplicationControl
     result || default_path
   end
 end
+

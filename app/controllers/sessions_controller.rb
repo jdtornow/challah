@@ -1,50 +1,51 @@
-if defined?(ApplicationController)
-  class SessionsController < ApplicationController
-    if respond_to?(:before_action)
-      # Rails >= 4.0
-      before_action :destroy_session, except: :create
+if File.exist?(Rails.root.join("controllers/application_controller"))
+  require "application_controller"
+end
+
+class SessionsController < (defined?(ApplicationController) ? ApplicationController : ActionController::Base)
+  if respond_to?(:before_action)
+    # Rails >= 4.0
+    before_action :destroy_session, except: :create
+  else
+    # Rails <= 3.2
+    before_filter :destroy_session, except: :create
+  end
+
+  # GET /login
+  # GET /sign-in
+  def new
+    @session = Challah::Session.new(request)
+  end
+
+  # POST /login
+  # POST /sign-in
+  def create
+    @session = Challah::Session.new(request, params[:session])
+    @session.ip = request.remote_ip
+
+    if @session.save
+      redirect_to return_to_path
     else
-      # Rails <= 3.2
-      before_filter :destroy_session, except: :create
-    end
-
-    unloadable
-
-    # GET /login
-    # GET /sign-in
-    def new
-      @session = Challah::Session.new(request)
-    end
-
-    # POST /login
-    # POST /sign-in
-    def create
-      @session = Challah::Session.new(request, params[:session])
-      @session.ip = request.remote_ip
-
-      if @session.save
-        redirect_to return_to_path
-      else
-        redirect_to signin_path, alert: I18n.translate('sessions.create.failed_login')
-      end
-    end
-
-    # GET /logout
-    # GET /sign-out
-    def destroy
-      redirect_to signin_path
-    end
-
-    protected
-
-    def destroy_session
-      current_user_session.destroy
-    end
-
-    def return_to_path(default_path = '/')
-      result = session[:return_to]
-      result = nil if result and result == "http://#{request.domain}/"
-      result || default_path
+      redirect_to signin_path, alert: I18n.translate('sessions.create.failed_login')
     end
   end
+
+  # GET /logout
+  # GET /sign-out
+  def destroy
+    redirect_to signin_path
+  end
+
+  protected
+
+  def destroy_session
+    current_user_session.destroy
+  end
+
+  def return_to_path(default_path = '/')
+    result = session[:return_to]
+    result = nil if result and result == "http://#{request.domain}/"
+    result || default_path
+  end
 end
+

@@ -1,9 +1,9 @@
-require 'highline/import'
-
 namespace :challah do
   namespace :users do
     desc "Create a new user"
     task :create => :environment do
+      require 'highline/import'
+
       check_for_tables
 
       first_user = ::User.count == 0

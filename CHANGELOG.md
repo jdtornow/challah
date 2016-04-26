@@ -1,3 +1,11 @@
+## Challah 1.3.2
+
+* Relax importing of highline in rake tasks to only include when in use
+
+## Challah 1.3.1
+
+* Bug fix preventing SessionsController from loading
+
 ## Challah 1.3.0
 
 * Compatibility with Rails5 (beta3)

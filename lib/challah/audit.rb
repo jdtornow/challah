@@ -96,7 +96,7 @@ module Challah
           write_attribute(attribute_name, nil)
         end
 
-        changed_attributes.delete(attribute_name)
+        @changed_attributes.delete(attribute_name)
       end
     end
   end

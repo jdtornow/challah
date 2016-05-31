@@ -17,13 +17,14 @@ module Challah
 
       include Challah::Audit
 
-      attr_accessor :name, :created_by, :created_at, :updated_by, :updated_at
+      attr_accessor :name, :created_by, :created_at, :updated_by, :updated_at, :changed_attributes
 
       def initialize(attributes = {})
         attributes.each do |name, value|
           send("#{name}=", value)
         end
 
+        @changed_attributes = {}
         @attributes = {}
       end
 
@@ -50,11 +51,6 @@ module Challah
 
       def write_attribute(attr_name, value)
         self.send("#{attr_name}=", value)
-      end
-
-      # Stub for tests
-      def changed_attributes
-        {}
       end
 
       # Stubs
@@ -104,6 +100,12 @@ module Challah
 
       assert_equal nil, @model.created_by
       assert_equal nil, @model.updated_by
+    end
+
+    describe "with an real model subclass" do
+      it "should not raise an error if nothing has changed" do
+        expect { User.new.send(:initialize_dup, nil) }.to_not raise_error
+      end
     end
   end
 end

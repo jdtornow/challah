@@ -95,8 +95,14 @@ module Challah
         if respond_to?(attribute_name) && respond_to?("#{ attribute_name }=")
           write_attribute(attribute_name, nil)
         end
+      end
 
-        @changed_attributes.delete(attribute_name)
+      @changed_attributes = changed_attributes.reduce(ActiveSupport::HashWithIndifferentAccess.new) do |result, (key, value)|
+        unless all_audit_attributes.include?(key.to_sym)
+          result[key] = value
+        end
+
+        result
       end
     end
   end

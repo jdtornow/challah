@@ -24,8 +24,11 @@ module Challah
           send("#{name}=", value)
         end
 
-        @changed_attributes = {}
         @attributes = {}
+      end
+
+      def changed_attributes
+        @changed_attributes ||= ActiveSupport::HashWithIndifferentAccess.new
       end
 
       def persisted?

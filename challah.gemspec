@@ -26,5 +26,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency "factory_girl_rails", "~> 4.6"
   s.add_development_dependency "sqlite3", "~> 1.3"
 
-  s.required_ruby_version = Gem::Requirement.new(">= 2.1.2")
+  s.required_ruby_version     = ">= 2.2.2"
+  s.required_rubygems_version = ">= 1.8.11"
 end

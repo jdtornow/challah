@@ -2,7 +2,7 @@ source "https://rubygems.org"
 
 gemspec path: "../"
 
-gem "rails", "5.0.0.beta1"
+gem "rails", "5.0.0.rc1"
 
 group :test do
   gem "factory_girl"
@@ -11,11 +11,7 @@ group :test do
   gem "sqlite3"
 
   gem "rails-controller-testing"
-  gem "rspec-rails", github: "rspec/rspec-rails"
-
-  %w[rspec-core rspec-expectations rspec-mocks rspec-support].each do |lib|
-    gem lib, github: "rspec/#{ lib }"
-  end
+  gem "rspec-rails", "3.5.0.beta3"
 end
 
 group :development do

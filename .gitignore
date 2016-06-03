@@ -26,3 +26,6 @@ spec/dummy/db/*.sqlite3
 spec/dummy/db/migrate/*.challah_engine.rb
 spec/dummy/log
 spec/dummy/public/system
+
+gemfiles/*.lock
+gemfiles/vendor

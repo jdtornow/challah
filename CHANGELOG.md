@@ -1,3 +1,7 @@
+## Challah 1.3.3
+
+* Fix Rails 4.2 "can't modify frozen hash ActiveSupport::HashWithIndifferentAccess" [PR #26](https://github.com/jdtornow/challah/pull/26) @stevenschobert
+
 ## Challah 1.3.2
 
 * Relax importing of highline in rake tasks to only include when in use

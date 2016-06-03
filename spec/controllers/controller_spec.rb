@@ -1,7 +1,7 @@
 require "spec_helper"
 
 module Challah
-  describe MockController do
+  describe MockController, type: :request do
 
     let(:user) { create(:user) }
     let(:controller) { MockController.new }

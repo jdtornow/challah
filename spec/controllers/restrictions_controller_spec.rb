@@ -1,7 +1,7 @@
 require "spec_helper"
 
 module Challah
-  describe RestrictionsController do
+  describe RestrictionsController, type: :request do
 
     let(:user) { create(:user) }
 
@@ -9,7 +9,7 @@ module Challah
       context "with no user" do
         before do
           signout
-          get :index
+          get "/challah"
         end
 
         it "has a successful response" do
@@ -24,7 +24,7 @@ module Challah
       context "with a regular user" do
         before do
           signin_as(user)
-          get :index
+          get "/challah"
         end
 
         it "has a successful response" do
@@ -39,7 +39,7 @@ module Challah
       context "with an api user" do
         before do
           Challah.options[:api_key_enabled] = true
-          get :index, key: user.api_key
+          get "/challah", key: user.api_key
         end
 
         it "has a successful response" do
@@ -54,7 +54,7 @@ module Challah
       context "with an api user but disabled api mode" do
         before do
           Challah.options[:api_key_enabled] = false
-          get :index, key: user.api_key
+          get "/challah", key: user.api_key
         end
 
         it "has a successful response" do
@@ -71,7 +71,7 @@ module Challah
       context "with no user" do
         before do
           signout
-          get :edit
+          get "/challah/edit"
         end
 
         it "has a successful response" do
@@ -82,7 +82,7 @@ module Challah
       context "with a regular user" do
         before do
           signin_as(user)
-          get :edit
+          get "/challah/edit"
         end
 
         it "has a successful response" do
@@ -99,7 +99,7 @@ module Challah
       context "with no user" do
         before do
           signout
-          get :show
+          get "/challah/show"
         end
 
         it "has a successful response" do
@@ -110,7 +110,7 @@ module Challah
       context "with a regular user" do
         before do
           signin_as(user)
-          get :show
+          get "/challah/show"
         end
 
         it "has a successful response" do

@@ -1,6 +1,7 @@
 # @private
 # This controller is only used for testing purposes, it does not actually get used outside of test.
 class RestrictionsController < ApplicationController
+
   signin_required                 only: [ :blah ]
   before_action :signin_required, only: [ :edit ]
   restrict_to_authenticated       only: [ :show ]
@@ -22,4 +23,5 @@ class RestrictionsController < ApplicationController
   def blah
     head :ok
   end
+
 end

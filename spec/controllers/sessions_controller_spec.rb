@@ -2,7 +2,7 @@ require "spec_helper"
 require "./spec/dummy/app/controllers/application_controller"
 
 module Challah
-  describe SessionsController do
+  describe SessionsController, type: :request do
 
     let(:user) { build(:user, username: 'sessions-user-test') }
 
@@ -12,7 +12,9 @@ module Challah
     end
 
     describe "GET /sign-in" do
-      before { get :new }
+      before do
+        get "/sign-in"
+      end
 
       it "has a sign-in page" do
         expect(response.status).to eq(200)
@@ -23,7 +25,7 @@ module Challah
       context "with valid credentials" do
         before do
           allow_any_instance_of(Session).to receive(:save).and_return(true)
-          post :create, username: 'sessions-user-test', password: 'abc123'
+          post "/sign-in", username: 'sessions-user-test', password: 'abc123'
         end
 
         it "signs the user in" do
@@ -34,7 +36,7 @@ module Challah
       context "with invalid credentials" do
         before do
           allow_any_instance_of(Session).to receive(:save).and_return(false)
-          post :create, username: 'sessions-user-test', password: ''
+          post "/sign-in", username: 'sessions-user-test', password: ''
         end
 
         it "signs the user in" do
@@ -45,7 +47,7 @@ module Challah
 
     describe "GET /sign-out" do
       before do
-        get :destroy
+        get "/sign-out"
       end
 
       it "goes back to sign-in" do

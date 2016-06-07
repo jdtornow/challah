@@ -26,15 +26,8 @@ if db_files.size > 0
   FileUtils.rm_rf(Rails.root.join("db", "schema.rb"))
 end
 
-if Rails.version.to_i == 5
-  `rails challah_engine:install:migrations`
-  `rails db:migrate`
-  `rails db:test:prepare`
-  `rails db:environment:set RAILS_ENV=test`
-else
-  `rake --rakefile #{ File.expand_path("../dummy/Rakefile",  __FILE__) } challah_engine:install:migrations`
-  `rake --rakefile #{ File.expand_path("../dummy/Rakefile",  __FILE__) } db:migrate db:test:prepare`
-end
+`rake --rakefile #{ File.expand_path("../dummy/Rakefile",  __FILE__) } challah_engine:install:migrations`
+`rake --rakefile #{ File.expand_path("../dummy/Rakefile",  __FILE__) } db:migrate db:test:prepare`
 
 RSpec.configure do |config|
   config.fixture_path = "#{ ::Rails.root }/spec/fixtures"

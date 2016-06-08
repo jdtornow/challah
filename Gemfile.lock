@@ -5,7 +5,7 @@ PATH
       bcrypt (~> 3.1)
       highline (~> 1.7, >= 1.7.1)
       rails (>= 4.2.0)
-      rake (~> 10.3)
+      rake (>= 10.3)
 
 GEM
   remote: https://rubygems.org/

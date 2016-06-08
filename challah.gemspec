@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency "highline", "~> 1.7", ">= 1.7.1"
   s.add_dependency "rails", ">= 4.2.0"
-  s.add_dependency "rake", "~> 10.3"
+  s.add_dependency "rake", ">= 10.3"
   s.add_dependency "bcrypt", "~> 3.1"
 
   s.add_development_dependency "rspec-rails", "~> 3.4"

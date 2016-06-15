@@ -29,6 +29,11 @@ module Challah
           :signed_in?
         )
 
+        # Rails 5 API
+        if defined?(ActionController::API)
+          ActionController::API.send(:include, Challah::Controller)
+        end
+
         # Load any ActionController/Challah plugins
         Challah.plugins.values.each do |plugin|
           plugin.action_controller.each do |proc|

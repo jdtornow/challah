@@ -1,3 +1,8 @@
+## Challah 1.4
+
+* Rails 5 support.
+* Changed `users.active` boolean column to `users.status` enum with `active` as one of the options.
+
 ## Challah 1.3.3
 
 * Fix Rails 4.2 "can't modify frozen hash ActiveSupport::HashWithIndifferentAccess" [PR #26](https://github.com/jdtornow/challah/pull/26) @stevenschobert

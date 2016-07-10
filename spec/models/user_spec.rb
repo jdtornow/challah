@@ -61,14 +61,14 @@ module Challah
       user = User.new
 
       user.active = true
-      assert_equal true, user.active
-      assert_equal true, user.active?
-      assert_equal true, user.valid_session?
+
+      expect(user.active?).to eq(true)
+      expect(user.valid_session?).to eq(true)
 
       user.active = false
-      assert_equal false, user.active
-      assert_equal false, user.active?
-      assert_equal false, user.valid_session?
+
+      expect(user.active?).to eq(false)
+      expect(user.valid_session?).to eq(false)
     end
 
     it "should create a user with password and authenticate them" do
@@ -329,13 +329,11 @@ module Challah
       it "is true if status is :active" do
         user.status = :active
         expect(user.active?).to eq(true)
-        expect(user.active).to eq(true)
       end
 
       it "is false if status is not :active" do
         user.status = :inactive
         expect(user.active?).to eq(false)
-        expect(user.active).to eq(false)
       end
     end
 

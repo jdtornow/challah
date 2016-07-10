@@ -154,6 +154,38 @@ module ApplicationCable
 end
 ```
 
+## Upgrading to 1.4+
+
+In Challah 1.4, the `active` boolean column changed to a `status` Rails enum with "active" as the default option. To upgrade a users table, use the following migration example:
+
+```bash
+rails g migration ConvertUsersActiveToEnum
+```
+
+```ruby
+class ConvertUsersActiveToEnum < ActiveRecord::Migration
+  def up
+    add_column :users, :status, :integer, default: 0
+
+    say_with_time "Converting users to status enum" do
+      User.where(active: false).update_all(status: User.statuses[:inactive])
+    end
+
+    remove_column :users, :active
+  end
+
+  def down
+    add_column :users, :active, :boolean, default: true
+
+    say_with_time "Converting users to active boolean" do
+      User.where(status: User.statuses[:inactive]).update_all(active: false)
+    end
+
+    remove_column :users, :status
+  end
+end
+```
+
 ## Full documentation
 
 Documentation is available at: [http://rubydoc.info/gems/challah](http://rubydoc.info/gems/challah)

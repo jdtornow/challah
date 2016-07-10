@@ -4,16 +4,9 @@ require "simplecov"
 ENV["RAILS_ENV"] ||= "test"
 
 require File.expand_path("../dummy/config/environment.rb",  __FILE__)
-require "rspec/rails"
-require "factory_girl"
-require "challah/test"
 require "pry"
 
 Rails.backtrace_cleaner.remove_silencers!
-
-# Load support files
-Dir["#{ File.dirname(__FILE__) }/support/**/*.rb"].each { |f| require f }
-Dir["#{ File.dirname(__FILE__) }/factories/**/*.rb"].each { |f| require f }
 
 db_files = Dir["#{ Rails.root.join("db") }/**/*challah*.rb"]
 
@@ -28,6 +21,14 @@ end
 
 `rake --rakefile #{ File.expand_path("../dummy/Rakefile",  __FILE__) } challah_engine:install:migrations`
 `rake --rakefile #{ File.expand_path("../dummy/Rakefile",  __FILE__) } db:migrate db:test:prepare`
+
+require "rspec/rails"
+require "factory_girl"
+require "challah/test"
+
+# Load support files
+Dir["#{ File.dirname(__FILE__) }/support/**/*.rb"].each { |f| require f }
+Dir["#{ File.dirname(__FILE__) }/factories/**/*.rb"].each { |f| require f }
 
 RSpec.configure do |config|
   config.fixture_path = "#{ ::Rails.root }/spec/fixtures"

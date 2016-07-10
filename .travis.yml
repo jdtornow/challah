@@ -8,4 +8,3 @@ cache: bundler
 gemfile:
   - Gemfile
   - gemfiles/rails42.gemfile
-  - gemfiles/rails5beta.gemfile

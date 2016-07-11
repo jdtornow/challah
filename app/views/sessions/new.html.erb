@@ -1,33 +1,27 @@
-<div class="page-header">
-  <h1>Sign In</h1>
-</div>
-
-<% if flash[:alert] %>
-  <div class="alert alert-block alert-error">
-    <%= flash[:alert] %>
-  </div>
-<% end %>
-
-<%= form_for(@session, as: :session, url: signin_path, method: :post, html: { id: 'log-in-form' }) do |f| %>
+<%= form_for @session, as: :session, url: signin_path, method: :post do |f| %>
   <div class="row">
-    <div class="span6 form-horizontal">
-      <div class="control-group">
-        <%= f.label :username, t('.user_or_email'), class: 'control-label' %>
+    <div class="col-sm-12 col-md-4 col-md-offset-4">
+      <h2><%= t(".title") %></h2>
 
-        <div class="controls">
-          <%= f.text_field :username, size: 40, maxlength: 200, class: 'span3' %>
+      <hr />
+
+      <% if flash[:alert] %>
+        <div class="alert alert-danger">
+          <%= flash[:alert] %>
         </div>
+      <% end %>
+
+      <div class="form-group">
+        <%= f.label :username, t(".user_or_email") %>
+        <%= f.text_field :username, size: 40, maxlength: 200, class: "form-control" %>
       </div>
 
-      <div class="control-group">
-        <%= f.label :password, t('.password'), :class => 'control-label' %>
-
-        <div class="controls">
-          <%= f.password_field :password, size: 40, maxlength: 200, class: 'span3' %>
-        </div>
+      <div class="form-group">
+        <%= f.label :password, t(".password") %>
+        <%= f.password_field :password, size: 40, maxlength: 200, class: "form-control" %>
       </div>
+
+      <%= f.submit t(".signin"), class: "btn btn-primary" %>
     </div>
   </div>
-
-  <div class="form-actions"><%= f.submit t('.signin'), class: 'btn btn-primary' %></div>
 <% end %>

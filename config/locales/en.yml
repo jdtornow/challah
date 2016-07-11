@@ -2,15 +2,16 @@ en:
   activerecord:
     errors:
       messages:
-        invalid_email: 'is not a valid email address.'
-        invalid_password: 'is not a valid password. Please enter at least 4 letters or numbers.'
-        no_match_password: 'does not match the confirmation password.'
-        invalid_key: 'is not valid. Please use only lower cased letters and underscores.'
+        invalid_email: "is not a valid email address."
+        invalid_password: "is not a valid password. Please enter at least 4 letters or numbers."
+        no_match_password: "does not match the confirmation password."
+        invalid_key: "is not valid. Please use only lower cased letters and underscores."
   sessions:
     new:
       user_or_email: "Username or email:"
       password: "Password:"
       login: "Log in"
       signin: "Sign in"
+      title: "Sign-in"
     create:
       failed_login: "There was a problem signing you in. Please check your username and password and try again."

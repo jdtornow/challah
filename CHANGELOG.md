@@ -2,6 +2,7 @@
 
 * Rails 5 support.
 * Changed `users.active` boolean column to `users.status` enum with `active` as one of the options.
+* Update sign-in page default bootstrap styles
 
 ## Challah 1.3.3
 

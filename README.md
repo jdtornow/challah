@@ -24,18 +24,21 @@ gem "challah"
 
 Once the gem has been set up and installed, run the following command to set up the database migrations:
 
-    rake challah:setup
+```bash
+rails challah:setup
+```
 
-This will copy over the necessary migrations to your app, migrate the database and add some seed data. You will be prompted to add the first user as the last step in this process.
+This will copy over the necessary migrations to your app and migrate the database. You will be prompted to add the first user as the last step in this process.
 
 ### Manual set up
 
 If you would prefer to handle these steps manually, you can do so by using these rake tasks instead:
 
-    rake challah:setup:migrations
-    rake db:migrate
-    rake challah:setup:seeds
-    rake challah:users:create
+```bash
+rails challah:setup:migrations
+rails challah:unpack:user
+rails db:migrate
+```
 
 ### Creating users
 
@@ -43,15 +46,18 @@ Since Challah doesn't provide any controller and views for users there are a few
 
 Use the following task to create a new user:
 
-    rake challah:users:create           # => Creates a new User record
+```bash
+# Creates a new User record
+rails challah:users:create
+```
 
-## Models
+## User Model
 
-Challah provides the core `User` model for your app, and a database migration to go along with it. You can customize the model to your app's specific needs, just leave the `challah_user` line intact.
+Challah provides the core `User` model for your app, and a database migration to go along with it. You can do anything you want with the model, just leave the `Challah::Userable` concern intact to keep Challah's standard user methods included.
 
 A user is anyone that needs to be able to authenticate (sign in) to the application. Each user requires a first name, last name, email address, username, and password.
 
-By default a user is marked as "active" and is able to log in to your application. If the active status column is toggled to false, then this user is no longer able to log in. The active status column can be used as a soft-delete function for users.
+By default a user is marked as "active" and is able to log in to your application. If the active status column is toggled to `inactive`, then this user is no longer able to log in. The active status column can be used as a soft-delete function for users.
 
 ## Checking for a current user
 
@@ -104,27 +110,38 @@ end
 
 ## Default Routes
 
-By default, there are a few routes included with the Challah engine. These routes provide a basic method for a username- and password-based sign in page. These routes are:
+By default, there are a few routes included with the Challah engine. These routes provide a basic method for a username and password sign in page. These routes are:
 
-    GET   /sign-in      # => SessionsController#new
-    POST  /sign-in      # => SessionsController#create
-    GET   /sign-out     # => SessionsController#new
+```text
+GET   /sign-in      # => SessionsController#new
+POST  /sign-in      # => SessionsController#create
+GET   /sign-out     # => SessionsController#new
+```
 
 Feel free to override the `SessionsController` with something more appropriate for your app.
 
 If you'd prefer to set up your own "sign in" and "sign out" actions, you can skip the inclusion of the default routes by adding the following line to an initializer file in your app:
 
-    Challah.options[:skip_routes] = true
+```ruby
+# in config/initializers/challah.rb
+Challah.options[:skip_routes] = true
+```
 
 ## Sign In Form
 
 By default, the sign in form is tucked away within the Challah gem. If you'd like to customize the markup or functionality of the sign in form, you can unpack it into your app by running:
 
-    rake challah:unpack:views        # => Copy the sign in view into your app
+```bash
+# Copy the sign in view into your app
+rails challah:unpack:views
+```
 
 If necessary, the sessions controller which handles creating new sessions and signing users out can also be unpacked into your app. This is really only recommended if you need to add some custom behavior or have advanced needs.
 
-    rake challah:unpack:signin        # => Copy the sessions controller into your app
+```bash
+# Copy the sessions controller into your app
+rails challah:unpack:signin
+```
 
 ## ActionCable in Rails 5
 
@@ -154,7 +171,7 @@ module ApplicationCable
 end
 ```
 
-## Upgrading to 1.4+
+## Upgrading to Challah 1.4+
 
 In Challah 1.4, the `active` boolean column changed to a `status` Rails enum with "active" as the default option. To upgrade a users table, use the following migration example:
 
@@ -186,19 +203,64 @@ class ConvertUsersActiveToEnum < ActiveRecord::Migration
 end
 ```
 
+## User Validations
+
+By default, the `first_name`, `last_name`, and `email` fields are required on the user model. If you'd prefer to add your own validations and leave the defaults off, you can use the following option within an initializer:
+
+```ruby
+# in config/initializers/challah.rb
+Challah[:skip_user_validations] = true
+```
+
+## Authorization Model
+
+The `Authorization` model can be used to store user credentials for a variety of different sources. By default, usernames and passwords are hashed and stored in this table.
+
+In addition to the username/password, you can also use the authorizations table to store credentials or tokens for other services as well. For example, you could store a successful Facebook session using the following method:
+
+```ruby
+Authorization.set({
+  # provider is just a key and can be anything to denote this service
+  provider: :facebook,
+
+  # the user's Facebook UID
+  uid: "000000",
+
+  # the user's Facebook-provided access token
+  token: "abc123",
+
+  # the user ID to link to this authorization
+  user_id: user.id,
+
+  # (optional, when this token expires)
+  expires_at: 60.minutes.from_now
+})
+```
+
+Then, to remove an authorization, just provide the user'd ID and the provider:
+
+```ruby
+Authorization.del({
+  provider: :facebook,
+  user_id: user.id
+})
+```
+
 ## Full documentation
 
 Documentation is available at: [http://rubydoc.info/gems/challah](http://rubydoc.info/gems/challah)
 
-### Issues
+## Issues
 
 If you have any issues or find bugs running Challah, please [report them on Github](https://github.com/jdtornow/challah/issues). While most functions should be stable, Challah is still in its infancy and certain issues may be present.
 
-### Testing
+## Testing
 
 Challah is fully tested using RSpec. To run the test suite, `bundle install` then run:
 
-    rspec
+```bash
+rspec
+```
 
 ## License
 

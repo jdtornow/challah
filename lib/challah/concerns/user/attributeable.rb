@@ -7,8 +7,13 @@ module Challah
       attr_reader :password_confirmation
       attr_reader :password_updated
 
-      if columns.map(&:name).include?("status")
-        enum status: %w( active inactive )
+      begin
+        if columns.map(&:name).include?("status")
+          enum status: %w( active inactive )
+        end
+      rescue ActiveRecord::StatementInvalid => exception
+        raise exception unless exception.message =~ /could not find table/i ||
+                               exception.message =~ /does not exist/i
       end
 
       before_save :ensure_user_tokens

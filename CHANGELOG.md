@@ -1,3 +1,7 @@
+## Challah 1.4.1
+
+* Fix running migrations on empty database [PR #27](https://github.com/jdtornow/challah/pull/27) @philtr
+
 ## Challah 1.4
 
 * Rails 5 support.

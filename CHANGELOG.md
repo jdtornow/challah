@@ -1,3 +1,7 @@
+## Challah 1.4.2
+
+* Fix issue with duplicating models and audits [#28](https://github.com/jdtornow/challah/issues/28)
+
 ## Challah 1.4.1
 
 * Fix running migrations on empty database [PR #27](https://github.com/jdtornow/challah/pull/27) @philtr

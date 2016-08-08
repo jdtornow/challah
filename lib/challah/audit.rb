@@ -36,6 +36,7 @@ module Challah
 
     # @private
     def initialize_dup(other)
+      super
       clear_audit_attributes
     end
 

@@ -99,15 +99,15 @@ module Challah
       @model.created_by = 1
       @model.updated_by = 2
 
-      @model.send(:initialize_dup, nil)
+      new_model = @model.dup
 
-      assert_equal nil, @model.created_by
-      assert_equal nil, @model.updated_by
+      assert_equal nil, new_model.created_by
+      assert_equal nil, new_model.updated_by
     end
 
     describe "with an real model subclass" do
       it "should not raise an error if nothing has changed" do
-        expect { User.new.send(:initialize_dup, nil) }.to_not raise_error
+        expect { User.new.send(:initialize_dup, User.new) }.to_not raise_error
       end
     end
   end

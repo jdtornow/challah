@@ -32,6 +32,7 @@ module Challah
   autoload :UserFindable,                     "challah/concerns/user/findable"
   autoload :UserPasswordable,                 "challah/concerns/user/passwordable"
   autoload :UserProvideable,                  "challah/concerns/user/provideable"
+  autoload :UserStatusable,                   "challah/concerns/user/statusable"
   autoload :UserValidateable,                 "challah/concerns/user/validateable"
 
   # Configuration options

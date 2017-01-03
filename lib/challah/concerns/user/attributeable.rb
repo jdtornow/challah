@@ -7,39 +7,9 @@ module Challah
       attr_reader :password_confirmation
       attr_reader :password_updated
 
-      begin
-        if columns.map(&:name).include?("status")
-          enum status: %w( active inactive )
-        end
-      rescue ActiveRecord::StatementInvalid => exception
-        raise exception unless exception.message =~ /could not find table/i ||
-                               exception.message =~ /does not exist/i
-      end
-
       before_save :ensure_user_tokens
       before_validation :normalize_user_email
     end
-
-    # Fallback to pre-enum active column (pre challah 1.4)
-    def active=(enabled)
-      if self.class.columns.map(&:name).include?("status")
-        self.status = (!!enabled ? :active : :inactive)
-      else
-        write_attribute(:active, !!enabled)
-      end
-    end
-
-    def active?
-      # enum-based status
-      if self.class.columns.map(&:name).include?("status")
-        read_attribute(:status).to_s == "active"
-
-      # support for non-enum status column (pre challah 1.4)
-      else
-        !!read_attribute(:active)
-      end
-    end
-    alias_method :active, :active?
 
     # First name and last name together
     def name
@@ -55,7 +25,7 @@ module Challah
     #
     # Override this method if you need to check for a particular configuration on each page request.
     def valid_session?
-      active?
+      true
     end
 
     protected

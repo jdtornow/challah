@@ -8,6 +8,7 @@ module Challah
     include UserFindable
     include UserPasswordable
     include UserProvideable
+    include UserStatusable
 
     unless Challah.options[:skip_user_validations]
       include UserValidateable

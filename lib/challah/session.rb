@@ -53,7 +53,7 @@ module Challah
         nil
       end
 
-      if store_user and store_user.active? and store_user.persistence_token == persistence_token
+      if store_user and store_user.valid_session? and store_user.persistence_token == persistence_token
         if store_user.valid_session?
           self.user = store_user
           @valid = true
@@ -90,7 +90,7 @@ module Challah
     # Returns true if this session has been authenticated and is ready to save.
     def valid?
       return @valid if @valid != nil
-      return true if self.user and self.user.active?
+      return true if self.user and self.user.valid_session?
       authenticate!
     end
 
@@ -126,7 +126,7 @@ module Challah
         end
       end
 
-      if user_record and user_record.active?
+      if user_record and user_record.valid_session?
         session.user = user_record
         session.persist = true
       end

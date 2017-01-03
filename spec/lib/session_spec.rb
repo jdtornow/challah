@@ -12,14 +12,14 @@ module Challah
         999
       end
 
-      def active?
+      def valid_session?
         true
       end
 
     end
 
     describe "#inspect" do
-      let(:session) { session = Session.create(user) }
+      let(:session) { Session.create(user) }
 
       it "has a pretty inspection" do
         expect(session.inspect).to match(/#<Session/)

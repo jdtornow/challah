@@ -17,7 +17,7 @@ module Challah
         user = user_model.find_for_session(username)
 
         if user
-          if user.active?
+          if user.valid_session?
             if user.authenticate(@password)
               return user
             end

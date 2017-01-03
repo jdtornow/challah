@@ -8,10 +8,7 @@ module Challah
     include UserFindable
     include UserPasswordable
     include UserProvideable
-
-    unless Challah.options[:skip_status_enum]
-      include UserStatusable
-    end
+    include UserStatusable
 
     unless Challah.options[:skip_user_validations]
       include UserValidateable

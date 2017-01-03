@@ -5,7 +5,8 @@ module Challah
     included do
       begin
         if columns.map(&:name).include?("status")
-          enum status: %w( active inactive )
+          additional_statuses = Array(Challah.options[:additional_statuses])
+          enum status: [:active, :inactive, *additional_statuses]
         end
       rescue ActiveRecord::StatementInvalid => exception
         raise exception unless exception.message =~ /could not find table/i ||

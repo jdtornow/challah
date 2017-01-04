@@ -53,6 +53,10 @@ class MockRequest
     @cookie_jar = value
   end
 
+  def headers
+    {}
+  end
+
   def remote_ip
     "8.8.8.8"
   end

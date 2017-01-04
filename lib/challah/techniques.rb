@@ -1,5 +1,6 @@
-require 'challah/techniques/api_key_technique'
-require 'challah/techniques/password_technique'
+require "challah/techniques/api_key_technique"
+require "challah/techniques/password_technique"
+require "challah/techniques/token_technique"
 
 module Challah
   # Techniques are used to allow different methods of authentication. By default, there are
@@ -23,7 +24,7 @@ module Challah
   #         # was params[:secret] provided to the request
   #         if @session.secret?
   #           # does the params[:secret] value match our shared password?
-  #           if @session.secret == 'let-me-in'
+  #           if @session.secret == "let-me-in"
   #             # if the secret was correct, grab the username from params, and load the user
   #             user = User.find_for_session(@session.username)
   #             return user

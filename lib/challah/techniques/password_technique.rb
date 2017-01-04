@@ -1,5 +1,4 @@
 module Challah
-
   # Allows authentication by username and password.
   class PasswordTechnique
 
@@ -51,5 +50,4 @@ module Challah
       @username
     end
   end
-
 end

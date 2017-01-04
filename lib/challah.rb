@@ -15,7 +15,6 @@ module Challah
   autoload :Session,                          "challah/session"
   autoload :Signup,                           "challah/signup"
   autoload :Techniques,                       "challah/techniques"
-  autoload :Techniques,                       "challah/techniques"
 
   autoload :EmailValidator,                   "challah/validators/email_validator"
   autoload :PasswordValidator,                "challah/validators/password_validator"
@@ -50,6 +49,8 @@ module Challah
     @options ||= {
       access_denied_view:     "sessions/access_denied",
       api_key_enabled:        false,
+      token_enabled:          false,
+      token_header:           "X-Auth-Token",
       cookie_prefix:          "challah",
       email_validator:        "challah/email",
       password_validator:     PasswordValidator,
@@ -71,6 +72,7 @@ module Challah
   # Default registered authentication techiques.
   register_technique :api_key,        ApiKeyTechnique
   register_technique :password,       PasswordTechnique
+  register_technique :token,          TokenTechnique
 
   # Set up plugin registering capability
   extend Plugins

@@ -1,3 +1,8 @@
+## Challah 1.5.0
+
+* Extract status enum to separate concern [PR #32](https://github.com/jdtornow/challah/pull/32) @philtr
+* Add built-in support for authenticating using X-Auth-Token header for APIs
+
 ## Challah 1.4.2
 
 * Fix issue with duplicating models and audits [#28](https://github.com/jdtornow/challah/issues/28)

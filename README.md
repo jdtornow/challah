@@ -8,9 +8,9 @@ Challah doesn't provide any fancy controllers or views that clutter your app or 
 
 ## Requirements
 
-* Ruby 2.1.2+
+* Ruby 2.2.2+
 * Bundler
-* Rails 5.0 (Recommended)
+* Rails 4.2+ (5.0 Recommended)
 
 ## Installation
 
@@ -142,6 +142,50 @@ If necessary, the sessions controller which handles creating new sessions and si
 # Copy the sessions controller into your app
 rails challah:unpack:signin
 ```
+
+## API Controllers
+
+For apps that use JSON API controllers, Challah can be used to authenticate a user with a url parameter or an HTTP request header. This feature is disabled by default, so to use it you will need to change the `token_enabled` setting to `true`:
+
+```ruby
+# in config/initializers/challah.rb
+Challah.options[:token_enabled] = true
+```
+
+Once enabled, this setting will allow the `api_key` for the user to be used to authenticate them via the `token` parameter, or `X-Auth-Token` HTTP header.
+
+For example, the following request would authenticate a valid active user that has the `api_key` value of `abc123`:
+
+``` shell
+curl -H "X-Auth-Token: abc123" \
+  -H 'Content-Type: application/json' \
+  http://localhost:3000/api/test.json
+```
+
+Using the `token` param, you could write the same thing as:
+
+``` shell
+curl -H 'Content-Type: application/json' \
+  http://localhost:3000/api/test.json?token=abc123
+```
+
+If you'd like to change the HTTP header used to fetch the user's api key from, you can change it using the `token_header` setting:
+
+```ruby
+# in config/initializers/challah.rb
+Challah.options[:token_enabled] = true
+Challah.options[:token_header] = "X-App-User"
+```
+
+Then:
+
+``` shell
+curl -H "X-App-User: abc123" \
+  -H 'Content-Type: application/json' \
+  http://localhost:3000/api/test.json
+```
+
+_Note: Custom HTTP headers should always start with X-_
 
 ## ActionCable in Rails 5
 

@@ -323,17 +323,19 @@ module Challah
       end
     end
 
-    describe "#active" do
+    describe "#active?" do
       let(:user) { build(:user) }
 
       it "is true if status is :active" do
         user.status = :active
         expect(user.active?).to eq(true)
+        expect(user.active).to eq(true)
       end
 
       it "is false if status is not :active" do
         user.status = :inactive
         expect(user.active?).to eq(false)
+        expect(user.active).to eq(false)
       end
     end
 

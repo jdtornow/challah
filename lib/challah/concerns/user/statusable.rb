@@ -33,7 +33,10 @@ module Challah
         !!read_attribute(:active)
       end
     end
-    alias_method :active, :active?
+
+    def active
+      active?
+    end
 
     def valid_session?
       active?

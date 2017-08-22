@@ -9,8 +9,7 @@ group :test do
   gem "mocha", :require => false
   gem "simplecov", :require => false
   gem "sqlite3"
-  gem "rspec"
-  gem "rspec-rails"
+  gem "rspec-rails", "~> 3.6.1"
 end
 
 group :development do

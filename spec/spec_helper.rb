@@ -19,7 +19,7 @@ if db_files.size > 0
   FileUtils.rm_rf(Rails.root.join("db", "schema.rb"))
 end
 
-`rake --rakefile #{ File.expand_path("../dummy/Rakefile",  __FILE__) } challah_engine:install:migrations`
+`cd #{ File.expand_path("../dummy",  __FILE__) } && ./bin/rails g challah`
 `rake --rakefile #{ File.expand_path("../dummy/Rakefile",  __FILE__) } db:migrate db:test:prepare`
 
 require "rspec/rails"

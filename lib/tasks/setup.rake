@@ -3,6 +3,10 @@ namespace :challah do
   task :setup => [ "challah:setup:migrations", "challah:unpack:user", "db:migrate", "challah:banner" ]
 
   task :banner do
+    is_rails5 = Rails.version.start_with? "5"
+
+    cmd = is_rails5 ? "rails" : "rake"
+
     banner = <<-str
 
   ==========================================================================
@@ -15,7 +19,7 @@ namespace :challah do
 
   If you want to create a new user now, just run:
 
-  rails challah:users:create
+  #{ cmd } challah:users:create
 
   ==========================================================================
 
@@ -26,8 +30,8 @@ namespace :challah do
 
   namespace :setup do
     task :migrations do
-      puts "Copying migrations..."
-      Rake::Task["challah_engine:install:migrations"].invoke
+      puts "Setting up migrations..."
+      sh "rails generate challah"
     end
   end
 end

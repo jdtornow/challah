@@ -1,7 +1,6 @@
-class CreateUsers < ActiveRecord::Migration
-
+class ChallahCreateUsers < ActiveRecord::Migration[5.0]
   def change
-    create_table :users do |t|
+     create_table :users do |t|
       t.string      :first_name
       t.string      :last_name
       t.string      :email
@@ -24,6 +23,22 @@ class CreateUsers < ActiveRecord::Migration
     add_index :users, :last_name
     add_index :users, :email
     add_index :users, :api_key
-  end
 
+    create_table :authorizations do |t|
+      t.integer     :user_id
+      t.string      :provider, limit: 50
+      t.string      :uid
+      t.string      :token, limit: 500
+      t.datetime    :expires_at
+      t.datetime    :last_session_at
+      t.string      :last_session_ip
+      t.integer     :session_count, default: 0
+      t.timestamps  null: true
+    end
+
+    add_index :authorizations, :user_id
+    add_index :authorizations, [ :user_id, :provider ]
+    add_index :authorizations, :uid
+    add_index :authorizations, :token
+  end
 end

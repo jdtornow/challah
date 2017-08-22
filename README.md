@@ -10,7 +10,7 @@ Challah doesn't provide any fancy controllers or views that clutter your app or 
 
 * Ruby 2.2.2+
 * Bundler
-* Rails 4.2+ (5.0 Recommended)
+* Rails 5.0+ (4.2 still supported, but not recommended)
 
 ## Installation
 
@@ -35,7 +35,7 @@ This will copy over the necessary migrations to your app and migrate the databas
 If you would prefer to handle these steps manually, you can do so by using these rake tasks instead:
 
 ```bash
-rails challah:setup:migrations
+rails g challah
 rails challah:unpack:user
 rails db:migrate
 ```

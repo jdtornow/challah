@@ -28,9 +28,9 @@ module Challah
       assert_equal user_two, User.find_for_session('test-user-2')
       assert_equal user_two, User.find_for_session('tester2@example.com')
 
-      assert_equal nil, User.find_for_session(' ')
-      assert_equal nil, User.find_for_session('not-existing')
-      assert_equal nil, User.find_for_session(nil)
+      expect(User.find_for_session(' ')).to be_nil
+      expect(User.find_for_session('not-existing')).to be_nil
+      expect(User.find_for_session(nil)).to be_nil
     end
 
     it "should find by username or email regardless of case" do
@@ -240,7 +240,7 @@ module Challah
       })
 
       assert_equal false, user.provider?(:password)
-      assert_equal nil, user.provider(:password)
+      expect(user.provider(:password)).to be_nil
 
       expected_auth = {
         :id => auth.id,

@@ -12,7 +12,7 @@ RSpec.describe "Session requests", type: :request do
 
   describe "GET /sign-in" do
     before do
-      get "/sign-in"
+      get_request "/sign-in"
     end
 
     it "has a sign-in page" do
@@ -24,7 +24,7 @@ RSpec.describe "Session requests", type: :request do
     context "with valid credentials" do
       before do
         allow_any_instance_of(Challah::Session).to receive(:save).and_return(true)
-        post "/sign-in", username: 'sessions-user-test', password: 'abc123'
+        post_request "/sign-in", params: { username: 'sessions-user-test', password: 'abc123' }
       end
 
       it "signs the user in" do
@@ -35,7 +35,7 @@ RSpec.describe "Session requests", type: :request do
     context "with invalid credentials" do
       before do
         allow_any_instance_of(Challah::Session).to receive(:save).and_return(false)
-        post "/sign-in", username: 'sessions-user-test', password: ''
+        post_request "/sign-in", params: { username: 'sessions-user-test', password: '' }
       end
 
       it "signs the user in" do
@@ -46,7 +46,7 @@ RSpec.describe "Session requests", type: :request do
 
   describe "GET /sign-out" do
     before do
-      get "/sign-out"
+      get_request "/sign-out"
     end
 
     it "goes back to sign-in" do

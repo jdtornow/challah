@@ -8,7 +8,7 @@ RSpec.describe "Restricted requests", type: :request do
     context "with no user" do
       before do
         signout
-        get "/challah"
+        get_request "/challah"
       end
 
       it "has a successful response" do
@@ -23,7 +23,7 @@ RSpec.describe "Restricted requests", type: :request do
     context "with a regular user" do
       before do
         signin_as(user)
-        get "/challah"
+        get_request "/challah"
       end
 
       it "has a successful response" do
@@ -38,7 +38,7 @@ RSpec.describe "Restricted requests", type: :request do
     context "with an api user" do
       before do
         Challah.options[:api_key_enabled] = true
-        get "/challah", key: user.api_key
+        get_request "/challah", params: { key: user.api_key }
       end
 
       it "has a successful response" do
@@ -53,7 +53,7 @@ RSpec.describe "Restricted requests", type: :request do
     context "with an api user but disabled api mode" do
       before do
         Challah.options[:api_key_enabled] = false
-        get "/challah", key: user.api_key
+        get_request "/challah", params: { key: user.api_key }
       end
 
       it "has a successful response" do
@@ -70,7 +70,7 @@ RSpec.describe "Restricted requests", type: :request do
     context "with no user" do
       before do
         signout
-        get "/challah/edit"
+        get_request "/challah/edit"
       end
 
       it "has a successful response" do
@@ -81,7 +81,7 @@ RSpec.describe "Restricted requests", type: :request do
     context "with a regular user" do
       before do
         signin_as(user)
-        get "/challah/edit"
+        get_request "/challah/edit"
       end
 
       it "has a successful response" do
@@ -98,7 +98,7 @@ RSpec.describe "Restricted requests", type: :request do
     context "with no user" do
       before do
         signout
-        get "/challah/show"
+        get_request "/challah/show"
       end
 
       it "has a successful response" do
@@ -109,7 +109,7 @@ RSpec.describe "Restricted requests", type: :request do
     context "with a regular user" do
       before do
         signin_as(user)
-        get "/challah/show"
+        get_request "/challah/show"
       end
 
       it "has a successful response" do

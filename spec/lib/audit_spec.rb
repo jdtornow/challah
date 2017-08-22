@@ -71,28 +71,28 @@ module Challah
       user = create(:user)
       user_two = create(:user, :first_name => 'User', :last_name => 'Test 2')
 
-      assert_equal 0, @model.current_user_id
-      assert_equal true, @model.new_record?
+      expect(@model.current_user_id).to eq(0)
+      expect(@model.new_record?).to eq(true)
 
       # For a new record, setting current_user should update both attributes
       @model.current_user = user
-      assert_equal user.id, @model.current_user_id
+      expect(@model.current_user_id).to eq(user.id)
 
       @model.save
 
-      assert_equal user.id, @model.created_by
-      assert_equal user.id, @model.updated_by
+      expect(@model.created_by).to eq(user.id)
+      expect(@model.updated_by).to eq(user.id)
 
-      assert_equal false, @model.new_record?
+      expect(@model.new_record?).to eq(false)
 
       # For an existing record, setting current_user (or current_user_id) should update only updated_by
       @model.current_user_id = user_two.id
-      assert_equal user_two.id, @model.current_user_id
+      expect(@model.current_user_id).to eq(user_two.id)
 
       @model.save
 
-      assert_equal user.id, @model.created_by
-      assert_equal user_two.id, @model.updated_by
+      expect(@model.created_by).to eq(user.id)
+      expect(@model.updated_by).to eq(user_two.id)
     end
 
     it "should be able to clear audit attributes" do
@@ -101,8 +101,8 @@ module Challah
 
       new_model = @model.dup
 
-      assert_equal nil, new_model.created_by
-      assert_equal nil, new_model.updated_by
+      expect(new_model.created_by).to be_nil
+      expect(new_model.updated_by).to be_nil
     end
 
     describe "with an real model subclass" do

@@ -2,7 +2,7 @@ unless defined?(API_BASE_CONTROLLER)
   API_BASE_CONTROLLER = ActionController::Base
 
   # For Rails 5.0+ use, API controller
-  if defined?(ActionController::API)
+  if defined?(ActionController::API) && !defined?(API_BASE_CONTROLLER)
     API_BASE_CONTROLLER = ActionController::API
   end
 end

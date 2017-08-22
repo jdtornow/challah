@@ -82,7 +82,7 @@ module Challah
 
       assert_equal true, signup.new_record?
       assert_equal "Avon Barksdale", signup.user.name
-      assert_equal nil, signup.provider
+      expect(signup.provider).to be_nil
     end
 
     it "should not sign up with an invalid provider" do

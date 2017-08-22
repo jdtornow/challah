@@ -87,9 +87,9 @@ module Challah
 
       session.destroy
 
-      assert_equal false, session.valid?
-      assert_equal nil, session.user
-      assert_equal [], request.cookies.keys.sort
+      expect(session.valid?).to eq(false)
+      expect(session.user).to be_nil
+      expect(request.cookies.keys.sort).to eq([])
     end
   end
 end

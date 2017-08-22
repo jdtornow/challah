@@ -78,7 +78,7 @@ module Challah
     it "should create a blank but invalid session for a non-existant or inactive user" do
       session = Session.create(999)
       assert_equal false, session.valid?
-      assert_equal nil, session.user_id
+      expect(session.user_id).to be_nil
     end
 
     it "should persist a session" do
@@ -98,7 +98,7 @@ module Challah
 
       session_three = Session.find
       assert_equal false, session_three.valid?
-      assert_equal nil, session_three.user
+      expect(session_three.user).to be_nil
     end
 
     it "should accept a user model" do
@@ -230,7 +230,7 @@ module Challah
       expect(user).to receive(:failed_authentication!).once
 
       assert_equal false, session.valid?
-      assert_equal nil, session.user
+      expect(session.user).to be_nil
     end
 
     it "should validate correctly with an email and password" do

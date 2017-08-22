@@ -18,6 +18,8 @@ module Challah
       # This is turned off by default and must be manually enabled for security reasons.
       return nil unless Challah.options[:token_enabled]
 
+      return nil unless token.present?
+
       if user = user_model.where(api_key: token).first
         if user.valid_session?
           return user

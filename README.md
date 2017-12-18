@@ -253,7 +253,7 @@ By default, the `first_name`, `last_name`, and `email` fields are required on th
 
 ```ruby
 # in config/initializers/challah.rb
-Challah[:skip_user_validations] = true
+Challah.options[:skip_user_validations] = true
 ```
 
 ## Authorization Model

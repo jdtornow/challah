@@ -1,3 +1,11 @@
+## Challah 1.6.0
+
+* For token technique, don't bother checking the database for an empty token query param
+* Add migration generator to account for Rails 5 migration inheritance syntax (`ActiveRecord::Migration[5.1]`)
+* Minor testing updates
+* Dependency updates, including renaming FactoryGirl to FactoryBot
+* Readme typo [PR #32](https://github.com/jdtornow/challah/pull/34) @stevenschobert
+
 ## Challah 1.5.0
 
 * Extract status enum to separate concern [PR #32](https://github.com/jdtornow/challah/pull/32) @philtr

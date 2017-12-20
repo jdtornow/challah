@@ -23,7 +23,7 @@ end
 `rake --rakefile #{ File.expand_path("../dummy/Rakefile",  __FILE__) } db:migrate db:test:prepare`
 
 require "rspec/rails"
-require "factory_girl"
+require "factory_bot"
 require "challah/test"
 
 # Load support files
@@ -33,7 +33,7 @@ Dir["#{ File.dirname(__FILE__) }/factories/**/*.rb"].each { |f| require f }
 RSpec.configure do |config|
   config.fixture_path = "#{ ::Rails.root }/spec/fixtures"
   config.use_transactional_fixtures = true
-  config.include FactoryGirl::Syntax::Methods
+  config.include FactoryBot::Syntax::Methods
   config.infer_spec_type_from_file_location!
 
   config.include DeprecatedRequestMethods

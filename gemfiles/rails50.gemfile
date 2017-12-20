@@ -1,9 +1,14 @@
-source 'https://rubygems.org'
+source "https://rubygems.org"
 
 gemspec
 
+gem "rails", "~> 5.0.6"
+
 group :test do
+  gem "factory_bot"
+  gem "mocha", :require => false
   gem "simplecov", :require => false
+  gem "sqlite3"
   gem "rails-controller-testing"
 end
 

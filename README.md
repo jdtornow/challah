@@ -1,6 +1,6 @@
 # Challah
 
-[![Build Status](https://travis-ci.org/jdtornow/challah.svg?branch=master)](https://travis-ci.org/jdtornow/challah) [![Code Climate](https://codeclimate.com/github/jdtornow/challah/badges/gpa.svg)](https://codeclimate.com/github/jdtornow/challah) [![Dependency Status](https://gemnasium.com/jdtornow/challah.svg)](https://gemnasium.com/jdtornow/challah) [![Gem Version](https://badge.fury.io/rb/challah.svg)](https://badge.fury.io/rb/challah)
+[![CircleCI](https://circleci.com/gh/jdtornow/challah/tree/2-0.svg?style=shield)](https://circleci.com/gh/jdtornow/challah/tree/master) [![Code Climate](https://codeclimate.com/github/jdtornow/challah/badges/gpa.svg)](https://codeclimate.com/github/jdtornow/challah) [![Dependency Status](https://gemnasium.com/jdtornow/challah.svg)](https://gemnasium.com/jdtornow/challah) [![Gem Version](https://badge.fury.io/rb/challah.svg)](https://badge.fury.io/rb/challah)
 
 Challah (pronounced HAH-lah) is a simple Rails authentication gem that provides users a way to authenticate with your app. Most of the functionality within the gem lives within a Rails engine and tries to stay out of the way of your app.
 
@@ -8,9 +8,9 @@ Challah doesn't provide any fancy controllers or views that clutter your app or 
 
 ## Requirements
 
-* Ruby 2.2.2+
+* Ruby 2.3.2+
 * Bundler
-* Rails 5.0+ (4.2 still supported, but not recommended)
+* Rails 5.2+
 
 ## Installation
 

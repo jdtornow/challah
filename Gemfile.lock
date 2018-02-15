@@ -139,6 +139,8 @@ GEM
       rspec-mocks (~> 3.7.0)
       rspec-support (~> 3.7.0)
     rspec-support (3.7.0)
+    rspec_junit_formatter (0.3.0)
+      rspec-core (>= 2, < 4, != 2.12.0)
     rubocop (0.52.1)
       parallel (~> 1.10)
       parser (>= 2.4.0.2, < 3.0)
@@ -180,6 +182,7 @@ DEPENDENCIES
   rails-controller-testing
   rdiscount
   rspec-rails (~> 3.7)
+  rspec_junit_formatter (~> 0.2)
   rubocop
   simplecov
   sqlite3 (~> 1.3)

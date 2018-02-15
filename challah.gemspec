@@ -17,8 +17,7 @@ Gem::Specification.new do |s|
   s.files         = Dir.glob("{app,config,db,test,lib}/**/*") + %w( README.md CHANGELOG.md VERSION )
   s.require_paths = ["lib"]
 
-  s.add_dependency "highline", "~> 1.7", ">= 1.7.1"
-  s.add_dependency "rails", ">= 4.2.0"
+  s.add_dependency "rails", "5.2.0.rc1"
   s.add_dependency "rake", ">= 10.3"
   s.add_dependency "bcrypt", "~> 3.1"
 
@@ -26,6 +25,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency "factory_bot_rails", "~> 4.8"
   s.add_development_dependency "sqlite3", "~> 1.3"
 
-  s.required_ruby_version     = ">= 2.2.2"
-  s.required_rubygems_version = ">= 1.8.11"
+  s.required_ruby_version     = ">= 2.3"
+  s.required_rubygems_version = ">= 2.5"
 end

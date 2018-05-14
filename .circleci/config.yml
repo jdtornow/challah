@@ -18,7 +18,7 @@ jobs:
       # Bundle install dependencies
       - run:
           name: Bundle Install
-          command: bin/bundle check --path vendor/bundle ||  bin/bundle install --path vendor/bundle --jobs 4 --retry 3
+          command: bundle check --path vendor/bundle || bundle install --path vendor/bundle --jobs 4 --retry 3
 
       - save_cache:
           name: Store bundle cache

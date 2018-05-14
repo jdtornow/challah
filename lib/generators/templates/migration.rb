@@ -8,7 +8,6 @@ class ChallahCreateUsers < ActiveRecord::Migration<%= migration_version %>
       t.string      :persistence_token
       t.string      :api_key
       t.datetime    :last_session_at
-      t.string      :last_session_ip
       t.integer     :session_count, default: 0
       t.integer     :failed_auth_count, default: 0
       t.integer     :created_by, default: 0
@@ -31,7 +30,6 @@ class ChallahCreateUsers < ActiveRecord::Migration<%= migration_version %>
       t.string      :token, limit: 500
       t.datetime    :expires_at
       t.datetime    :last_session_at
-      t.string      :last_session_ip
       t.integer     :session_count, default: 0
       t.timestamps  null: true
     end

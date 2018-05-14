@@ -35,7 +35,7 @@ module Challah
     # been authenticated.
     def successful_authentication!(ip_address = nil)
       self.last_session_at = Time.now
-      self.last_session_ip = ip_address
+      self.last_session_ip = ip_address if respond_to?(:last_session_ip=)
       self.save
       self.increment!(:session_count, 1)
     end

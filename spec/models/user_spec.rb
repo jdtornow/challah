@@ -206,12 +206,10 @@ module Challah
     it "should have successful and failed authentication methods" do
       user = create(:user)
 
-      expect(user.last_session_ip).to be_nil
       expect(user.last_session_at).to be_nil
 
-      expect { user.successful_authentication!('192.168.0.1') }.to change { user.session_count }.by(1)
+      expect { user.successful_authentication! }.to change { user.session_count }.by(1)
 
-      expect(user.last_session_ip).to_not be_nil
       expect(user.last_session_at).to_not be_nil
 
       expect { user.failed_authentication! }.to change { user.failed_auth_count }.by(1)

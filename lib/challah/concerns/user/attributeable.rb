@@ -50,7 +50,7 @@ module Challah
     def ensure_email_hash_presence
       if respond_to?("email_hash=")
         if email_changed?
-          self.email_hash = Encrypter.md5(email.to_s.downcase.strip)
+          self.email_hash = generate_email_hash
         end
       end
     end
@@ -61,6 +61,12 @@ module Challah
         if self.persistence_token.to_s.blank?
           self.persistence_token = Random.token(125)
         end
+      end
+    end
+
+    def generate_email_hash
+      if self.email.present?
+        Encrypter.md5(email.to_s.downcase.strip)
       end
     end
 

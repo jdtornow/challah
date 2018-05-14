@@ -217,18 +217,6 @@ module Challah
       expect { user.failed_authentication! }.to change { user.failed_auth_count }.by(1)
     end
 
-    it "should calculate an email hash on save" do
-      user = build(:user)
-
-      user.email = 'tester@challah.me'
-      assert user.save
-      assert_equal '859ea8a4ea69b321df4992ca14c08d6b', user.email_hash
-
-      user.email = 'tester-too@challah.me'
-      assert user.save
-      assert_equal '45ab23dd8eb9a00f61cef27004b38b01', user.email_hash
-    end
-
     it "should have custom authorization providers" do
       user = create(:user)
 
@@ -372,6 +360,33 @@ module Challah
           expect(duplicate.valid?).to eq(false)
           expect(duplicate.errors).to include(:email)
         end
+      end
+    end
+
+    describe "#email_hash" do
+      it "calculates on save" do
+        user = build(:user)
+
+        user.email = 'tester@challah.me'
+        expect(user.save).to eq(true)
+        expect(user.email_hash).to eq("859ea8a4ea69b321df4992ca14c08d6b")
+
+        user.email = 'tester-too@challah.me'
+        expect(user.save).to eq(true)
+
+        expect(user.email_hash).to eq("45ab23dd8eb9a00f61cef27004b38b01")
+      end
+
+      it "uses nil if no email is provided" do
+        user = build(:user)
+
+        allow(user).to receive(:valid?).and_return(true)
+
+        user.email = ""
+        expect(user).to be_valid
+        expect(user.save).to eq(true)
+
+        expect(user.email_hash).to eq(nil)
       end
     end
 

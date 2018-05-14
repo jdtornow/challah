@@ -19,7 +19,7 @@ module Dummy
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
 
-    if Rails.application.config.active_record.respond_to?(:sqlite3)
+    if Rails.version.start_with?("5.2")
       Rails.application.config.active_record.sqlite3.represent_boolean_as_integer = true
     end
   end

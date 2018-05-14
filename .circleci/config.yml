@@ -1,0 +1,39 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/repo
+    docker:
+      - image: circleci/ruby:2.4.3-stretch-node
+        environment:
+          RAILS_ENV: test
+    steps:
+      - checkout
+
+      # Restore bundle cache
+      - restore_cache:
+          name: Restore bundle cache
+          keys:
+            - challah-{{ checksum "Gemfile.lock" }}
+
+      # Bundle install dependencies
+      - run:
+          name: Bundle Install
+          command: bin/bundle check --path vendor/bundle ||  bin/bundle install --path vendor/bundle --jobs 4 --retry 3
+
+      - save_cache:
+          name: Store bundle cache
+          key: challah-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+
+      - type: shell
+        command: |
+          bundle exec rspec --profile 10 \
+                            --format RspecJunitFormatter \
+                            --out /tmp/test-results/rspec.xml \
+                            --format progress \
+                            $(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)
+
+      # Save artifacts
+      - type: store_test_results
+        path: /tmp/test-results

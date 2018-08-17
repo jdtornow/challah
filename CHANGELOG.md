@@ -1,3 +1,8 @@
+## Challah 1.6.1
+
+* Prevent an email address that is blank from saving the `User#email_hash` attribute
+* Removes default column for `last_session_ip` that unnecessarily stores user IP addresses by default and could be considered a privacy concern. This column can be manually included in the migration to still track the user IP.
+
 ## Challah 1.6.0
 
 * For token technique, don't bother checking the database for an empty token query param

@@ -9,12 +9,12 @@ module Challah
       before_destroy :clear_authorizations_before_destroy
     end
 
-    protected
+    def authorizations
+      return [] if new_record?
+      self.class.authorization_model.where(user_id: self.id)
+    end
 
-      def authorizations
-        return [] if new_record?
-        self.class.authorization_model.where(user_id: self.id)
-      end
+    protected
 
       def clear_authorizations_before_destroy
         authorizations.destroy_all

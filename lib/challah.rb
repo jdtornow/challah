@@ -9,7 +9,6 @@ module Challah
   autoload :Authenticators,                   "challah/authenticators"
   autoload :Controller,                       "challah/controller"
   autoload :Encrypter,                        "challah/encrypter"
-  autoload :Plugins,                          "challah/plugins"
   autoload :Providers,                        "challah/providers"
   autoload :Random,                           "challah/random"
   autoload :Session,                          "challah/session"
@@ -73,10 +72,6 @@ module Challah
   register_technique :api_key,        ApiKeyTechnique
   register_technique :password,       PasswordTechnique
   register_technique :token,          TokenTechnique
-
-  # Set up plugin registering capability
-  extend Plugins
-  @plugins ||= {}
 
   # Set up authenticators
   extend Authenticators

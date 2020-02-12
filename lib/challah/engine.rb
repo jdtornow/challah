@@ -33,13 +33,6 @@ module Challah
         if defined?(ActionController::API)
           ActionController::API.send(:include, Challah::Controller)
         end
-
-        # Load any ActionController/Challah plugins
-        Challah.plugins.values.each do |plugin|
-          plugin.action_controller.each do |proc|
-            proc.call
-          end
-        end
       end
     end
 
@@ -49,13 +42,6 @@ module Challah
         Challah.options[:logger] = ActiveRecord::Base.logger
 
         ActiveRecord::Base.send(:include, Challah::Audit)
-
-        # Load any ActiveRecord/Challah plugins
-        Challah.plugins.values.each do |plugin|
-          plugin.active_record.each do |proc|
-            proc.call
-          end
-        end
       end
     end
   end

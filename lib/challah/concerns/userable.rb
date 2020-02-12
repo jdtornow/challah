@@ -14,8 +14,5 @@ module Challah
       include UserValidateable
     end
 
-    included do
-      Challah.include_user_plugins!
-    end
   end
 end

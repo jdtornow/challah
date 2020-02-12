@@ -35,6 +35,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency "sqlite3", "~> 1.3"
   s.add_development_dependency "rspec_junit_formatter", "~> 0.2"
 
-  s.required_ruby_version     = ">= 2.2.2"
+  s.required_ruby_version     = ">= 2.4.9"
   s.required_rubygems_version = ">= 1.8.11"
 end

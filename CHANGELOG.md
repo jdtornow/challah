@@ -1,6 +1,6 @@
-## Challah 2.0.0
+## Challah 2.0.0.beta1
 
-This version introduces the following breaking changes:
+This version introduces the following breaking changes, and therefore a new major version number:
 
 * Plugins no longer supported. This was never fully baked and was only used for the now defunct challah-rolls library, which is no longer maintained.
 * Drops support for Rails 4

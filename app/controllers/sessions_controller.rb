@@ -3,6 +3,7 @@ if File.exist?(Rails.root.join("controllers/application_controller"))
 end
 
 class SessionsController < (defined?(ApplicationController) ? ApplicationController : ActionController::Base)
+
   before_action :destroy_session, except: :create
 
   # GET /login
@@ -20,7 +21,7 @@ class SessionsController < (defined?(ApplicationController) ? ApplicationControl
     if @session.save
       redirect_to return_to_path
     else
-      redirect_to signin_path, alert: I18n.translate('sessions.create.failed_login')
+      redirect_to signin_path, alert: I18n.translate("sessions.create.failed_login")
     end
   end
 
@@ -32,14 +33,14 @@ class SessionsController < (defined?(ApplicationController) ? ApplicationControl
 
   protected
 
-  def destroy_session
-    current_user_session.destroy
-  end
+    def destroy_session
+      current_user_session.destroy
+    end
 
-  def return_to_path(default_path = '/')
-    result = session[:return_to]
-    result = nil if result and result == "http://#{request.domain}/"
-    result || default_path
-  end
+    def return_to_path(default_path = "/")
+      result = session[:return_to]
+      result = nil if result && (result == "http://#{ request.domain }/")
+      result || default_path
+    end
+
 end
-

@@ -43,7 +43,7 @@ module Challah
 
     private
 
-    attr_reader :token
+      attr_reader :token
 
   end
 end

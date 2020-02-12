@@ -1,5 +1,6 @@
 module Challah
   module UserPasswordable
+
     # Set the password and password_confirmation in one shortcut method.
     def password!(new_password)
       self.password = new_password
@@ -7,7 +8,7 @@ module Challah
     end
 
     def password_provider?
-      return true if @password_updated or @username_updated
+      return true if @password_updated || @username_updated
       !!providers[:password]
     end
 
@@ -37,12 +38,13 @@ module Challah
     end
 
     def username
-      @username ||= password_provider? ? password_provider.fetch(:uid, '') : ''
+      @username ||= password_provider? ? password_provider.fetch(:uid, "") : ""
     end
 
     def username=(value)
       @username_updated = true
       @username = value.to_s.strip.downcase
     end
+
   end
 end

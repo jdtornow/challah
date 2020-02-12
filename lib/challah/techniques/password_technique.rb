@@ -12,7 +12,7 @@ module Challah
 
     # if we can successfully authenticate, return a User instance, otherwise nil
     def authenticate
-      if username? and password?
+      if username? && password?
         user = user_model.find_for_session(username)
 
         if user
@@ -49,5 +49,6 @@ module Challah
     def username
       @username
     end
+
   end
 end

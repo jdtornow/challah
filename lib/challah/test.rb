@@ -1,7 +1,9 @@
 module Challah
+
   # Used to persist session data in test mode instead of using cookies. Stores the session
   # data lazily in a global var, accessible across the testing environment.
   class TestSessionStore
+
     def initialize(session = nil)
       @session = session
     end
@@ -22,6 +24,7 @@ module Challah
       $challah_test_session = "#{ token }@#{ user_id }"
       true
     end
+
   end
 
   module Testing
@@ -39,17 +42,20 @@ module Challah
     alias_method :logout, :signout
 
   end
+
 end
 
 if defined?(ActionController::TestCase)
   Challah.options[:storage_class] = Challah::TestSessionStore
 
   class ActionController::TestCase
+
     include Challah::Testing
 
     setup do
       $challah_test_session = nil
     end
+
   end
 end
 

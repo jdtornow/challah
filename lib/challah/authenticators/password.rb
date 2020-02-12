@@ -1,6 +1,7 @@
 module Challah
   module Authenticators
     class Password
+
       def self.match?(user, provider, plain_password)
         if !!provider
           crypted_password = provider.fetch(:token)
@@ -9,6 +10,7 @@ module Challah
 
         false
       end
+
     end
   end
 end

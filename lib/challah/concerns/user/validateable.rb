@@ -1,5 +1,6 @@
 module Challah
   module UserValidateable
+
     extend ActiveSupport::Concern
 
     included do
@@ -17,5 +18,6 @@ module Challah
 
       validates_with Challah.options[:password_validator], force: false
     end
+
   end
 end

@@ -1,9 +1,10 @@
-require 'digest/sha2'
-require 'bcrypt'
+require "digest/sha2"
+require "bcrypt"
 
 module Challah
   # Handles all encryption, hashing and comparison necessary for tokens and passwords.
   class Encrypter
+
     attr_accessor :cost, :joiner
 
     # The number of times to hash the given password.
@@ -54,5 +55,6 @@ module Challah
     def self.md5(*args)
       new().md5(*args)
     end
+
   end
 end

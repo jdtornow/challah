@@ -1,5 +1,6 @@
 module Challah
   module UserAttributeable
+
     extend ActiveSupport::Concern
 
     included do
@@ -30,50 +31,51 @@ module Challah
 
     protected
 
-    # Ensure that all system-generated columns aren't blank on each save
-    def ensure_user_tokens
-      ensure_api_key_presence
-      ensure_email_hash_presence
-      ensure_persistence_token_presence
-    end
+      # Ensure that all system-generated columns aren't blank on each save
+      def ensure_user_tokens
+        ensure_api_key_presence
+        ensure_email_hash_presence
+        ensure_persistence_token_presence
+      end
 
-    # Store a random seed for this user's api key
-    def ensure_api_key_presence
-      if respond_to?("api_key=")
-        if self.api_key.to_s.blank?
-          self.api_key = Random.token(50)
+      # Store a random seed for this user's api key
+      def ensure_api_key_presence
+        if respond_to?("api_key=")
+          if self.api_key.to_s.blank?
+            self.api_key = Random.token(50)
+          end
         end
       end
-    end
 
-    # Store a hashed email if the column exists
-    def ensure_email_hash_presence
-      if respond_to?("email_hash=")
-        if email_changed?
-          self.email_hash = generate_email_hash
+      # Store a hashed email if the column exists
+      def ensure_email_hash_presence
+        if respond_to?("email_hash=")
+          if email_changed?
+            self.email_hash = generate_email_hash
+          end
         end
       end
-    end
 
-    # Store a random token to identify user in persisted objects
-    def ensure_persistence_token_presence
-      if respond_to?("persistence_token=")
-        if self.persistence_token.to_s.blank?
-          self.persistence_token = Random.token(125)
+      # Store a random token to identify user in persisted objects
+      def ensure_persistence_token_presence
+        if respond_to?("persistence_token=")
+          if self.persistence_token.to_s.blank?
+            self.persistence_token = Random.token(125)
+          end
         end
       end
-    end
 
-    def generate_email_hash
-      if self.email.present?
-        Encrypter.md5(email.to_s.downcase.strip)
+      def generate_email_hash
+        if self.email.present?
+          Encrypter.md5(email.to_s.downcase.strip)
+        end
       end
-    end
 
-    # Downcase email and strip if of whitespace
-    # Ex: "   HELLO@example.com   " => "hello@example.com"
-    def normalize_user_email
-      self.email = self.email.to_s.downcase.strip
-    end
+      # Downcase email and strip if of whitespace
+      # Ex: "   HELLO@example.com   " => "hello@example.com"
+      def normalize_user_email
+        self.email = self.email.to_s.downcase.strip
+      end
+
   end
 end

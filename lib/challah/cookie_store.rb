@@ -9,15 +9,17 @@ module Challah
   # a new class that responds to +read+, +save+ and +destroy+
   #
   class CookieStore < SimpleCookieStore
+
     def inspect
-      "#<CookieStore:0x#{object_id.to_s(16)} valid=#{existing?}>"
+      "#<CookieStore:0x#{ object_id.to_s(16) } valid=#{ existing? }>"
     end
 
     protected
 
-    def validation_cookie_value(value = nil)
-      value = session_cookie_value unless value
-      Encrypter.md5(value, request.user_agent, request.remote_ip)
-    end
+      def validation_cookie_value(value = nil)
+        value = session_cookie_value unless value
+        Encrypter.md5(value, request.user_agent, request.remote_ip)
+      end
+
   end
 end

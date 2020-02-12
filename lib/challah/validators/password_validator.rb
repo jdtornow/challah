@@ -1,9 +1,10 @@
 module Challah
   class PasswordValidator < ActiveModel::Validator
+
     # Check to make sure a valid password and confirmation were set
     def validate(record)
-      if record.password_provider? or options[:force]
-        if record.new_record? and record.password.to_s.blank? and !record.password_changed?
+      if record.password_provider? || options[:force]
+        if record.new_record? && record.password.to_s.blank? && !record.password_changed?
           record.errors.add :password, :blank
         elsif record.password_changed?
           if record.password.to_s.size < 4
@@ -14,5 +15,6 @@ module Challah
         end
       end
     end
+
   end
 end

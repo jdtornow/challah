@@ -1,8 +1,9 @@
-require 'challah/authenticators/api_key'
-require 'challah/authenticators/password'
+require "challah/authenticators/api_key"
+require "challah/authenticators/password"
 
 module Challah
   module Authenticators
+
     # Register a new authenticator.
     #
     # Usage:
@@ -19,5 +20,6 @@ module Challah
     def authenticators
       @authenticators.dup
     end
+
   end
 end

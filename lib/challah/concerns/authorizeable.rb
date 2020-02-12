@@ -1,5 +1,6 @@
 module Challah
   module Authorizeable
+
     extend ActiveSupport::Concern
 
     included do
@@ -12,6 +13,7 @@ module Challah
     end
 
     module ClassMethods
+
       def hashable_attributes
         protected_attributes = %w( user_id provider last_session_at last_session_ip session_count created_at updated_at )
         @hashable_attributes ||= self.columns.map(&:name) - protected_attributes
@@ -63,6 +65,8 @@ module Challah
       def user_model
         @user_model ||= Challah.user
       end
+
     end
+
   end
 end

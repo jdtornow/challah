@@ -1,5 +1,6 @@
 module Challah
   class Session
+
     extend ActiveModel::Naming
     include ActiveModel::Conversion
 
@@ -34,7 +35,7 @@ module Challah
     end
 
     def inspect
-      "#<Session:0x#{object_id.to_s(16)} valid=#{valid?} store=#{self.store.inspect} user=#{user_id || 'nil'}>"
+      "#<Session:0x#{ object_id.to_s(16) } valid=#{ valid? } store=#{ self.store.inspect } user=#{ user_id || 'nil' }>"
     end
 
     def persist?
@@ -43,7 +44,7 @@ module Challah
 
     def read
       persistence_token, user_id = self.store.read
-      return false if persistence_token.nil? or user_id.nil?
+      return false if persistence_token.nil? || user_id.nil?
 
       store_user = nil
 
@@ -53,7 +54,7 @@ module Challah
         nil
       end
 
-      if store_user and store_user.valid_session? and store_user.persistence_token == persistence_token
+      if store_user && store_user.valid_session? && (store_user.persistence_token == persistence_token)
         if store_user.valid_session?
           self.user = store_user
           @valid = true
@@ -66,7 +67,7 @@ module Challah
     def save
       return false unless valid?
 
-      if self.user and persist?
+      if self.user && persist?
         self.store.save(self.user.persistence_token, user_id)
         return true
       end
@@ -90,7 +91,7 @@ module Challah
     # Returns true if this session has been authenticated and is ready to save.
     def valid?
       return @valid if @valid != nil
-      return true if self.user and self.user.valid_session?
+      return true if self.user && self.user.valid_session?
       authenticate!
     end
 
@@ -126,7 +127,7 @@ module Challah
         end
       end
 
-      if user_record and user_record.valid_session?
+      if user_record && user_record.valid_session?
         session.user = user_record
         session.persist = true
       end
@@ -157,32 +158,33 @@ module Challah
 
     protected
 
-    # Try and authenticate against the various auth techniques. If one
-    # technique works, then just exit and make the session active.
-    def authenticate!
-      Challah.techniques.values.each do |klass|
-        technique = klass.new(self)
-        technique.user_model = user_model if technique.respond_to?(:"user_model=")
+      # Try and authenticate against the various auth techniques. If one
+      # technique works, then just exit and make the session active.
+      def authenticate!
+        Challah.techniques.values.each do |klass|
+          technique = klass.new(self)
+          technique.user_model = user_model if technique.respond_to?(:"user_model=")
 
-        @user = technique.authenticate
+          @user = technique.authenticate
+
+          if @user
+            @persist = technique.respond_to?(:persist?) ? technique.persist? : false
+            break
+          end
+        end
 
         if @user
-          @persist = technique.respond_to?(:persist?) ? technique.persist? : false
-          break
-        end
-      end
+          # Only update user record if persistence is on for the technique.
+          # Otherwise this builds up quick (one session for each API call)
+          if @persist
+            @user.successful_authentication!(ip)
+          end
 
-      if @user
-        # Only update user record if persistence is on for the technique.
-        # Otherwise this builds up quick (one session for each API call)
-        if @persist
-          @user.successful_authentication!(ip)
+          return @valid = true
         end
 
-        return @valid = true
+        @valid = false
       end
 
-      @valid = false
-    end
   end
 end

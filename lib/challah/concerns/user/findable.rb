@@ -1,5 +1,6 @@
 module Challah
   module UserFindable
+
     extend ActiveSupport::Concern
 
     module ClassMethods
@@ -15,18 +16,20 @@ module Challah
 
       protected
 
-      def find_by_authorization(uid)
-        authorization = self.authorization_model
-        result = authorization.where(provider: :password, uid: uid).first
-        if result
-          result.user
+        def find_by_authorization(uid)
+          authorization = self.authorization_model
+          result = authorization.where(provider: :password, uid: uid).first
+          if result
+            result.user
+          end
         end
-      end
 
-      def find_by_email(email)
-        return unless email.include?('@')
-        where(email: email).first
-      end
+        def find_by_email(email)
+          return unless email.include?("@")
+          where(email: email).first
+        end
+
     end
+
   end
 end

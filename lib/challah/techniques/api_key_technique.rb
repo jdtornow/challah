@@ -5,7 +5,7 @@ module Challah
     attr_accessor :user_model
 
     def initialize(session)
-      @key        = session.key? ? session.key : nil
+      @key = session.key? ? session.key : nil
     end
 
     def authenticate
@@ -16,7 +16,7 @@ module Challah
       unless @key.to_s.blank?
         user = user_model.find_by_api_key(@key)
 
-        if user and user.valid_session?
+        if user && user.valid_session?
           return user
         end
       end

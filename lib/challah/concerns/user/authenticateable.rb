@@ -1,5 +1,6 @@
 module Challah
   module UserAuthenticateable
+
     # Generic authentication method. By default, this just checks to see if the password
     # given matches this user. You can also pass in the first parameter as the method
     # to use for a different type of authentication.
@@ -39,5 +40,6 @@ module Challah
       self.save
       self.increment!(:session_count, 1)
     end
+
   end
 end

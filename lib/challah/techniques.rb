@@ -54,6 +54,7 @@ module Challah
   # +ApiKeyTechnique+.
   #
   module Techniques
+
     # Register a new technique class. Pass in a name as an identifier, and the class to use
     # when attempting to authenticate.
     def register_technique(name, klass)
@@ -69,5 +70,6 @@ module Challah
     def techniques
       @techniques.dup
     end
+
   end
 end

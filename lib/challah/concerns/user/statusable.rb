@@ -1,5 +1,6 @@
 module Challah
   module UserStatusable
+
     extend ActiveSupport::Concern
 
     included do
@@ -41,5 +42,6 @@ module Challah
     def valid_session?
       active?
     end
+
   end
 end

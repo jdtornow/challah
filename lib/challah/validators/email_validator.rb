@@ -6,6 +6,7 @@ module Challah
   #       validates :email, :presence => true, :email => true
   #     end
   class EmailValidator < ActiveModel::EachValidator
+
     # Called automatically by ActiveModel validation..
     def validate_each(record, attribute, value)
       unless value =~ EmailValidator.pattern
@@ -17,5 +18,6 @@ module Challah
     def self.pattern
       /\b[A-Z0-9._%a-z\-]+@(?:[A-Z0-9a-z\-]+\.)+[A-Za-z]{2,}\z/
     end
+
   end
 end

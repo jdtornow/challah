@@ -1,5 +1,6 @@
 module Challah
   module Userable
+
     extend ActiveSupport::Concern
 
     include UserAttributeable

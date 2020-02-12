@@ -28,6 +28,7 @@ module Challah
   #       end
   #
   module Audit
+
     extend ActiveSupport::Concern
 
     included do
@@ -58,53 +59,54 @@ module Challah
 
     private
 
-    def before_save_audit
-      if new_record?
-        all_audit_attributes.map(&:to_s).each do |column|
-          if respond_to?(column) && respond_to?("#{ column }=")
-            write_attribute(column, current_user_id)
+      def before_save_audit
+        if new_record?
+          all_audit_attributes.map(&:to_s).each do |column|
+            if respond_to?(column) && respond_to?("#{ column }=")
+              write_attribute(column, current_user_id)
+            end
+          end
+        else
+          audit_attributes_for_update.map(&:to_s).each do |column|
+            if respond_to?(column) && respond_to?("#{ column }=")
+              next if attribute_changed?(column) # don't update the column if we already manually did
+              write_attribute(column, current_user_id)
+            end
           end
         end
-      else
-        audit_attributes_for_update.map(&:to_s).each do |column|
-          if respond_to?(column) && respond_to?("#{ column }=")
-            next if attribute_changed?(column) # don't update the column if we already manually did
-            write_attribute(column, current_user_id)
+      end
+
+      # @private
+      def audit_attributes_for_update
+        [ :updated_by, :modifed_by, :updated_user_id ]
+      end
+
+      # @private
+      def audit_attributes_for_create
+        [ :created_by, :created_user_id ]
+      end
+
+      # @private
+      def all_audit_attributes
+        audit_attributes_for_update + audit_attributes_for_create
+      end
+
+      # Clear attributes and changed_attributes
+      def clear_audit_attributes
+        all_audit_attributes.each do |attribute_name|
+          if respond_to?(attribute_name) && respond_to?("#{ attribute_name }=")
+            write_attribute(attribute_name, nil)
           end
         end
-      end
-    end
 
-    # @private
-    def audit_attributes_for_update
-      [ :updated_by, :modifed_by, :updated_user_id ]
-    end
+        @changed_attributes = changed_attributes.reduce(ActiveSupport::HashWithIndifferentAccess.new) do |result, (key, value)|
+          unless all_audit_attributes.include?(key.to_sym)
+            result[key] = value
+          end
 
-    # @private
-    def audit_attributes_for_create
-      [ :created_by, :created_user_id ]
-    end
-
-    # @private
-    def all_audit_attributes
-      audit_attributes_for_update + audit_attributes_for_create
-    end
-
-    # Clear attributes and changed_attributes
-    def clear_audit_attributes
-      all_audit_attributes.each do |attribute_name|
-        if respond_to?(attribute_name) && respond_to?("#{ attribute_name }=")
-          write_attribute(attribute_name, nil)
+          result
         end
       end
 
-      @changed_attributes = changed_attributes.reduce(ActiveSupport::HashWithIndifferentAccess.new) do |result, (key, value)|
-        unless all_audit_attributes.include?(key.to_sym)
-          result[key] = value
-        end
-
-        result
-      end
-    end
   end
 end

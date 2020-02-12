@@ -1,6 +1,7 @@
 require "challah/version"
 
 module Challah
+
   autoload :Audit,                            "challah/audit"
 
   autoload :CookieStore,                      "challah/cookie_store"
@@ -86,6 +87,7 @@ module Challah
   @providers ||= {}
 
   register_provider :password, PasswordProvider
+
 end
 
 require "challah/engine" if defined?(Rails)

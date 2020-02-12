@@ -7,7 +7,7 @@ class ChallahGenerator < Rails::Generators::Base
   source_root File.expand_path("../templates", __FILE__)
 
   def copy_migration
-    migration_template "migration.rb", "db/migrate/challah_create_users.rb", migration_version: migration_version
+    migration_template "migration.erb", "db/migrate/challah_create_users.rb", migration_version: migration_version
   end
 
   def migration_version

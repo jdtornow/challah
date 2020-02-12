@@ -1,5 +1,6 @@
 module Challah
   module Providers
+
     # Get a list of all authorization providers other than password provider
     def custom_providers
       providers.reject { |k, v| k == :password }
@@ -18,5 +19,6 @@ module Challah
     def providers
       @providers.dup
     end
+
   end
 end

@@ -1,5 +1,6 @@
 module Challah
   class Signup
+
     extend ActiveModel::Naming
     include ActiveModel::Conversion
 
@@ -17,7 +18,7 @@ module Challah
       return unless Hash === value
 
       value.each do |key, value|
-        self.send("#{key}=", value)
+        self.send("#{ key }=", value)
       end
     end
 
@@ -60,7 +61,7 @@ module Challah
         user.errors.each { |a, e| @errors.add(a, e) }
       end
 
-      if !provider or !valid_provider?
+      if !provider || !valid_provider?
         result = false
         user.errors.each { |a, e| @errors.add(a, e) unless @errors.added?(a, e) }
       end
@@ -71,5 +72,6 @@ module Challah
     def self.model_name
       ActiveModel::Name.new(Challah::Signup, Challah, "Signup")
     end
+
   end
 end

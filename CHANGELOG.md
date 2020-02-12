@@ -9,7 +9,7 @@ This version introduces the following breaking changes:
 Plus the following new changes:
 
 * Support for Rails 6.0
-* Authorizations table is now properly set as a foreign key to users
+* Authorizations table is now properly set as a foreign key to users (for new installations only, for existing tables you can do this yourself)
 
 ## Challah 1.6.1
 

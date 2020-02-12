@@ -1,39 +1,77 @@
-version: 2
-jobs:
-  build:
-    working_directory: ~/repo
-    docker:
-      - image: circleci/ruby:2.4.3-stretch-node
-        environment:
-          RAILS_ENV: test
+---
+version: 2.1
+
+commands:
+  shared_steps:
     steps:
       - checkout
 
-      # Restore bundle cache
       - restore_cache:
           name: Restore bundle cache
-          keys:
-            - challah-{{ checksum "Gemfile.lock" }}
+          key: v1-challah-{{ checksum "Gemfile.lock" }}
 
-      # Bundle install dependencies
       - run:
           name: Bundle Install
-          command: bundle check --path vendor/bundle || bundle install --path vendor/bundle --jobs 4 --retry 3
+          command: |
+            gem uninstall bundler
+            gem install bundler -v=2.1.2
+            bundle config set path 'vendor/bundle'
+            bundle install
 
       - save_cache:
           name: Store bundle cache
-          key: challah-{{ checksum "Gemfile.lock" }}
+          key: v1-challah-{{ checksum "Gemfile.lock" }}
           paths:
             - vendor/bundle
 
-      - type: shell
+default_job: &default_job
+  working_directory: ~/repo
+  steps:
+    - shared_steps
+
+    - run:
+        name: "Rails DB Migrate"
+        command: |
+          bundle exec rails db:migrate
+
+    - run:
+        name: "Rubocop"
+        command: bundle exec rubocop
+
+    - run:
+        name: "RSpec"
         command: |
           bundle exec rspec --profile 10 \
-                            --format RspecJunitFormatter \
-                            --out /tmp/test-results/rspec.xml \
-                            --format progress \
-                            $(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)
+                          --format RspecJunitFormatter \
+                          --out /tmp/test-results/rspec.xml \
+                          --format progress \
+                          spec/
 
-      # Save artifacts
-      - type: store_test_results
+    - store_test_results:
         path: /tmp/test-results
+
+jobs:
+  ruby_25:
+    <<: *default_job
+    docker:
+      - image: circleci/ruby:2.5-stretch-node
+        environment:
+          RAILS_ENV: test
+      - image: redis:4.0
+
+  ruby_26:
+    <<: *default_job
+    docker:
+      - image: circleci/ruby:2.6-stretch-node
+        environment:
+          RAILS_ENV: test
+      - image: redis:4.0
+
+
+workflows:
+  version: 2
+  rubies:
+    jobs:
+      - ruby_25
+      - ruby_26
+

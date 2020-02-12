@@ -1,3 +1,16 @@
+## Challah 2.0.0
+
+This version introduces the following breaking changes:
+
+* Plugins no longer supported. This was never fully baked and was only used for the now defunct challah-rolls library, which is no longer maintained.
+* Drops support for Rails 4
+* Drops support for Ruby prior to 2.4.9
+
+Plus the following new changes:
+
+* Support for Rails 6.0
+* Authorizations table is now properly set as a foreign key to users
+
 ## Challah 1.6.1
 
 * Prevent an email address that is blank from saving the `User#email_hash` attribute

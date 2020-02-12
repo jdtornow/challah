@@ -60,12 +60,10 @@ module Challah
     it "should have an active? user flag" do
       user = User.new
 
-      user.active = true
-
       expect(user.active?).to eq(true)
       expect(user.valid_session?).to eq(true)
 
-      user.active = false
+      user.status = :inactive
 
       expect(user.active?).to eq(false)
       expect(user.valid_session?).to eq(false)
@@ -322,26 +320,6 @@ module Challah
         user.status = :inactive
         expect(user.active?).to eq(false)
         expect(user.active).to eq(false)
-      end
-    end
-
-    describe "#active=" do
-      let(:user) { build(:user) }
-
-      it "sets the status column to active" do
-        user.status = :inactive
-        expect(user.active?).to eq(false)
-
-        user.active = true
-        expect(user.active?).to eq(true)
-      end
-
-      it "sets the status column to inactive" do
-        user.status = :active
-        expect(user.active?).to eq(true)
-
-        user.active = false
-        expect(user.active?).to eq(false)
       end
     end
 

@@ -5,6 +5,7 @@ This version introduces the following breaking changes, and therefore a new majo
 * Plugins no longer supported. This was never fully baked and was only used for the now defunct challah-rolls library, which is no longer maintained.
 * Drops support for Rails 4
 * Drops support for Ruby prior to 2.5.0
+* Removes legacy support for boolean-based User#active column in favor of enums on User#status
 
 Plus the following new changes:
 

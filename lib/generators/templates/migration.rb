@@ -10,10 +10,8 @@ class ChallahCreateUsers < ActiveRecord::Migration<%= migration_version %>
       t.datetime    :last_session_at
       t.integer     :session_count, default: 0
       t.integer     :failed_auth_count, default: 0
-      t.integer     :created_by, default: 0
-      t.integer     :updated_by, default: 0
-      t.datetime    :created_at
-      t.datetime    :updated_at
+      t.bigint      :created_by, default: 0
+      t.bigint      :updated_by, default: 0
       t.integer     :status, default: 0 # defaults to :active
       t.timestamps  null: true
     end
@@ -24,7 +22,7 @@ class ChallahCreateUsers < ActiveRecord::Migration<%= migration_version %>
     add_index :users, :api_key
 
     create_table :authorizations do |t|
-      t.integer     :user_id
+      t.references  :user
       t.string      :provider, limit: 50
       t.string      :uid
       t.string      :token, limit: 500
@@ -34,7 +32,6 @@ class ChallahCreateUsers < ActiveRecord::Migration<%= migration_version %>
       t.timestamps  null: true
     end
 
-    add_index :authorizations, :user_id
     add_index :authorizations, [ :user_id, :provider ]
     add_index :authorizations, :uid
     add_index :authorizations, :token

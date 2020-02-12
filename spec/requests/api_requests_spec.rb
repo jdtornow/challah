@@ -31,7 +31,7 @@ RSpec.describe "JSON API Requests", type: :request do
   describe "GET /api/sample" do
     context "with no user" do
       before do
-        get_request "/api/sample", params: {}, headers: json_headers
+        get "/api/sample", params: {}, headers: json_headers
       end
 
       it "returns unauthorized" do
@@ -42,7 +42,7 @@ RSpec.describe "JSON API Requests", type: :request do
 
     context "with a regular user and header token" do
       before do
-        get_request "/api/sample", headers: headers
+        get "/api/sample", headers: headers
       end
 
       it "has a successful response" do
@@ -62,7 +62,7 @@ RSpec.describe "JSON API Requests", type: :request do
       end
 
       before do
-        get_request "/api/sample", headers: headers
+        get "/api/sample", headers: headers
       end
 
       it "returns unauthorized" do
@@ -73,7 +73,7 @@ RSpec.describe "JSON API Requests", type: :request do
 
     context "with a regular user and token param" do
       before do
-        get_request "/api/sample", params: { token: user.api_key }, headers: json_headers
+        get "/api/sample", params: { token: user.api_key }, headers: json_headers
       end
 
       it "has a successful response" do
@@ -87,7 +87,7 @@ RSpec.describe "JSON API Requests", type: :request do
 
     context "with an invalid token param" do
       before do
-        get_request "/api/sample", params: { token: "bad-api-key" }, headers: json_headers
+        get "/api/sample", params: { token: "bad-api-key" }, headers: json_headers
       end
 
       it "returns unauthorized" do
@@ -107,7 +107,7 @@ RSpec.describe "JSON API Requests", type: :request do
       before do
         Challah.options[:token_header] = "X-User-Api-Token"
 
-        get_request "/api/sample", headers: headers
+        get "/api/sample", headers: headers
       end
 
       it "has a successful response" do

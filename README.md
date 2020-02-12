@@ -34,7 +34,7 @@ This will copy over the necessary migrations to your app and migrate the databas
 If you would prefer to handle these steps manually, you can do so by using these rake tasks instead:
 
 ```bash
-rails g challah
+rails generate challah
 rails challah:unpack:user
 rails db:migrate
 ```

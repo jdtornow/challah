@@ -1,4 +1,4 @@
-Dummy::Application.routes.draw do
+Rails.application.routes.draw do
 
   # Testing routes
   get "/challah", to: "restrictions#index", as: :test_index

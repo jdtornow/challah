@@ -1,3 +1,7 @@
+## Challah 2.0.0.beta2
+
+* "Support" for Rails 7.0
+
 ## Challah 2.0.0.beta1
 
 This version introduces the following breaking changes, and therefore a new major version number:

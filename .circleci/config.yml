@@ -54,7 +54,7 @@ jobs:
   ruby_26:
     <<: *default_job
     docker:
-      - image: circleci/ruby:2.6-stretch-node
+      - image: cimg/ruby:2.6-node
         environment:
           RAILS_ENV: test
       - image: redis:6.0
@@ -62,7 +62,7 @@ jobs:
   ruby_27:
     <<: *default_job
     docker:
-      - image: circleci/ruby:2.7-stretch-node
+      - image: cimg/ruby:2.7-node
         environment:
           RAILS_ENV: test
       - image: redis:6.0

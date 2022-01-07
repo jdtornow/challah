@@ -57,13 +57,30 @@ jobs:
       - image: circleci/ruby:2.6-stretch-node
         environment:
           RAILS_ENV: test
-      - image: redis:4.0
+      - image: redis:6.0
+
+  ruby_27:
+    <<: *default_job
+    docker:
+      - image: circleci/ruby:2.7-stretch-node
+        environment:
+          RAILS_ENV: test
+      - image: redis:6.0
+
+  ruby_30:
+    <<: *default_job
+    docker:
+      - image: cimg/ruby:3.0-node
+        environment:
+          RAILS_ENV: test
+      - image: redis:6.0
 
 
 workflows:
   version: 2
   rubies:
     jobs:
-      - ruby_25
       - ruby_26
+      - ruby_27
+      - ruby_30
 

@@ -27,7 +27,7 @@ Gem::Specification.new do |s|
   }
 
   s.add_dependency "highline", ">= 1.7.1", "< 3"
-  s.add_dependency "rails", ">= 5.2.0", "< 7"
+  s.add_dependency "rails", ">= 5.2.0", "< 8"
   s.add_dependency "rake", ">= 10.3"
   s.add_dependency "bcrypt", "~> 3.1"
 

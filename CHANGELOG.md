@@ -1,6 +1,7 @@
 ## Challah 2.0.0.beta2
 
 * "Support" for Rails 7.0
+* Drops support for Ruby prior to 2.6
 
 ## Challah 2.0.0.beta1
 

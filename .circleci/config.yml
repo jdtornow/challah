@@ -51,14 +51,6 @@ default_job: &default_job
         path: /tmp/test-results
 
 jobs:
-  ruby_25:
-    <<: *default_job
-    docker:
-      - image: circleci/ruby:2.5-stretch-node
-        environment:
-          RAILS_ENV: test
-      - image: redis:4.0
-
   ruby_26:
     <<: *default_job
     docker:

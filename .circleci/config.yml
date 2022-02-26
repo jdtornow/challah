@@ -51,14 +51,6 @@ default_job: &default_job
         path: /tmp/test-results
 
 jobs:
-  ruby_26:
-    <<: *default_job
-    docker:
-      - image: cimg/ruby:2.6-node
-        environment:
-          RAILS_ENV: test
-      - image: redis:6.0
-
   ruby_27:
     <<: *default_job
     docker:
@@ -80,7 +72,6 @@ workflows:
   version: 2
   rubies:
     jobs:
-      - ruby_26
       - ruby_27
       - ruby_30
 

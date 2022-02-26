@@ -1,13 +1,13 @@
-appraise "rails60" do
-  gem "rails", "~> 6.0"
+appraise "rails62" do
+  gem "rails", "~> 6.2"
 
   group :development, :test do
     gem "rspec-rails"
   end
 end
 
-appraise "rails52" do
-  gem "rails", "~> 5.2"
+appraise "rails70" do
+  gem "rails", "~> 6.0"
 
   group :development, :test do
     gem "rspec-rails"

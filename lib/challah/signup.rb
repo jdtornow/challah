@@ -58,12 +58,20 @@ module Challah
 
       unless user.valid?
         result = false
-        user.errors.each { |a, e| @errors.add(a, e) }
+
+        user.errors.each do |error|
+          @errors.add(error.attribute, error.message)
+        end
       end
 
       if !provider || !valid_provider?
         result = false
-        user.errors.each { |a, e| @errors.add(a, e) unless @errors.added?(a, e) }
+
+        user.errors.each do |error|
+          unless @errors.added?(error.attribute, error.message)
+            @errors.add(error.attribute, error.message)
+          end
+        end
       end
 
       result
